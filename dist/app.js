@@ -24,7 +24,7 @@ app.use(_bodyParser2.default.json());
 
 app.use(_bodyParser2.default.urlencoded());
 
-app.use('/api/v1/users/requests', _requestRoute2.default);
+app.use('/api/v1', _requestRoute2.default);
 
 exports.default = app;
 //# sourceMappingURL=app.js.map
