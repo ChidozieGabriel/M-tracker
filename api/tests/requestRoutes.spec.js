@@ -52,7 +52,7 @@ describe('API ENDPOINT', () => {
       message: 'Lorem ipsum owjjfndfnmnxnfj Lorem ipsum Lorem',
     };
 
-    const data2 =  {
+    const data2 = {
       id: 140,
       name: 'Janet May',
       email: 'janetMaye@yahoomail.com',
