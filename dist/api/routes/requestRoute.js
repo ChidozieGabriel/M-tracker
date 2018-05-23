@@ -16,15 +16,15 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var router = _express2.default.Router();
 
-router.get('/', _requestsController2.default.get_all_requests);
+router.get('/users/requests', _requestsController2.default.get_all_requests);
 
-router.get('/:requestId', _requestsController2.default.get_a_request);
+router.get('/users/requests/:requestId', _requestsController2.default.get_a_request);
 
-router.post('/', _requestsController2.default.create_a_request);
+router.post('/users/requests/', _requestsController2.default.create_a_request);
 
-router.put('/:requestId', _requestsController2.default.modify_a_request);
+router.put('/users/requests/:requestId', _requestsController2.default.modify_a_request);
 
-router.delete('/:requestId', _requestsController2.default.delete_a_request);
+router.delete('/users/requests/:requestId', _requestsController2.default.delete_a_request);
 
 exports.default = router;
 //# sourceMappingURL=requestRoute.js.map

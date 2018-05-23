@@ -18,13 +18,15 @@ var _requestRoute2 = _interopRequireDefault(_requestRoute);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+// import userModel from './api/models/userModel';
+
 var app = (0, _express2.default)();
 
 app.use(_bodyParser2.default.json());
 
-app.use(_bodyParser2.default.urlencoded());
+app.use(_bodyParser2.default.urlencoded({ extended: false }));
 
-app.use('/api/v1/users/requests', _requestRoute2.default);
+app.use('/api/v1', _requestRoute2.default);
 
 exports.default = app;
 //# sourceMappingURL=app.js.map
