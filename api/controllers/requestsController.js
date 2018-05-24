@@ -1,5 +1,4 @@
 import db from '../models/userModel';
-import jwt from 'jsonwebtoken';
 
 global.data = [
   {
@@ -34,24 +33,23 @@ global.data = [
 
 
 exports.getAllUserRequests = (req, res) => {
-
+  const userId = req.userInfo.id;
   const sql = {
-    text: 'SELECT * FROM requests ',
+    text: 'SELECT * FROM requests WHERE user_id=$1',
+    values: [userId],
   };
   db.query(sql, (err, result) => {
     if (err) {
       return res.status(500)
         .json({
-          error: err,
-        })
-        .end();
+          err,
+        }).end();
     }
     res.status(200)
       .json({
         user: req.userInfo,
         result: result.rows,
-      })
-    ;
+      });
   });
 
   // if (global.data.length !== 0) {

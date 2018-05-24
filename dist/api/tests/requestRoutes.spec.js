@@ -18,112 +18,100 @@ var server = _supertest2.default.agent(_app2.default);
 
 var Expect = _chai2.default.expect;
 
-describe('API ENDPOINT', function () {
-  describe('GET request( /request )', function () {
-    it('Should get an array of objects ', function (done) {
-      server.get('/api/v1/users/requests').end(function (err, res) {
-        // if (err) {
-        //   console.log(err);
-        // }else {
-        //   console.log(res);
-        // }
-        Expect(res.statusCode).to.equal(200);
-        Expect(res).to.be.an('object');
-        Expect(res.body.data).to.be.an('array');
-      });
-      return done();
+describe('REQUEST CONTROLLER API ENDPOINT', function () {
+  it('Should list ALL requests on /user/request GET', function (done) {
+    server.get('/api/v1/users/requests').end(function (err, res) {
+      // Expect(err).to.be.null;
+      Expect(res.statusCode).to.equal(200);
+      Expect(res).to.be.an('object');
+      Expect(res.body.data).to.be.an('array');
     });
-
-    it('Should get an object', function (done) {
-      server.get('/api/v1/users/requests/110').end(function (err, res) {
-        Expect(res.statusCode).to.equal(200);
-        Expect(res).to.be.an('object');
-      });
-      return done();
-    });
-
-    it('Should get Not found', function (done) {
-      server.get('/api/v1/users/requests/1100').end(function (err, res) {
-        Expect(res.statusCode).to.equal(404);
-      });
-      return done();
-    });
+    return done();
   });
 
-  describe('POST request( /request )', function () {
+  it('Should list ONE requests on /user/request/:requestId GET', function (done) {
+    server.get('/api/v1/users/requests/110').end(function (err, res) {
+      Expect(res.statusCode).to.equal(200);
+      Expect(res).to.be.an('object');
+    });
+    return done();
+  });
+
+  it('Should throw a 404 error when request is not found', function (done) {
+    server.get('/api/v1/users/requests/1100').end(function (err, res) {
+      Expect(res.statusCode).to.equal(404);
+    });
+    return done();
+  });
+
+  var data1 = {
+    id: 140,
+    name: 'Janet May',
+    email: 'janetMaye@yahoomail.com',
+    date: '2011-11-21',
+    dept: 'Engineering HQ',
+    request: 'Lorem ipsum owjjfndfnmnxnfj Lorem ipsum Lorem'
+  };
+
+  it('should create a SINGLE request user/requests/ POST', function (done) {
+
+    server.post('/api/v1/users/requests').send(data1).end(function (err, res) {
+      Expect(res.statusCode).to.equal(201);
+    });
+    return done();
+  });
+
+  it('should get an error when a bad request is sent on user/requests/  POST', function (done) {
     var data = {
-      id: '140',
+      id: '150',
       name: 'Janet May',
       email: 'janetMaye@yahoomail.com',
       date: '2011-11-21',
       dept: 'Engineering HQ',
-      message: 'Lorem ipsum owjjfndfnmnxnfj Lorem ipsum Lorem'
+      request: 'Lorem ipsum'
     };
 
-    var data2 = {
-      id: 140,
-      name: 'Janet May',
-      email: 'janetMaye@yahoomail.com',
-      date: '2011-11-21',
-      dept: 'Engineering HQ',
-      message: 'Lorem ipsum owjjfndfnmnxnfj Lorem ipsum Lorem'
-    };
-
-    it('Should get a status code 201', function (done) {
-      server.post('/api/v1/users/requests').send(data2).end(function (err, res) {
-        Expect(res.statusCode).to.equal(201);
-      });
-      return done();
+    server.post('/api/v1/users/requests/').send(data).end(function (err, res) {
+      Expect(res.statusCode).to.equal(400);
     });
-
-    it('Should get a status code 400', function (done) {
-      server.post('/api/v1/users/requests').send(data).end(function (err, res) {
-        Expect(res.statusCode).to.equal(400);
-      });
-      return done();
-    });
+    return done();
   });
 
-  describe('PUT request( /request/:requestId )', function () {
-    var data3 = {
+  it('should update a SINGLE request on user/requests/:requestId PUT', function (done) {
+    var data = {
       name: 'Janet May',
       email: 'janetMaye@yahoomail.com',
       date: '2011-11-21',
       dept: 'Engineering HQ',
-      message: 'Lorem ipsum owjjfndfnmnxnfj Lorem ipsum Lorem'
+      request: 'Lorem ipsum owjjfndfnmnxnfj Lorem ipsum Lorem'
     };
-
-    it('Should get an array of objects ', function (done) {
-      server.put('/api/v1/users/requests/110').send(data3).end(function (err, res) {
-        Expect(res.statusCode).to.equal(200);
-        Expect(res).to.be.an('object');
-        Expect(res.body.data).to.be.an('object');
-      });
-      return done();
+    server.put('/api/v1/users/requests/110').send(data).end(function (err, res) {
+      Expect(res.statusCode).to.equal(200);
+      Expect(res).to.be.an('object');
+      Expect(res.body.data).to.be.an('object');
     });
-
-    it('Should get Not found', function (done) {
-      server.put('/api/v1/users/requests/1100').end(function (err, res) {
-        Expect(res.statusCode).to.equal(404);
-      });
-      return done();
-    });
+    return done();
   });
 
-  describe('DELETE request( /request/:requestId )', function () {
-    it('Should get an array of objects ', function (done) {
-      server.put('/api/v1/users/requests/110').end(function (err, res) {
-        Expect(res.statusCode).to.equal(200);
-      });
-      return done();
+  it('should get an error when a request is not found on user/requests/:requestId  PUT', function (done) {
+    server.put('/api/v1/users/requests/1100').end(function (err, res) {
+      Expect(res.statusCode).to.equal(404);
     });
+    return done();
+  });
 
-    it('Should get Not found', function (done) {
-      server.put('/api/v1/users/requests/1100').end(function (err, res) {
-        Expect(res.statusCode).to.equal(404);
-      });
-      return done();
+  it('should delete requests on user/requests/:requestId  DELETE', function (done) {
+    server.put('/api/v1/users/requests/110').end(function (err, res) {
+      Expect(res.statusCode).to.equal(200);
     });
+    return done();
+  });
+
+  it('should get an error when a request is not found on user/requests/:requestId  DELETE', function (done) {
+    server.put('/api/v1/users/requests/1100').end(function (err, res) {
+      Expect(res.statusCode).to.equal(404);
+    });
+    return done();
   });
 });
 //# sourceMappingURL=requestRoutes.spec.js.map

@@ -1,5 +1,11 @@
 'use strict';
 
+var _userModel = require('../models/userModel');
+
+var _userModel2 = _interopRequireDefault(_userModel);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 global.data = [{
   id: 110,
   name: 'John doe',
@@ -27,17 +33,60 @@ global.data = [{
 }];
 
 exports.getAllUserRequests = function (req, res) {
-  if (global.data.length !== 0) {
-    return res.status(200).json({
-      status: 'Success',
-      data: global.data
+  var userId = req.userInfo.id;
+  var sql = {
+    text: 'SELECT * FROM requests WHERE user_id=$1',
+    values: [userId]
+  };
+  _userModel2.default.query(sql, function (err, result) {
+    if (err) {
+      return res.status(500).json({
+        err: err
+      }).end();
+    }
+    res.status(200).json({
+      user: req.userInfo,
+      result: result.rows
     });
-  }
-  res.status(204).end();
+  });
+
+  // if (global.data.length !== 0) {
+  //   return res.status(200)
+  //     .json({
+  //       status: 'Success',
+  //       data: global.data,
+  //     });
+  // }
+  // res.status(204)
+  //   .end();
 };
 
 exports.getSingleRequest = function (req, res) {
   var id = parseInt(req.params.requestId, 10);
+  // const sql = {
+  //   text: 'SELECT * FROM requests WHERE id=$1',
+  //   values: [id],
+  // };
+  // db.query(sql, (err, result) => {
+  //   if (err) {
+  //     return res.status(500)
+  //       .json({
+  //         error: err,
+  //       })
+  //       .end();
+  //   }
+  //   if (result.rows.length > 0) {
+  //     return res.status(200)
+  //       .json({
+  //         result: result.rows,
+  //       });
+  //   }
+  //   res.status(404)
+  //     .json({
+  //       message: 'Record not found',
+  //     });
+  // });
+
   for (var i = 0; i < global.data.length; i += 1) {
     if (global.data[i].id === id) {
       return res.status(200).json({
@@ -53,8 +102,34 @@ exports.getSingleRequest = function (req, res) {
 };
 
 exports.createRequest = function (req, res) {
+  //   const userId = 2;
+  //   req.body.url = `/api/v1/users/requests/`;
+  //   const query = {
+  //     text: 'INSERT INTO requests(user_id, requester_name, requester_email, date, status, request, dept, url, method) VALUES($1, $2, $3, NOW() ,$4, $5, $6, $7, $8)',
+  //     values: [userId, req.body.name, req.body.email, 'pending', req.body.request, req.body.dept, req.body.url, 'GET'],
+  //   };
+  //   db.query(query, (err, result) => {
+  //     if (err) {
+  //       return res.status(500)
+  //         .json({
+  //           message: `Server Error ${err}`,
+  //         });
+  //     }
+  //     res.status(201)
+  //       .json({
+  //         message: 'Request Created successfully',
+  //       });
+  //     if (req.body.name && req.body.email === null) {
+  //       res.status(400)
+  //         .json({
+  //           message: 'Bad Request',
+  //         });
+  //     }
+  //   });
+  // };
+
   if (typeof req.body.id === 'number') {
-    req.body.Url = 'http://localhost:5000/api/v1/users/requests/' + req.body.id;
+    req.body.Url = '/api/v1/users/requests/' + req.body.id;
     global.data.push(req.body);
     return res.status(201).json({
       status: 'Success',
@@ -69,6 +144,12 @@ exports.createRequest = function (req, res) {
 
 exports.modifyRequest = function (req, res) {
   var id = parseInt(req.params.requestId, 10);
+  // const query = {
+  //   text: 'INSERT INTO requests(user_id, requester_name, requester_email, date, status, request, dept, url, method) VALUES($1, $2, $3, NOW() ,$4, $5, $6, $7, $8)',
+  //   values: [userId, req.body.name, req.body.email, 'pending', req.body.request, req.body.dept, req.body.url, 'GET'],
+  // };
+
+
   for (var i = 0; i < global.data.length; i += 1) {
     if (global.data[i].id === id) {
       global.data[i].name = req.body.name;
