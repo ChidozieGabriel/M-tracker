@@ -1,16 +1,11 @@
 import Pg from 'pg';
 
 const pool = new Pg.Pool({
-  user: 'testUser',
-  host: 'localhost',
-  database: 'test',
-  password: '123456',
-  port: 5432,
-});
-
-pool.query('SELECT NOW()', (err, res) => {
-  console.log(err, res);
-  pool.end();
+  user: process.env.DB_USER,
+  host: process.env.DB_HOST,
+  database: process.env.DB_NAME,
+  password: process.env.DB_PASS,
+  port: process.env.DB_PORT,
 });
 
 export default pool;

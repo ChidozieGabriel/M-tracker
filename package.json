@@ -4,9 +4,15 @@
   "description": "API for Maintenance-tracker",
   "main": "app.js",
   "scripts": {
-    "test": "nyc --reporter=html --reporter=text mocha --require babel-register api/tests/*",
-    "start": "nodemon -r babel-register server.js",
-    "coverage": "nyc report --reporter=text-lcov | coveralls"
+    "test": "nyc --reporter=html --reporter=text mocha --require babel-register api/tests/* ",
+    "start": "nodemon -r dotenv/config -r babel-register app.js",
+    "coverage": "nyc report --reporter=text-lcov | coveralls",
+    "pretest": "",
+    "posttest": ""
+  },
+  "nyc": {
+
+    "exclude": "**/*.spec.js"
   },
   "repository": {
     "type": "git",
@@ -35,13 +41,16 @@
     "eslint-plugin-react": "^7.8.2",
     "express": "^4.16.3",
     "istanbul": "^0.4.5",
+    "jsonwebtoken": "^8.2.1",
     "mocha": "^5.1.1",
     "nodemon": "^1.17.4",
     "nyc": "^11.8.0",
     "pg": "^7.4.3",
-    "supertest": "^3.1.0"
+    "supertest": "^3.1.0",
+    "bcrypt": "^2.0.1"
   },
   "devDependencies": {
-    "babel-cli": "^6.26.0"
+    "babel-cli": "^6.26.0",
+    "dotenv": "^5.0.1"
   }
 }

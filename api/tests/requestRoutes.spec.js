@@ -15,6 +15,11 @@ describe('API ENDPOINT', () => {
       server
         .get('/api/v1/users/requests')
         .end((err, res) => {
+          // if (err) {
+          //   console.log(err);
+          // }else {
+          //   console.log(res);
+          // }
           Expect(res.statusCode).to.equal(200);
           Expect(res).to.be.an('object');
           Expect(res.body.data).to.be.an('array');

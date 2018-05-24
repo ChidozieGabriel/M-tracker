@@ -29,93 +29,90 @@ global.data = [
   },
 ];
 
-export default {
-  get_all_requests: (req, res) => {
-    if (global.data.length !== 0) {
+exports.getAllRequests = (req, res) => {
+  if (global.data.length !== 0) {
+    return res.status(200)
+      .json({
+        status: 'Success',
+        data: global.data,
+      });
+  }
+  res.status(204)
+    .end();
+};
+
+exports.getSingle = (req, res) => {
+  const id = parseInt(req.params.requestId, 10);
+  for (let i = 0; i < global.data.length; i += 1) {
+    if (global.data[i].id === id) {
       return res.status(200)
         .json({
           status: 'Success',
-          data: global.data,
+          data: global.data[i],
         });
     }
-    return res.status(204)
-      .end();
-  },
+  }
+  res.status(404)
+    .json({
+      status: 'fail',
+      message: 'Not found',
+    });
+};
 
-
-  get_a_request: (req, res) => {
-    const id = parseInt(req.params.requestId, 10);
-    for (let i = 0; i < global.data.length; i += 1) {
-      if (global.data[i].id === id) {
-        return res.status(200)
-          .json({
-            status: 'Success',
-            data: global.data[i],
-          });
-      }
-    }
-    return res.status(404)
+exports.createRequest = (req, res) => {
+  if (typeof req.body.id === 'number') {
+    req.body.Url = `http://localhost:5000/api/v1/users/requests/${req.body.id}`;
+    global.data.push(req.body);
+    return res.status(201)
       .json({
-        status: 'fail',
-        message: 'Not found',
+        status: 'Success',
+        message: 'Request Created successfully',
       });
-  },
+  }
+  res.status(400)
+    .json({
+      status: 'Fail',
+      message: 'Bad Request',
+    });
+};
 
-  create_a_request: (req, res) => {
-    if (typeof req.body.id === 'number') {
-      req.body.Url = `http://localhost:5000/api/v1/users/requests/${req.body.id}`;
-      global.data.push(req.body);
-      return res.status(201)
+exports.modifyRequest = (req, res) => {
+  const id = parseInt(req.params.requestId, 10);
+  for (let i = 0; i < global.data.length; i += 1) {
+    if (global.data[i].id === id) {
+      global.data[i].name = req.body.name;
+      global.data[i].email = req.body.email;
+      global.data[i].date = req.body.date;
+      global.data[i].dept = req.body.dept;
+      global.data[i].message = req.body.message;
+      return res.status(200)
         .json({
           status: 'Success',
-          message: 'Request Created successfully',
+          data: global.data[i],
         });
     }
-    return res.status(400)
-      .json({
-        status: 'Fail',
-        message: 'Bad Request',
-      });
-  },
-
-  modify_a_request: (req, res) => {
-    const id = parseInt(req.params.requestId, 10);
-    for (let i = 0; i < global.data.length; i += 1) {
-      if (global.data[i].id === id) {
-        global.data[i].name = req.body.name;
-        global.data[i].email = req.body.email;
-        global.data[i].date = req.body.date;
-        global.data[i].dept = req.body.dept;
-        global.data[i].message = req.body.message;
-        return res.status(200)
-          .json({
-            status: 'Success',
-            data: global.data[i],
-          });
-      }
+  }
+  res.status(404)
+    .json({
+      status: 'fail',
+      message: 'Not found',
+    });
+};
+exports.deleteRequest = (req, res) => {
+  const id = parseInt(req.params.requestId, 10);
+  for (let i = 0; i < global.data.length; i += 1) {
+    if (global.data[i].id === id) {
+      global.data.splice(i, 1);
+      return res.status(200)
+        .json({
+          status: 'Success',
+          message: 'Request deleted successfully',
+        });
     }
-    return res.status(404)
-      .json({
-        status: 'fail',
-        message: 'Not found',
-      });
-  },
-  delete_a_request: (req, res) => {
-    const id = parseInt(req.params.requestId, 10);
-    for (let i = 0; i < global.data.length; i += 1) {
-      if (global.data[i].id === id) {
-        global.data.splice(i, 1);
-        return res.status(200)
-          .json({
-            status: 'Success',
-            message: 'Request deleted successfully',
-          });
-      }
-    }
-    return res.status(404)
-      .json({
-        status: 'Fail',
-        message: 'Not found',
-      });
-  },
+  }
+  res.status(404)
+    .json({
+      status: 'Fail',
+      message: 'Not found',
+    });
 };
