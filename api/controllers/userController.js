@@ -16,7 +16,7 @@ exports.signUp = (req, res) => {
     if (err) {
       return res.status(500)
         .json({
-          error: err,
+          err,
         });
     }
     if (result.rows.length > 0) {
@@ -29,7 +29,7 @@ exports.signUp = (req, res) => {
       if (err) {
         return res.status(500)
           .json({
-            error: err,
+            err,
           });
       }
       // const password = hash;
@@ -41,7 +41,7 @@ exports.signUp = (req, res) => {
         if (err) {
           return res.status(500)
             .json({
-              message: `Not Found ${err}`,
+              err,
             });
         }
         if (result.rowCount === 1) {
@@ -55,7 +55,7 @@ exports.signUp = (req, res) => {
           res.status(201)
             .json({
               auth: true,
-              token: token,
+              token,
             })
             .end();
         }
@@ -76,7 +76,7 @@ exports.login = (req, res) => {
     if (err) {
       res.status(500)
         .json({
-          error: err,
+          err,
         })
         .end();
     }
@@ -85,16 +85,18 @@ exports.login = (req, res) => {
       bcrypt.compare(password, result.rows[0].password, (err, match) => {
         if (match) {
           // Create token
-          let token = jwt.sign({
+          const token = jwt.sign({
+            id: result.rows[0].id,
             email: result.rows[0].email,
             name: result.rows[0].name,
+            admin: result.rows[0].admin,
           }, process.env.JWT_KEY, {
-            expiresIn: 86400,
+            expiresIn: '1h',
           });
           res.status(200)
             .json({
               auth: true,
-              token: token,
+              token,
             })
             .end();
         }

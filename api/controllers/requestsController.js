@@ -1,3 +1,6 @@
+import db from '../models/userModel';
+import jwt from 'jsonwebtoken';
+
 global.data = [
   {
     id: 110,
@@ -29,20 +32,66 @@ global.data = [
   },
 ];
 
+
 exports.getAllUserRequests = (req, res) => {
-  if (global.data.length !== 0) {
-    return res.status(200)
+
+  const sql = {
+    text: 'SELECT * FROM requests ',
+  };
+  db.query(sql, (err, result) => {
+    if (err) {
+      return res.status(500)
+        .json({
+          error: err,
+        })
+        .end();
+    }
+    res.status(200)
       .json({
-        status: 'Success',
-        data: global.data,
-      });
-  }
-  res.status(204)
-    .end();
+        user: req.userInfo,
+        result: result.rows,
+      })
+    ;
+  });
+
+  // if (global.data.length !== 0) {
+  //   return res.status(200)
+  //     .json({
+  //       status: 'Success',
+  //       data: global.data,
+  //     });
+  // }
+  // res.status(204)
+  //   .end();
 };
+
 
 exports.getSingleRequest = (req, res) => {
   const id = parseInt(req.params.requestId, 10);
+  // const sql = {
+  //   text: 'SELECT * FROM requests WHERE id=$1',
+  //   values: [id],
+  // };
+  // db.query(sql, (err, result) => {
+  //   if (err) {
+  //     return res.status(500)
+  //       .json({
+  //         error: err,
+  //       })
+  //       .end();
+  //   }
+  //   if (result.rows.length > 0) {
+  //     return res.status(200)
+  //       .json({
+  //         result: result.rows,
+  //       });
+  //   }
+  //   res.status(404)
+  //     .json({
+  //       message: 'Record not found',
+  //     });
+  // });
+
   for (let i = 0; i < global.data.length; i += 1) {
     if (global.data[i].id === id) {
       return res.status(200)
@@ -60,8 +109,34 @@ exports.getSingleRequest = (req, res) => {
 };
 
 exports.createRequest = (req, res) => {
+//   const userId = 2;
+//   req.body.url = `/api/v1/users/requests/`;
+//   const query = {
+//     text: 'INSERT INTO requests(user_id, requester_name, requester_email, date, status, request, dept, url, method) VALUES($1, $2, $3, NOW() ,$4, $5, $6, $7, $8)',
+//     values: [userId, req.body.name, req.body.email, 'pending', req.body.request, req.body.dept, req.body.url, 'GET'],
+//   };
+//   db.query(query, (err, result) => {
+//     if (err) {
+//       return res.status(500)
+//         .json({
+//           message: `Server Error ${err}`,
+//         });
+//     }
+//     res.status(201)
+//       .json({
+//         message: 'Request Created successfully',
+//       });
+//     if (req.body.name && req.body.email === null) {
+//       res.status(400)
+//         .json({
+//           message: 'Bad Request',
+//         });
+//     }
+//   });
+// };
+
   if (typeof req.body.id === 'number') {
-    req.body.Url = `http://localhost:5000/api/v1/users/requests/${req.body.id}`;
+    req.body.Url = `/api/v1/users/requests/${req.body.id}`;
     global.data.push(req.body);
     return res.status(201)
       .json({
@@ -78,6 +153,12 @@ exports.createRequest = (req, res) => {
 
 exports.modifyRequest = (req, res) => {
   const id = parseInt(req.params.requestId, 10);
+  // const query = {
+  //   text: 'INSERT INTO requests(user_id, requester_name, requester_email, date, status, request, dept, url, method) VALUES($1, $2, $3, NOW() ,$4, $5, $6, $7, $8)',
+  //   values: [userId, req.body.name, req.body.email, 'pending', req.body.request, req.body.dept, req.body.url, 'GET'],
+  // };
+
+
   for (let i = 0; i < global.data.length; i += 1) {
     if (global.data[i].id === id) {
       global.data[i].name = req.body.name;

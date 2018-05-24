@@ -3,12 +3,14 @@ import express from 'express';
 import { getAllUserRequests, getSingleRequest, createRequest, modifyRequest, deleteRequest } from '../controllers/requestsController';
 
 import { login, signUp } from '../controllers/userController';
-
+import verifyToken from '../middleware/verifyToken';
 import userAuth from '../middleware/userAuth';
+
+// import userAuth from '../middleware/userAuth';
 
 const router = express.Router();
 
-router.get('/users/requests', getAllUserRequests);
+router.get('/users/requests', verifyToken, userAuth, getAllUserRequests);
 //
 router.get('/users/requests/:requestId', getSingleRequest);
 //

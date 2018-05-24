@@ -28,7 +28,7 @@ exports.signUp = function (req, res) {
   _userModel2.default.query(sql, function (err, result) {
     if (err) {
       return res.status(500).json({
-        error: err
+        err: err
       });
     }
     if (result.rows.length > 0) {
@@ -39,7 +39,7 @@ exports.signUp = function (req, res) {
     _bcrypt2.default.hash(password, 10, function (err, hash) {
       if (err) {
         return res.status(500).json({
-          error: err
+          err: err
         });
       }
       // const password = hash;
@@ -50,7 +50,7 @@ exports.signUp = function (req, res) {
       _userModel2.default.query(query, function (err, result) {
         if (err) {
           return res.status(500).json({
-            message: 'Not Found ' + err
+            err: err
           });
         }
         if (result.rowCount === 1) {
@@ -82,7 +82,7 @@ exports.login = function (req, res) {
   _userModel2.default.query(sql, function (err, result) {
     if (err) {
       res.status(500).json({
-        error: err
+        err: err
       }).end();
     }
     // res.json(result.rows.length);
@@ -91,10 +91,12 @@ exports.login = function (req, res) {
         if (match) {
           // Create token
           var token = _jsonwebtoken2.default.sign({
+            id: result.rows[0].id,
             email: result.rows[0].email,
-            name: result.rows[0].name
+            name: result.rows[0].name,
+            admin: result.rows[0].admin
           }, process.env.JWT_KEY, {
-            expiresIn: 86400
+            expiresIn: '1h'
           });
           res.status(200).json({
             auth: true,
