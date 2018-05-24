@@ -46,7 +46,7 @@ exports.signUp = (req, res) => {
         }
         if (result.rowCount === 1) {
           // Create token
-          let token = jwt.sign({
+          const token = jwt.sign({
             email: email,
             name: name,
           }, process.env.JWT_KEY, {

@@ -20,9 +20,9 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var router = _express2.default.Router();
 
-router.get('/users/requests', _requestsController.getAllRequests);
+router.get('/users/requests', _requestsController.getAllUserRequests);
 //
-router.get('/users/requests/:requestId', _requestsController.getSingle);
+router.get('/users/requests/:requestId', _requestsController.getSingleRequest);
 //
 router.post('/users/requests/', _requestsController.createRequest);
 //
@@ -34,6 +34,18 @@ router.delete('/users/requests/:requestId', _requestsController.deleteRequest);
 router.post('/auth/signup', _userController.signUp);
 
 router.post('/auth/login', _userController.login);
+
+//ADMIN ROUTES
+
+router.get('/requests', getAllRequests);
+
+router.put('/requests/:requestId/approve', approveRequest);
+
+router.put('/requests/:requestId/disapprove', disapproveRequest);
+
+router.put('/requests/:requestId/resolve', resolveRequest);
+
+router.delete('/requests/:requestId', _requestsController.deleteRequest);
 
 exports.default = router;
 //# sourceMappingURL=Routes.js.map

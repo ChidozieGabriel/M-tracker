@@ -29,7 +29,7 @@ global.data = [
   },
 ];
 
-exports.getAllRequests = (req, res) => {
+exports.getAllUserRequests = (req, res) => {
   if (global.data.length !== 0) {
     return res.status(200)
       .json({
@@ -41,7 +41,7 @@ exports.getAllRequests = (req, res) => {
     .end();
 };
 
-exports.getSingle = (req, res) => {
+exports.getSingleRequest = (req, res) => {
   const id = parseInt(req.params.requestId, 10);
   for (let i = 0; i < global.data.length; i += 1) {
     if (global.data[i].id === id) {

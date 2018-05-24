@@ -26,7 +26,7 @@ global.data = [{
   Url: 'http://localhost:5000/api/v1/users/requests/130'
 }];
 
-exports.getAllRequests = function (req, res) {
+exports.getAllUserRequests = function (req, res) {
   if (global.data.length !== 0) {
     return res.status(200).json({
       status: 'Success',
@@ -36,7 +36,7 @@ exports.getAllRequests = function (req, res) {
   res.status(204).end();
 };
 
-exports.getSingle = function (req, res) {
+exports.getSingleRequest = function (req, res) {
   var id = parseInt(req.params.requestId, 10);
   for (var i = 0; i < global.data.length; i += 1) {
     if (global.data[i].id === id) {
