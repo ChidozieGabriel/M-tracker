@@ -26,16 +26,16 @@ router.post('/auth/login', login);
 
 
 //ADMIN ROUTES
-
-router.get('/requests', getAllRequests);
-
-router.put('/requests/:requestId/approve', approveRequest);
-
-router.put('/requests/:requestId/disapprove', disapproveRequest);
-
-router.put('/requests/:requestId/resolve', resolveRequest);
-
-router.delete('/requests/:requestId', deleteRequest);
+//
+// router.get('/requests', getAllRequests);
+//
+// router.put('/requests/:requestId/approve', approveRequest);
+//
+// router.put('/requests/:requestId/disapprove', disapproveRequest);
+//
+// router.put('/requests/:requestId/resolve', resolveRequest);
+//
+// router.delete('/requests/:requestId', deleteRequest);
 
 export default router;
 

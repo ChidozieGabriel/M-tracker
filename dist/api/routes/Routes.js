@@ -36,16 +36,16 @@ router.post('/auth/signup', _userController.signUp);
 router.post('/auth/login', _userController.login);
 
 //ADMIN ROUTES
-
-router.get('/requests', getAllRequests);
-
-router.put('/requests/:requestId/approve', approveRequest);
-
-router.put('/requests/:requestId/disapprove', disapproveRequest);
-
-router.put('/requests/:requestId/resolve', resolveRequest);
-
-router.delete('/requests/:requestId', _requestsController.deleteRequest);
+//
+// router.get('/requests', getAllRequests);
+//
+// router.put('/requests/:requestId/approve', approveRequest);
+//
+// router.put('/requests/:requestId/disapprove', disapproveRequest);
+//
+// router.put('/requests/:requestId/resolve', resolveRequest);
+//
+// router.delete('/requests/:requestId', deleteRequest);
 
 exports.default = router;
 //# sourceMappingURL=Routes.js.map
