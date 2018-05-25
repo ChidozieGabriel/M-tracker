@@ -59,10 +59,9 @@ exports.signUp = function (req, res) {
             email: email,
             name: name
           }, process.env.JWT_KEY, {
-            expiresIn: 86400
+            expiresIn: '1hr'
           });
           res.status(201).json({
-            auth: true,
             token: token
           }).end();
         }
@@ -72,8 +71,10 @@ exports.signUp = function (req, res) {
 };
 
 exports.login = function (req, res) {
-  var email = req.body.email;
-  var password = req.body.password;
+  var _req$body2 = req.body,
+      email = _req$body2.email,
+      password = _req$body2.password;
+
 
   var sql = {
     text: 'SELECT * FROM users WHERE email= $1',
@@ -81,7 +82,7 @@ exports.login = function (req, res) {
   };
   _userModel2.default.query(sql, function (err, result) {
     if (err) {
-      res.status(500).json({
+      return res.status(500).json({
         err: err
       }).end();
     }
@@ -99,7 +100,6 @@ exports.login = function (req, res) {
             expiresIn: '1h'
           });
           res.status(200).json({
-            auth: true,
             token: token
           }).end();
         }

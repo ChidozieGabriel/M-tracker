@@ -29,7 +29,6 @@ describe('USER CONTROLLER TESTS', function () {
       server.post('/api/v1/auth/signup').send(newUser).end(function (err, res) {
         Expect(err).to.be.null;
         Expect(res.statusCode).to.equal(201);
-        Expect(res.body[0]).to.be.have.property('auth');
         Expect(res.body[0]).to.be.have.property('token');
         Expect(res.body[0].auth).to.be.equal(false);
       });
@@ -39,16 +38,14 @@ describe('USER CONTROLLER TESTS', function () {
 
   describe('POST User Login( /Auth/login)', function () {
     it('Should get status code', function (done) {
-
       var User = {
         email: 'nwokeochavictor@gmail.com',
         password: '123456'
       };
-
       server.post('/api/v1/auth/login').send(User).end(function (err, res) {
+        console.log(res.body);
         Expect(err).to.be.null;
         Expect(res.statusCode).to.equal(200);
-        Expect(res.body[0]).to.be.have.property('auth');
         Expect(res.body[0]).to.be.have.property('token');
       });
       return done();

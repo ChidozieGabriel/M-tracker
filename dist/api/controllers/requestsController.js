@@ -37,7 +37,6 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 //   },
 // ];
 
-
 exports.getAllUserRequests = function (req, res) {
   var userId = req.userInfo.id;
   var sql = {

@@ -50,11 +50,10 @@ exports.signUp = (req, res) => {
             email: email,
             name: name,
           }, process.env.JWT_KEY, {
-            expiresIn: 86400,
+            expiresIn: '1hr',
           });
           res.status(201)
             .json({
-              auth: true,
               token,
             })
             .end();
@@ -65,16 +64,15 @@ exports.signUp = (req, res) => {
 };
 
 exports.login = (req, res) => {
-  const email = req.body.email;
-  const password = req.body.password;
+  const { email, password } = req.body;
 
-  let sql = {
+  const sql = {
     text: 'SELECT * FROM users WHERE email= $1',
     values: [email],
   };
   user.query(sql, (err, result) => {
     if (err) {
-      res.status(500)
+     return res.status(500)
         .json({
           err,
         })
@@ -95,7 +93,6 @@ exports.login = (req, res) => {
           });
           res.status(200)
             .json({
-              auth: true,
               token,
             })
             .end();

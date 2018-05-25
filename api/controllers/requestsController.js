@@ -31,7 +31,6 @@ import db from '../models/userModel';
 //   },
 // ];
 
-
 exports.getAllUserRequests = (req, res) => {
   const userId = req.userInfo.id;
   const sql = {
@@ -53,7 +52,6 @@ exports.getAllUserRequests = (req, res) => {
       });
   });
 };
-
 
 exports.getSingleRequest = (req, res) => {
   const userId = req.userInfo.id;
@@ -147,7 +145,6 @@ exports.modifyRequest = (req, res) => {
     }
   });
 };
-
 
 exports.deleteRequest = (req, res) => {
   const id = parseInt(req.params.requestId, 10);
