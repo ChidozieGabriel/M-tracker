@@ -28,13 +28,13 @@ var router = _express2.default.Router();
 
 router.get('/users/requests', _verifyToken2.default, _userAuth2.default, _requestsController.getAllUserRequests);
 //
-router.get('/users/requests/:requestId', _requestsController.getSingleRequest);
+router.get('/users/requests/:requestId', _verifyToken2.default, _userAuth2.default, _requestsController.getSingleRequest);
 //
-router.post('/users/requests/', _requestsController.createRequest);
+router.post('/users/requests/', _verifyToken2.default, _userAuth2.default, _requestsController.createRequest);
 //
-router.put('/users/requests/:requestId', _requestsController.modifyRequest);
+router.put('/users/requests/:requestId', _verifyToken2.default, _userAuth2.default, _requestsController.modifyRequest);
 
-router.delete('/users/requests/:requestId', _requestsController.deleteRequest);
+router.delete('/users/requests/:requestId/delete', _verifyToken2.default, _userAuth2.default, _requestsController.deleteRequest);
 
 // USER ROUTES
 router.post('/auth/signup', _userController.signUp);

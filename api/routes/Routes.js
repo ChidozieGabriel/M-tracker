@@ -1,6 +1,12 @@
 import express from 'express';
 
-import { getAllUserRequests, getSingleRequest, createRequest, modifyRequest, deleteRequest } from '../controllers/requestsController';
+import {
+  getAllUserRequests,
+  getSingleRequest,
+  createRequest,
+  modifyRequest,
+  deleteRequest,
+} from '../controllers/requestsController';
 
 import { login, signUp } from '../controllers/userController';
 import verifyToken from '../middleware/verifyToken';
@@ -12,13 +18,13 @@ const router = express.Router();
 
 router.get('/users/requests', verifyToken, userAuth, getAllUserRequests);
 //
-router.get('/users/requests/:requestId', getSingleRequest);
+router.get('/users/requests/:requestId', verifyToken, userAuth, getSingleRequest);
 //
-router.post('/users/requests/', createRequest);
+router.post('/users/requests/', verifyToken, userAuth, createRequest);
 //
-router.put('/users/requests/:requestId', modifyRequest);
+router.put('/users/requests/:requestId', verifyToken, userAuth, modifyRequest);
 
-router.delete('/users/requests/:requestId', deleteRequest);
+router.delete('/users/requests/:requestId/delete', verifyToken, userAuth, deleteRequest);
 
 
 // USER ROUTES
