@@ -149,7 +149,6 @@ exports.modifyRequest = (req, res) => {
 };
 
 
-
 exports.deleteRequest = (req, res) => {
   const id = parseInt(req.params.requestId, 10);
   const query = {
@@ -173,5 +172,146 @@ exports.deleteRequest = (req, res) => {
       .json({
         message: 'Request deleted successfully',
       });
+  });
+};
+
+
+// Admin Controllers
+
+exports.getAllRequests = (req, res) => {
+  // const userId = req.userInfo.id;
+  const sql = {
+    text: 'SELECT * FROM requests',
+  };
+  db.query(sql, (err, result) => {
+    if (err) {
+      return res.status(500)
+        .json({
+          err,
+        })
+        .end();
+    }
+    res.status(200)
+      .json({
+        user: req.userInfo,
+        result: result.rows,
+      });
+  });
+};
+
+exports.approveRequest = (req, res) => {
+  const userId = req.userInfo.id;
+  const id = parseInt(req.params.requestId, 10);
+  const query = {
+    text: 'UPDATE requests SET status=$1 WHERE id=$2',
+    values: ['approved', id],
+  };
+
+  db.query(query, (err, result) => {
+    if (err) {
+      return res.status(500)
+        .json({
+          err,
+        });
+    }
+    if (result.rowCount === 1) {
+      const sql = {
+        text: 'SELECT * FROM requests WHERE id=$1',
+        values: [id],
+      };
+      db.query(sql, (err, result) => {
+        if (err) {
+          return res.status(500)
+            .json({
+              error: err,
+            })
+            .end();
+        }
+        if (result.rows.length > 0) {
+          return res.status(200)
+            .json({
+              result: result.rows,
+            });
+        }
+      });
+    }
+  });
+};
+
+exports.disapproveRequest = (req, res) => {
+  const userId = req.userInfo.id;
+  const id = parseInt(req.params.requestId, 10);
+  const query = {
+    text: 'UPDATE requests SET status=$1 WHERE id=$2',
+    values: ['disapproved', id],
+  };
+
+  db.query(query, (err, result) => {
+    if (err) {
+      return res.status(500)
+        .json({
+          err,
+        });
+    }
+    if (result.rowCount === 1) {
+      const sql = {
+        text: 'SELECT * FROM requests WHERE id=$1',
+        values: [id],
+      };
+      db.query(sql, (err, result) => {
+        if (err) {
+          return res.status(500)
+            .json({
+              error: err,
+            })
+            .end();
+        }
+        if (result.rows.length > 0) {
+          return res.status(200)
+            .json({
+              result: result.rows,
+            });
+        }
+      });
+    }
+  });
+};
+
+exports.resolveRequest = (req, res) => {
+  const userId = req.userInfo.id;
+  const id = parseInt(req.params.requestId, 10);
+  const query = {
+    text: 'UPDATE requests SET status=$1 WHERE id=$2',
+    values: ['resolved', id],
+  };
+
+  db.query(query, (err, result) => {
+    if (err) {
+      return res.status(500)
+        .json({
+          err,
+        });
+    }
+    if (result.rowCount === 1) {
+      const sql = {
+        text: 'SELECT * FROM requests WHERE id=$1',
+        values: [id],
+      };
+      db.query(sql, (err, result) => {
+        if (err) {
+          return res.status(500)
+            .json({
+              error: err,
+            })
+            .end();
+        }
+        if (result.rows.length > 0) {
+          return res.status(200)
+            .json({
+              result: result.rows,
+            });
+        }
+      });
+    }
   });
 };

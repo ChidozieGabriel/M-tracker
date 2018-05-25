@@ -20,6 +20,10 @@ var _userAuth = require('../middleware/userAuth');
 
 var _userAuth2 = _interopRequireDefault(_userAuth);
 
+var _isAdmin = require('../middleware/isAdmin');
+
+var _isAdmin2 = _interopRequireDefault(_isAdmin);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 // import userAuth from '../middleware/userAuth';
@@ -34,8 +38,6 @@ router.post('/users/requests/', _verifyToken2.default, _userAuth2.default, _requ
 //
 router.put('/users/requests/:requestId', _verifyToken2.default, _userAuth2.default, _requestsController.modifyRequest);
 
-router.delete('/users/requests/:requestId/delete', _verifyToken2.default, _userAuth2.default, _requestsController.deleteRequest);
-
 // USER ROUTES
 router.post('/auth/signup', _userController.signUp);
 
@@ -43,15 +45,15 @@ router.post('/auth/login', _userController.login);
 
 //ADMIN ROUTES
 //
-// router.get('/requests', getAllRequests);
-//
-// router.put('/requests/:requestId/approve', approveRequest);
-//
-// router.put('/requests/:requestId/disapprove', disapproveRequest);
-//
-// router.put('/requests/:requestId/resolve', resolveRequest);
-//
-// router.delete('/requests/:requestId', deleteRequest);
+router.get('/requests', _verifyToken2.default, _userAuth2.default, _isAdmin2.default, _requestsController.getAllRequests);
+
+router.put('/requests/:requestId/approve', _verifyToken2.default, _userAuth2.default, _isAdmin2.default, _requestsController.approveRequest);
+
+router.put('/requests/:requestId/disapprove', _verifyToken2.default, _userAuth2.default, _isAdmin2.default, _requestsController.disapproveRequest);
+
+router.put('/requests/:requestId/resolve', _verifyToken2.default, _userAuth2.default, _isAdmin2.default, _requestsController.resolveRequest);
+
+router.delete('/requests/:requestId/delete', _verifyToken2.default, _userAuth2.default, _isAdmin2.default, _requestsController.deleteRequest);
 
 exports.default = router;
 //# sourceMappingURL=Routes.js.map
