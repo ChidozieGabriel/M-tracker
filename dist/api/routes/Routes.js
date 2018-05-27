@@ -56,4 +56,4 @@ router.put('/requests/:requestId/resolve', _verifyToken2.default, _userAuth2.def
 router.delete('/requests/:requestId/delete', _verifyToken2.default, _userAuth2.default, _isAdmin2.default, _requestsController.deleteRequest);
 
 exports.default = router;
-//# sourceMappingURL=Routes.js.map
+//# sourceMappingURL=routes.js.map

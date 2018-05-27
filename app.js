@@ -2,7 +2,7 @@ import express from 'express';
 
 import bodyParser from 'body-parser';
 
-import Routes from './api/routes/Routes';
+import Routes from './api/routes/routes';
 
 // import userModel from './api/models/userModel';
 
