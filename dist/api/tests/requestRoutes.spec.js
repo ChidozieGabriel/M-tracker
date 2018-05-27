@@ -4,8 +4,6 @@ var _chai = require('chai');
 
 var _chai2 = _interopRequireDefault(_chai);
 
-var _pg = require('pg');
-
 var _userModel = require('../models/userModel');
 
 var _userModel2 = _interopRequireDefault(_userModel);
@@ -24,38 +22,37 @@ var _app2 = _interopRequireDefault(_app);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+// import { Pool } from 'pg';
+
 var server = _supertest2.default.agent(_app2.default);
 
 var Expect = _chai2.default.expect;
 
 _chai2.default.use(_chaiHttp2.default);
 
-var token = null;
-
-beforeEach(function (done) {
-  server.post('/api/v1/auth/login').send({
-    email: 'nwokeochavictor@gmail.com',
+// let token = null;
+global.token = null;
+before(function (done) {
+  // db.query('CREATE DATABASE IF EXISTS "testRunning";', (err, results) => {
+  //   if (err) {
+  //     return err;
+  //   }
+  //   db.query('CREATE TABLE users(id SERIAL PRIMARY KEY, name VARCHAR(40) NOT NULL, password VARCHAR(40) NOT NULL, email VARCHAR(40) NOT NULL, admin BOOLEAN DEFAULT true', (err, results) => {
+  //     if (err) {
+  //       return err;
+  //     }
+  //     db.end();
+  //     done();
+  //   });
+  // });
+  _chai2.default.request(_app2.default).post('/api/v1/auth/login').send({
+    email: 'nwokeochavicto22r@gmail.com',
     password: '123456'
   }).end(function (err, res) {
-    token = res.body.token;
+    global.token = res.body.token;
     done();
   });
 });
-// const createDb = 'CREATE DATABASE "testRunning" WITH OWNER = "testUser" ENCODING = UTF8 CONNECTION LIMIT = -1';
-// pool.query(createDb, (err, results) => {
-//   if (err) {
-//     return err;
-//   }
-//   pool.query('CREATE TABLE users (id SERIAL PRIMARY KEY, email VARCHAR(40) NOT NULL, password VARCHAR(255) NOT NULL, admin boolean NOT NULL, name VARCHAR(255) NOT NULL)', (err, result) => {
-//     if (err) {
-//       return err;
-//     }
-//   });
-//   pool.end();
-// });
-// return done();
-// });
-
 
 // afterEach((done) => {
 //   pool.query('DROP DATABASE "testRunning"', (err, results) => {
@@ -67,34 +64,33 @@ beforeEach(function (done) {
 //   return done();
 // });
 
-
 describe('USER REQUEST CONTROLLER API ENDPOINT', function () {
-  it.only('Should list ALL requests on /user/request GET', function (done) {
-    server.set('Authorization', 'Bearer ' + token).get('/api/v1/users/requests').end(function (err, res) {
-      // Expect(err).to.be.null;
+  it('Should list ALL requests on /user/request GET', function (done) {
+    _chai2.default.request(_app2.default).get('/api/v1/users/requests/').set({ Authorization: 'Bearer ' + global.token }).end(function (err, res) {
+      Expect(err).to.be.null;
       Expect(res.statusCode).to.equal(200);
       Expect(res).to.be.an('object');
+      done();
     });
-    return done();
   });
 
   it('Should list ONE requests on /user/request/:requestId GET', function (done) {
-    _chai2.default.request(_app2.default).get('/api/v1/users/requests/110').end(function (err, res) {
+    _chai2.default.request(_app2.default).get('/api/v1/users/requests/10').set({ Authorization: 'Bearer ' + global.token }).end(function (err, res) {
       Expect(res.statusCode).to.equal(200);
       Expect(res).to.be.an('object');
     });
-    return done();
+    done();
   });
 
   it('Should throw a 404 error when request is not found', function (done) {
-    _chai2.default.request(_app2.default).get('/api/v1/users/requests/1100').end(function (err, res) {
+    _chai2.default.request(_app2.default).get('/api/v1/users/requests/1100').set({ Authorization: 'Bearer ' + global.token }).end(function (err, res) {
+      console.log(res.statusCode);
       Expect(res.statusCode).to.equal(404);
     });
-    return done();
+    done();
   });
 
   var data1 = {
-    id: 140,
     name: 'Janet May',
     email: 'janetMaye@yahoomail.com',
     date: '2011-11-21',
@@ -104,63 +100,70 @@ describe('USER REQUEST CONTROLLER API ENDPOINT', function () {
 
   it('should create a SINGLE request user/requests/ POST', function (done) {
 
-    _chai2.default.request(_app2.default).post('/api/v1/users/requests').send(data1).end(function (err, res) {
+    _chai2.default.request(_app2.default).post('/api/v1/users/requests').set({ Authorization: 'Bearer ' + global.token }).send(data1).end(function (err, res) {
       Expect(res.statusCode).to.equal(201);
     });
-    return done();
+    done();
   });
 
   it('should get an error when a bad request is sent on user/requests/  POST', function (done) {
     var data = {
-      id: '150',
       name: 'Janet May',
       email: 'janetMaye@yahoomail.com',
-      date: '2011-11-21',
       dept: 'Engineering HQ',
       request: 'Lorem ipsum'
     };
 
-    _chai2.default.request(_app2.default).post('/api/v1/users/requests/').send(data).end(function (err, res) {
+    _chai2.default.request(_app2.default).post('/api/v1/users/requests/').set({ Authorization: 'Bearer ' + global.token }).send(data1).end(function (err, res) {
       Expect(res.statusCode).to.equal(400);
     });
-    return done();
+    done();
   });
 
   it('should update a SINGLE request on user/requests/:requestId PUT', function (done) {
     var data = {
       name: 'Janet May',
       email: 'janetMaye@yahoomail.com',
-      date: '2011-11-21',
       dept: 'Engineering HQ',
       request: 'Lorem ipsum owjjfndfnmnxnfj Lorem ipsum Lorem'
     };
-    _chai2.default.request(_app2.default).put('/api/v1/users/requests/110').send(data).end(function (err, res) {
+    _chai2.default.request(_app2.default).put('/api/v1/users/requests/10').set({ Authorization: 'Bearer ' + global.token }).send(data).end(function (err, res) {
       Expect(res.statusCode).to.equal(200);
       Expect(res).to.be.an('object');
       Expect(res.body.data).to.be.an('object');
     });
-    return done();
+    done();
   });
 
   it('should get an error when a request is not found on user/requests/:requestId  PUT', function (done) {
-    _chai2.default.request(_app2.default).put('/api/v1/users/requests/1100').end(function (err, res) {
+    _chai2.default.request(_app2.default).put('/api/v1/users/requests/1100').set({ Authorization: 'Bearer ' + global.token }).end(function (err, res) {
       Expect(res.statusCode).to.equal(404);
     });
-    return done();
+    done();
   });
 
-  it('should delete requests on user/requests/:requestId  DELETE', function (done) {
-    _chai2.default.request(_app2.default).put('/api/v1/users/requests/110').end(function (err, res) {
-      Expect(res.statusCode).to.equal(200);
-    });
-    return done();
-  });
-
-  it('should get an error when a request is not found on user/requests/:requestId  DELETE', function (done) {
-    _chai2.default.request(_app2.default).put('/api/v1/users/requests/1100').end(function (err, res) {
-      Expect(res.statusCode).to.equal(404);
-    });
-    return done();
-  });
+  // it('should delete requests on user/requests/:requestId  DELETE', (done) => {
+  //   chai.request(app)
+  //     .put('/api/v1/users/requests/10')
+  //     .set({ Authorization: 'Bearer ' + global.token })
+  //     .end((err, res) => {
+  //       Expect(res.statusCode)
+  //         .to.equal(200);
+  //       done();
+  //     });
+  // });
+  //
+  //
+  // it('should get an error when a request is not found on user/requests/:requestId  DELETE', (done) => {
+  //   chai.request(app)
+  //     .put('/api/v1/users/requests/1100')
+  //     .set({ Authorization: 'Bearer ' + global.token })
+  //     .end((err, res) => {
+  //       Expect(res.statusCode)
+  //         .to
+  //         .equal(404);
+  //     });
+  //   done();
+  // });
 });
 //# sourceMappingURL=requestRoutes.spec.js.map
