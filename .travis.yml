@@ -6,10 +6,6 @@ language: node_js
 node_js:
  - "8"
  
-env:
-  - DATABASE_URL=postgres://dgrfjmoh:AzvlLLw7tICyAnAaT_yg1P1JDAuS1Y8o@tantor.db.elephantsql.com:5432/dgrfjmoh
-  - LOCAL_DB=postgresql://testUser:123456@localhost:5432/test
-
 #before_script:
 #  - psql -c 'drop database if exists travis;' -U postgres
 #  - psql -c 'create database travis;' -U postgres
