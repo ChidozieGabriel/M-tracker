@@ -4,9 +4,15 @@
   "description": "API for Maintenance-tracker",
   "main": "app.js",
   "scripts": {
-    "test": "nyc --reporter=html --reporter=text mocha --require babel-register api/tests/*",
-    "start": "nodemon -r babel-register server.js",
-    "coverage": "nyc report --reporter=text-lcov | coveralls"
+    "test": "cross-env NODE_ENV=test nyc --reporter=html --reporter=text mocha --require dotenv/config --require babel-register api/tests/*",
+    "start": "cross-env NODE_ENV=development nodemon -r dotenv/config -r babel-register app.js",
+    "coverage": "nyc report --reporter=text-lcov | coveralls",
+    "pretest": "cross-env NODE_ENV=test node --require dotenv/config -r babel-register api/db/createTable.js && cross-env NODE_ENV=test node --require dotenv/config -r babel-register api/db/user.seed.js && cross-env NODE_ENV=test node --require dotenv/config -r babel-register api/db/admin.seed.js",
+    "posttest": "cross-env NODE_ENV=test node --require dotenv/config -r babel-register api/db/dropTable.js"
+
+  },
+  "nyc": {
+    "exclude": "**/*.spec.js"
   },
   "repository": {
     "type": "git",
@@ -25,8 +31,10 @@
   "dependencies": {
     "babel-preset-env": "^1.7.0",
     "babel-register": "^6.26.0",
+    "bcrypt": "^2.0.1",
     "body-parser": "^1.18.3",
     "chai": "^4.1.2",
+    "chai-http": "^4.0.0",
     "coveralls": "^3.0.1",
     "eslint": "^4.19.1",
     "eslint-config-airbnb": "^16.1.0",
@@ -35,6 +43,7 @@
     "eslint-plugin-react": "^7.8.2",
     "express": "^4.16.3",
     "istanbul": "^0.4.5",
+    "jsonwebtoken": "^8.2.1",
     "mocha": "^5.1.1",
     "nodemon": "^1.17.4",
     "nyc": "^11.8.0",
@@ -42,6 +51,8 @@
     "supertest": "^3.1.0"
   },
   "devDependencies": {
-    "babel-cli": "^6.26.0"
+    "babel-cli": "^6.26.0",
+    "cross-env": "^5.1.6",
+    "dotenv": "^5.0.1"
   }
 }

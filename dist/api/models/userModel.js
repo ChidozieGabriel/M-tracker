@@ -6,22 +6,17 @@ Object.defineProperty(exports, "__esModule", {
 
 var _pg = require('pg');
 
-var _pg2 = _interopRequireDefault(_pg);
+var pool = null;
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var pool = new _pg2.default.Pool({
-  user: 'testUser',
-  host: 'localhost',
-  database: 'test',
-  password: '123456',
-  port: 5432
-});
-
-pool.query('SELECT NOW()', function (err, res) {
-  console.log(err, res);
-  pool.end();
-});
+if (process.env.NODE_ENV === 'test') {
+  pool = new _pg.Pool({
+    connectionString: process.env.DATABASE_URL
+  });
+} else if (process.env.NODE_ENV === 'development') {
+  pool = new _pg.Pool({
+    connectionString: process.env.LOCAL_DB
+  });
+}
 
 exports.default = pool;
 //# sourceMappingURL=userModel.js.map

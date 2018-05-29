@@ -2,7 +2,7 @@ import express from 'express';
 
 import bodyParser from 'body-parser';
 
-import requestRoute from './api/routes/requestRoute';
+import Routes from './api/routes/routes';
 
 // import userModel from './api/models/userModel';
 
@@ -12,6 +12,14 @@ app.use(bodyParser.json());
 
 app.use(bodyParser.urlencoded({ extended: false }));
 
-app.use('/api/v1', requestRoute);
+// Request Route
+app.use('/api/v1', Routes);
+
+
+const port = process.env.PORT || 5000;
+
+app.listen(port, () => {
+  console.log(`listening on ${port}`);
+});
 
 export default app;

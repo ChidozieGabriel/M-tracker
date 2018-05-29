@@ -12,9 +12,9 @@ var _bodyParser = require('body-parser');
 
 var _bodyParser2 = _interopRequireDefault(_bodyParser);
 
-var _requestRoute = require('./api/routes/requestRoute');
+var _routes = require('./api/routes/routes');
 
-var _requestRoute2 = _interopRequireDefault(_requestRoute);
+var _routes2 = _interopRequireDefault(_routes);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -26,7 +26,14 @@ app.use(_bodyParser2.default.json());
 
 app.use(_bodyParser2.default.urlencoded({ extended: false }));
 
-app.use('/api/v1', _requestRoute2.default);
+// Request Route
+app.use('/api/v1', _routes2.default);
+
+var port = process.env.PORT || 5000;
+
+app.listen(port, function () {
+  console.log('listening on ' + port);
+});
 
 exports.default = app;
 //# sourceMappingURL=app.js.map
