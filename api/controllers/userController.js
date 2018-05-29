@@ -34,7 +34,7 @@ exports.signUp = (req, res) => {
       }
       // const password = hash;
       const query = {
-        text: 'INSERT INTO users(email, name, password, admin) VALUES($1, $2, $3, $4 )',
+        text: 'INSERT INTO users(email, name, password, admin) VALUES($1, $2, $3, $4 ) RETURNING id',
         values: [email, name, hash, false],
       };
       user.query(query, (err, result) => {
@@ -47,11 +47,13 @@ exports.signUp = (req, res) => {
         if (result.rowCount === 1) {
           // Create token
           const token = jwt.sign({
-            email: email,
-            name: name,
+            id: result.rows[0].id,
+            email,
+            name,
           }, process.env.JWT_KEY, {
             expiresIn: '1hr',
           });
+          res.set('Access-Control-Allow-Origin', '*');
           res.status(201)
             .json({
               token,
@@ -70,9 +72,10 @@ exports.login = (req, res) => {
     text: 'SELECT * FROM users WHERE email= $1',
     values: [email],
   };
+
   user.query(sql, (err, result) => {
     if (err) {
-     return res.status(500)
+      return res.status(500)
         .json({
           err,
         })
@@ -91,6 +94,7 @@ exports.login = (req, res) => {
           }, process.env.JWT_KEY, {
             expiresIn: '1h',
           });
+          res.set('Access-Control-Allow-Origin', '*');
           res.status(200)
             .json({
               token,
@@ -102,6 +106,8 @@ exports.login = (req, res) => {
       res.status(401)
         .json({
           error: 'Login Authentication Failed',
+          email,
+          password,
         })
         .end();
     }

@@ -1,7 +1,9 @@
 import chai from 'chai';
 
-import db from '../models/userModel';
+import chaiHttp from 'chai-http';
 
+
+import db from '../models/userModel';
 
 import superTest from 'supertest';
 
@@ -11,15 +13,17 @@ const server = superTest.agent(app);
 
 const Expect = chai.expect;
 
-before((done) => {
-  db.query('SELECT FROM users WHERE email="nwokeochavictor@gmail.com;"', (err, results) => {
-    if (err) {
-      return err;
-    }
-    console.log(results);
-  });
-  done();
-});
+chai.use(chaiHttp);
+
+// before((done) => {
+//   db.query('SELECT FROM users WHERE email="nwokeochavictor@gmail.com;"', (err, results) => {
+//     if (err) {
+//       return err;
+//     }
+//     console.log(results);
+//   });
+//   done();
+// });
 
 
 describe('USER CONTROLLER TESTS', () => {
@@ -35,8 +39,14 @@ describe('USER CONTROLLER TESTS', () => {
         .send(newUser)
         .end((err, res) => {
           Expect(err).to.be.null;
-          Expect(res.statusCode).to.equal(201);
-          Expect(res.body[0]).to.be.have.property('token');
+          Expect(res.statusCode)
+            .to
+            .equal(201);
+          Expect(res.body[0])
+            .to
+            .be
+            .have
+            .property('token');
           Expect(res.body[0].auth)
             .to
             .be
@@ -47,7 +57,7 @@ describe('USER CONTROLLER TESTS', () => {
   });
 
   describe('POST User Login( /Auth/login)', () => {
-    it('Should get status code', (done) => {
+    it('Should return a token', (done) => {
       const User = {
         email: 'nwokeochavictor@gmail.com',
         password: '123456',
@@ -56,43 +66,11 @@ describe('USER CONTROLLER TESTS', () => {
         .post('/api/v1/auth/login')
         .send(User)
         .end((err, res) => {
-          console.log(res.body);
           Expect(err).to.be.null;
-          Expect(res.statusCode)
-            .to
-            .equal(200);
-          Expect(res.body[0])
-            .to
-            .be
-            .have
-            .property('token');
+          Expect(res.statusCode).to.equal(200);
+          Expect(res.body[0]).to.be.have.property('token');
         });
-      return done();
-    });
-
-    it('Should get a status code', (done) => {
-      const User = {
-        email: 'nwokeochavictor@gmail.com',
-        password: '123456',
-      };
-
-
-      server
-        .post('/api/v1/auth/login')
-        .send(User)
-        .end((err, res) => {
-          console.log(res.body);
-          Expect(err).to.be.null;
-          Expect(res.statusCode)
-            .to
-            .equal(200);
-          Expect(res.body[0])
-            .to
-            .be
-            .have
-            .property('token');
-        });
-      return done();
+      done();
     });
   });
 });

@@ -29,6 +29,8 @@ router.post('/users/requests/', verifyToken, userAuth, createRequest);
 //
 router.put('/users/requests/:requestId', verifyToken, userAuth, modifyRequest);
 
+router.delete('/users/requests/:requestId/delete', verifyToken, userAuth, deleteRequest);
+
 
 // USER ROUTES
 router.post('/auth/signup', signUp);
@@ -45,7 +47,5 @@ router.put('/requests/:requestId/approve', verifyToken, userAuth, isAdmin, appro
 router.put('/requests/:requestId/disapprove', verifyToken, userAuth, isAdmin, disapproveRequest);
 
 router.put('/requests/:requestId/resolve', verifyToken, userAuth, isAdmin, resolveRequest);
-
-router.delete('/requests/:requestId/delete', verifyToken, userAuth, isAdmin, deleteRequest);
 
 export default router;

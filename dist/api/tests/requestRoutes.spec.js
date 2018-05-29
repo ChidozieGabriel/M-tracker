@@ -33,20 +33,8 @@ _chai2.default.use(_chaiHttp2.default);
 // let token = null;
 global.token = null;
 before(function (done) {
-  // db.query('CREATE DATABASE IF EXISTS "testRunning";', (err, results) => {
-  //   if (err) {
-  //     return err;
-  //   }
-  //   db.query('CREATE TABLE users(id SERIAL PRIMARY KEY, name VARCHAR(40) NOT NULL, password VARCHAR(40) NOT NULL, email VARCHAR(40) NOT NULL, admin BOOLEAN DEFAULT true', (err, results) => {
-  //     if (err) {
-  //       return err;
-  //     }
-  //     db.end();
-  //     done();
-  //   });
-  // });
   _chai2.default.request(_app2.default).post('/api/v1/auth/login').send({
-    email: 'nwokeochavicto22r@gmail.com',
+    email: 'example@gmail.com',
     password: '123456'
   }).end(function (err, res) {
     global.token = res.body.token;
@@ -75,7 +63,7 @@ describe('USER REQUEST CONTROLLER API ENDPOINT', function () {
   });
 
   it('Should list ONE requests on /user/request/:requestId GET', function (done) {
-    _chai2.default.request(_app2.default).get('/api/v1/users/requests/10').set({ Authorization: 'Bearer ' + global.token }).end(function (err, res) {
+    _chai2.default.request(_app2.default).get('/api/v1/users/requests/1').set({ Authorization: 'Bearer ' + global.token }).end(function (err, res) {
       Expect(res.statusCode).to.equal(200);
       Expect(res).to.be.an('object');
     });
@@ -84,7 +72,6 @@ describe('USER REQUEST CONTROLLER API ENDPOINT', function () {
 
   it('Should throw a 404 error when request is not found', function (done) {
     _chai2.default.request(_app2.default).get('/api/v1/users/requests/1100').set({ Authorization: 'Bearer ' + global.token }).end(function (err, res) {
-      console.log(res.statusCode);
       Expect(res.statusCode).to.equal(404);
     });
     done();
@@ -107,13 +94,6 @@ describe('USER REQUEST CONTROLLER API ENDPOINT', function () {
   });
 
   it('should get an error when a bad request is sent on user/requests/  POST', function (done) {
-    var data = {
-      name: 'Janet May',
-      email: 'janetMaye@yahoomail.com',
-      dept: 'Engineering HQ',
-      request: 'Lorem ipsum'
-    };
-
     _chai2.default.request(_app2.default).post('/api/v1/users/requests/').set({ Authorization: 'Bearer ' + global.token }).send(data1).end(function (err, res) {
       Expect(res.statusCode).to.equal(400);
     });
@@ -127,7 +107,7 @@ describe('USER REQUEST CONTROLLER API ENDPOINT', function () {
       dept: 'Engineering HQ',
       request: 'Lorem ipsum owjjfndfnmnxnfj Lorem ipsum Lorem'
     };
-    _chai2.default.request(_app2.default).put('/api/v1/users/requests/10').set({ Authorization: 'Bearer ' + global.token }).send(data).end(function (err, res) {
+    _chai2.default.request(_app2.default).put('/api/v1/users/requests/1').set({ Authorization: 'Bearer ' + global.token }).send(data).end(function (err, res) {
       Expect(res.statusCode).to.equal(200);
       Expect(res).to.be.an('object');
       Expect(res.body.data).to.be.an('object');
@@ -142,28 +122,26 @@ describe('USER REQUEST CONTROLLER API ENDPOINT', function () {
     done();
   });
 
-  // it('should delete requests on user/requests/:requestId  DELETE', (done) => {
-  //   chai.request(app)
-  //     .put('/api/v1/users/requests/10')
-  //     .set({ Authorization: 'Bearer ' + global.token })
-  //     .end((err, res) => {
-  //       Expect(res.statusCode)
-  //         .to.equal(200);
-  //       done();
-  //     });
-  // });
   //
-  //
-  // it('should get an error when a request is not found on user/requests/:requestId  DELETE', (done) => {
-  //   chai.request(app)
-  //     .put('/api/v1/users/requests/1100')
-  //     .set({ Authorization: 'Bearer ' + global.token })
-  //     .end((err, res) => {
-  //       Expect(res.statusCode)
-  //         .to
-  //         .equal(404);
-  //     });
-  //   done();
-  // });
+  it('should get an error when a request is not found on user/requests/:requestId  DELETE', function (done) {
+    _chai2.default.request(_app2.default).delete('/api/v1/users/requests/1110/delete').set({ Authorization: 'Bearer ' + global.token }).end(function (err, res) {
+      Expect(res.statusCode).to.equal(404);
+    });
+    done();
+  });
+
+  it('should delete a request on user/requests/:requestId  DELETE', function (done) {
+    _chai2.default.request(_app2.default).delete('/api/v1/users/requests/1/delete').set({ Authorization: 'Bearer ' + global.token }).end(function (err, res) {
+      Expect(res.statusCode).to.equal(200);
+    });
+    done();
+  });
+
+  it('should not grant access to none admin users', function (done) {
+    _chai2.default.request(_app2.default).get('/api/v1/requests/').set({ Authorization: 'Bearer ' + global.token }).end(function (err, res) {
+      Expect(res.statusCode).to.equal(403);
+    });
+    done();
+  });
 });
 //# sourceMappingURL=requestRoutes.spec.js.map
