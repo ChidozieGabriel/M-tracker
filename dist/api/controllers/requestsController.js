@@ -6,38 +6,6 @@ var _userModel2 = _interopRequireDefault(_userModel);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-// global.data = [
-//   {
-//     id: 110,
-//     name: 'John doe',
-//     email: 'example@gmail.com',
-//     date: '2018-10-13',
-//     dept: 'Accounts',
-//     message: 'Lorem ipsum ',
-//     Url: 'http://localhost:5000/api/v1/users/requests/110',
-//   },
-//
-//   {
-//     id: 120,
-//     name: 'Jane doe',
-//     email: 'janedoe@gmail.com',
-//     date: '2014-1-25',
-//     dept: 'Engineering',
-//     message: 'Lorem ipsum Lorem ipsum Lorem',
-//     Url: 'http://localhost:5000/api/v1/users/requests/120',
-//   },
-//   {
-//     id: 130,
-//     name: 'Frank Moore',
-//     email: 'frankmoore@examplemail.me',
-//     date: '2011-8-1',
-//     dept: 'Logistics',
-//     message: 'Lorem ipsum Lorem ipsum Lorem ipsum ',
-//     Url: 'http://localhost:5000/api/v1/users/requests/130',
-//   },
-// ];
-
-
 exports.getAllUserRequests = function (req, res) {
   var userId = req.userInfo.id;
   var sql = {
@@ -45,12 +13,7 @@ exports.getAllUserRequests = function (req, res) {
     values: [userId]
   };
   _userModel2.default.query(sql, function (err, result) {
-    if (err) {
-      return res.status(500).json({
-        err: err
-      }).end();
-    }
-    res.status(200).json({
+    res.status(200).set('Access-Control-Allow-Origin', '*').set('Access-Control-Allow-Credentials', 'true').set('Access-Control-Allow-Methods', 'POST, GET, OPTIONS, DELETE').set('Access-Control-Max-Age', '3600').set('Access-Control-Allow-Headers', 'Content-Type, Accept, X-Requested-With, remember-me').json({
       user: req.userInfo,
       result: result.rows
     });
@@ -65,11 +28,13 @@ exports.getSingleRequest = function (req, res) {
     values: [id, userId]
   };
   _userModel2.default.query(sql, function (err, result) {
-    if (err) {
-      return res.status(500).json({
-        error: err
-      }).end();
-    }
+    // if (err) {
+    //   return res.status(500)
+    //     .json({
+    //       error: err,
+    //     })
+    //     .end();
+    // }
     if (result.rows.length > 0) {
       return res.status(200).json({
         result: result.rows
@@ -88,11 +53,12 @@ exports.createRequest = function (req, res) {
     values: [userId, req.body.name, req.body.email, 'pending', req.body.request, req.body.dept]
   };
   _userModel2.default.query(query, function (err, result) {
-    if (err) {
-      return res.status(500).json({
-        err: err
-      });
-    }
+    // if (err) {
+    //   return res.status(500)
+    //     .json({
+    //       err,
+    //     });
+    // }
     res.status(201).json({
       message: 'Request Created successfully'
     });
@@ -146,11 +112,12 @@ exports.deleteRequest = function (req, res) {
     values: [id]
   };
   _userModel2.default.query(query, function (err, result) {
-    if (err) {
-      return res.status(500).json({
-        err: err
-      });
-    }
+    // if (err) {
+    //   return res.status(500)
+    //     .json({
+    //       err,
+    //     });
+    // }
     if (result.rowCount === 0) {
       return res.status(404).json({
         message: 'Request Not found'
@@ -159,6 +126,136 @@ exports.deleteRequest = function (req, res) {
     res.status(200).json({
       message: 'Request deleted successfully'
     });
+  });
+};
+
+// Admin Controllers
+exports.getAllRequests = function (req, res) {
+  // const userId = req.userInfo.id;
+  var sql = {
+    text: 'SELECT * FROM requests'
+  };
+  _userModel2.default.query(sql, function (err, result) {
+    // if (err) {
+    //   return res.status(500)
+    //     .json({
+    //       err,
+    //     })
+    //     .end();
+    // }
+    // res.set('Access-Control-Allow-Origin', '*');
+    res.status(200).set('Access-Control-Allow-Origin', '*').json({
+      user: req.userInfo,
+      result: result.rows
+    });
+  });
+};
+
+exports.approveRequest = function (req, res) {
+  var userId = req.userInfo.id;
+  var id = parseInt(req.params.requestId, 10);
+  var query = {
+    text: 'UPDATE requests SET status=$1 WHERE id=$2',
+    values: ['approved', id]
+  };
+
+  _userModel2.default.query(query, function (err, result) {
+    // if (err) {
+    //   return res.status(500)
+    //     .json({
+    //       err,
+    //     });
+    // }
+    if (result.rowCount === 1) {
+      var sql = {
+        text: 'SELECT * FROM requests WHERE id=$1',
+        values: [id]
+      };
+      _userModel2.default.query(sql, function (err, result) {
+        if (err) {
+          return res.status(500).json({
+            error: err
+          }).end();
+        }
+        if (result.rows.length > 0) {
+          return res.status(200).json({
+            result: result.rows
+          });
+        }
+      });
+    }
+  });
+};
+
+exports.disapproveRequest = function (req, res) {
+  var userId = req.userInfo.id;
+  var id = parseInt(req.params.requestId, 10);
+  var query = {
+    text: 'UPDATE requests SET status=$1 WHERE id=$2',
+    values: ['disapproved', id]
+  };
+
+  _userModel2.default.query(query, function (err, result) {
+    // if (err) {
+    //   return res.status(500)
+    //     .json({
+    //       err,
+    //     });
+    // }
+    if (result.rowCount === 1) {
+      var sql = {
+        text: 'SELECT * FROM requests WHERE id=$1',
+        values: [id]
+      };
+      _userModel2.default.query(sql, function (err, result) {
+        if (err) {
+          return res.status(500).json({
+            error: err
+          }).end();
+        }
+        if (result.rows.length > 0) {
+          return res.status(200).json({
+            result: result.rows
+          });
+        }
+      });
+    }
+  });
+};
+
+exports.resolveRequest = function (req, res) {
+  var userId = req.userInfo.id;
+  var id = parseInt(req.params.requestId, 10);
+  var query = {
+    text: 'UPDATE requests SET status=$1 WHERE id=$2',
+    values: ['resolved', id]
+  };
+
+  _userModel2.default.query(query, function (err, result) {
+    // if (err) {
+    //   return res.status(500)
+    //     .json({
+    //       err,
+    //     });
+    // }
+    if (result.rowCount === 1) {
+      var sql = {
+        text: 'SELECT * FROM requests WHERE id=$1',
+        values: [id]
+      };
+      _userModel2.default.query(sql, function (err, result) {
+        if (err) {
+          return res.status(500).json({
+            error: err
+          }).end();
+        }
+        if (result.rows.length > 0) {
+          return res.status(200).json({
+            result: result.rows
+          });
+        }
+      });
+    }
   });
 };
 //# sourceMappingURL=requestsController.js.map

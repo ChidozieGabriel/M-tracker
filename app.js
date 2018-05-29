@@ -2,7 +2,7 @@ import express from 'express';
 
 import bodyParser from 'body-parser';
 
-import requestRoute from './api/routes/Routes';
+import Routes from './api/routes/routes';
 
 // import userModel from './api/models/userModel';
 
@@ -13,7 +13,8 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 // Request Route
-app.use('/api/v1', requestRoute);
+app.use('/api/v1', Routes);
+
 
 const port = process.env.PORT || 5000;
 

@@ -1,11 +1,17 @@
-import Pg from 'pg';
+import { Pool } from 'pg';
 
-const pool = new Pg.Pool({
-  user: process.env.DB_USER,
-  host: process.env.DB_HOST,
-  database: process.env.DB_NAME,
-  password: process.env.DB_PASS,
-  port: process.env.DB_PORT,
-});
+
+let pool = null;
+
+if (process.env.NODE_ENV === 'test') {
+  pool = new Pool({
+    connectionString: process.env.DATABASE_URL,
+  });
+} else if (process.env.NODE_ENV === 'development') {
+  pool = new Pool({
+    connectionString: process.env.LOCAL_DB,
+  });
+}
+
 
 export default pool;

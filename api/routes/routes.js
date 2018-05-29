@@ -6,11 +6,16 @@ import {
   createRequest,
   modifyRequest,
   deleteRequest,
+  getAllRequests,
+  approveRequest,
+  disapproveRequest,
+  resolveRequest,
 } from '../controllers/requestsController';
 
 import { login, signUp } from '../controllers/userController';
 import verifyToken from '../middleware/verifyToken';
 import userAuth from '../middleware/userAuth';
+import isAdmin from '../middleware/isAdmin';
 
 // import userAuth from '../middleware/userAuth';
 
@@ -35,15 +40,12 @@ router.post('/auth/login', login);
 
 //ADMIN ROUTES
 //
-// router.get('/requests', getAllRequests);
-//
-// router.put('/requests/:requestId/approve', approveRequest);
-//
-// router.put('/requests/:requestId/disapprove', disapproveRequest);
-//
-// router.put('/requests/:requestId/resolve', resolveRequest);
-//
-// router.delete('/requests/:requestId', deleteRequest);
+router.get('/requests', verifyToken, userAuth, isAdmin, getAllRequests);
+
+router.put('/requests/:requestId/approve', verifyToken, userAuth, isAdmin, approveRequest);
+
+router.put('/requests/:requestId/disapprove', verifyToken, userAuth, isAdmin, disapproveRequest);
+
+router.put('/requests/:requestId/resolve', verifyToken, userAuth, isAdmin, resolveRequest);
 
 export default router;
-
