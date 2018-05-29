@@ -38,6 +38,8 @@ router.post('/users/requests/', _verifyToken2.default, _userAuth2.default, _requ
 //
 router.put('/users/requests/:requestId', _verifyToken2.default, _userAuth2.default, _requestsController.modifyRequest);
 
+router.delete('/users/requests/:requestId/delete', _verifyToken2.default, _userAuth2.default, _requestsController.deleteRequest);
+
 // USER ROUTES
 router.post('/auth/signup', _userController.signUp);
 
@@ -53,7 +55,5 @@ router.put('/requests/:requestId/disapprove', _verifyToken2.default, _userAuth2.
 
 router.put('/requests/:requestId/resolve', _verifyToken2.default, _userAuth2.default, _isAdmin2.default, _requestsController.resolveRequest);
 
-router.delete('/requests/:requestId/delete', _verifyToken2.default, _userAuth2.default, _isAdmin2.default, _requestsController.deleteRequest);
-
 exports.default = router;
-//# sourceMappingURL=Routes.js.map
+//# sourceMappingURL=routes.js.map

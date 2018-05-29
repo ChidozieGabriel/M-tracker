@@ -44,7 +44,7 @@ exports.signUp = function (req, res) {
       }
       // const password = hash;
       var query = {
-        text: 'INSERT INTO users(email, name, password, admin) VALUES($1, $2, $3, $4 )',
+        text: 'INSERT INTO users(email, name, password, admin) VALUES($1, $2, $3, $4 ) RETURNING id',
         values: [email, name, hash, false]
       };
       _userModel2.default.query(query, function (err, result) {
@@ -56,11 +56,13 @@ exports.signUp = function (req, res) {
         if (result.rowCount === 1) {
           // Create token
           var token = _jsonwebtoken2.default.sign({
+            id: result.rows[0].id,
             email: email,
             name: name
           }, process.env.JWT_KEY, {
             expiresIn: '1hr'
           });
+          res.set('Access-Control-Allow-Origin', '*');
           res.status(201).json({
             token: token
           }).end();
@@ -80,6 +82,7 @@ exports.login = function (req, res) {
     text: 'SELECT * FROM users WHERE email= $1',
     values: [email]
   };
+
   _userModel2.default.query(sql, function (err, result) {
     if (err) {
       return res.status(500).json({
@@ -99,6 +102,7 @@ exports.login = function (req, res) {
           }, process.env.JWT_KEY, {
             expiresIn: '1h'
           });
+          res.set('Access-Control-Allow-Origin', '*');
           res.status(200).json({
             token: token
           }).end();
@@ -106,7 +110,9 @@ exports.login = function (req, res) {
       });
     } else {
       res.status(401).json({
-        error: 'Login Authentication Failed'
+        error: 'Login Authentication Failed',
+        email: email,
+        password: password
       }).end();
     }
   });

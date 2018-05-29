@@ -4,6 +4,10 @@ var _chai = require('chai');
 
 var _chai2 = _interopRequireDefault(_chai);
 
+var _chaiHttp = require('chai-http');
+
+var _chaiHttp2 = _interopRequireDefault(_chaiHttp);
+
 var _userModel = require('../models/userModel');
 
 var _userModel2 = _interopRequireDefault(_userModel);
@@ -22,15 +26,18 @@ var server = _supertest2.default.agent(_app2.default);
 
 var Expect = _chai2.default.expect;
 
-before(function (done) {
-  _userModel2.default.query('SELECT FROM users WHERE email="nwokeochavictor@gmail.com;"', function (err, results) {
-    if (err) {
-      return err;
-    }
-    console.log(results);
-  });
-  done();
-});
+_chai2.default.use(_chaiHttp2.default);
+
+// before((done) => {
+//   db.query('SELECT FROM users WHERE email="nwokeochavictor@gmail.com;"', (err, results) => {
+//     if (err) {
+//       return err;
+//     }
+//     console.log(results);
+//   });
+//   done();
+// });
+
 
 describe('USER CONTROLLER TESTS', function () {
   describe('User sign up)', function () {
@@ -51,33 +58,17 @@ describe('USER CONTROLLER TESTS', function () {
   });
 
   describe('POST User Login( /Auth/login)', function () {
-    it('Should get status code', function (done) {
+    it('Should return a token', function (done) {
       var User = {
         email: 'nwokeochavictor@gmail.com',
         password: '123456'
       };
       server.post('/api/v1/auth/login').send(User).end(function (err, res) {
-        console.log(res.body);
         Expect(err).to.be.null;
         Expect(res.statusCode).to.equal(200);
         Expect(res.body[0]).to.be.have.property('token');
       });
-      return done();
-    });
-
-    it('Should get a status code', function (done) {
-      var User = {
-        email: 'nwokeochavictor@gmail.com',
-        password: '123456'
-      };
-
-      server.post('/api/v1/auth/login').send(User).end(function (err, res) {
-        console.log(res.body);
-        Expect(err).to.be.null;
-        Expect(res.statusCode).to.equal(200);
-        Expect(res.body[0]).to.be.have.property('token');
-      });
-      return done();
+      done();
     });
   });
 });

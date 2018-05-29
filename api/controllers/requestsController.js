@@ -1,36 +1,5 @@
 import db from '../models/userModel';
 
-// global.data = [
-//   {
-//     id: 110,
-//     name: 'John doe',
-//     email: 'example@gmail.com',
-//     date: '2018-10-13',
-//     dept: 'Accounts',
-//     message: 'Lorem ipsum ',
-//     Url: 'http://localhost:5000/api/v1/users/requests/110',
-//   },
-//
-//   {
-//     id: 120,
-//     name: 'Jane doe',
-//     email: 'janedoe@gmail.com',
-//     date: '2014-1-25',
-//     dept: 'Engineering',
-//     message: 'Lorem ipsum Lorem ipsum Lorem',
-//     Url: 'http://localhost:5000/api/v1/users/requests/120',
-//   },
-//   {
-//     id: 130,
-//     name: 'Frank Moore',
-//     email: 'frankmoore@examplemail.me',
-//     date: '2011-8-1',
-//     dept: 'Logistics',
-//     message: 'Lorem ipsum Lorem ipsum Lorem ipsum ',
-//     Url: 'http://localhost:5000/api/v1/users/requests/130',
-//   },
-// ];
-
 exports.getAllUserRequests = (req, res) => {
   const userId = req.userInfo.id;
   const sql = {
@@ -38,14 +7,12 @@ exports.getAllUserRequests = (req, res) => {
     values: [userId],
   };
   db.query(sql, (err, result) => {
-    if (err) {
-      return res.status(500)
-        .json({
-          err,
-        })
-        .end();
-    }
     res.status(200)
+      .set('Access-Control-Allow-Origin', '*')
+      .set('Access-Control-Allow-Credentials', 'true')
+      .set('Access-Control-Allow-Methods', 'POST, GET, OPTIONS, DELETE')
+      .set('Access-Control-Max-Age', '3600')
+      .set('Access-Control-Allow-Headers', 'Content-Type, Accept, X-Requested-With, remember-me')
       .json({
         user: req.userInfo,
         result: result.rows,
@@ -61,13 +28,13 @@ exports.getSingleRequest = (req, res) => {
     values: [id, userId],
   };
   db.query(sql, (err, result) => {
-    if (err) {
-      return res.status(500)
-        .json({
-          error: err,
-        })
-        .end();
-    }
+    // if (err) {
+    //   return res.status(500)
+    //     .json({
+    //       error: err,
+    //     })
+    //     .end();
+    // }
     if (result.rows.length > 0) {
       return res.status(200)
         .json({
@@ -88,12 +55,12 @@ exports.createRequest = (req, res) => {
     values: [userId, req.body.name, req.body.email, 'pending', req.body.request, req.body.dept],
   };
   db.query(query, (err, result) => {
-    if (err) {
-      return res.status(500)
-        .json({
-          err,
-        });
-    }
+    // if (err) {
+    //   return res.status(500)
+    //     .json({
+    //       err,
+    //     });
+    // }
     res.status(201)
       .json({
         message: 'Request Created successfully',
@@ -153,12 +120,12 @@ exports.deleteRequest = (req, res) => {
     values: [id],
   };
   db.query(query, (err, result) => {
-    if (err) {
-      return res.status(500)
-        .json({
-          err,
-        });
-    }
+    // if (err) {
+    //   return res.status(500)
+    //     .json({
+    //       err,
+    //     });
+    // }
     if (result.rowCount === 0) {
       return res.status(404)
         .json({
@@ -174,21 +141,22 @@ exports.deleteRequest = (req, res) => {
 
 
 // Admin Controllers
-
 exports.getAllRequests = (req, res) => {
   // const userId = req.userInfo.id;
   const sql = {
     text: 'SELECT * FROM requests',
   };
   db.query(sql, (err, result) => {
-    if (err) {
-      return res.status(500)
-        .json({
-          err,
-        })
-        .end();
-    }
+    // if (err) {
+    //   return res.status(500)
+    //     .json({
+    //       err,
+    //     })
+    //     .end();
+    // }
+    // res.set('Access-Control-Allow-Origin', '*');
     res.status(200)
+      .set('Access-Control-Allow-Origin', '*')
       .json({
         user: req.userInfo,
         result: result.rows,
@@ -205,12 +173,12 @@ exports.approveRequest = (req, res) => {
   };
 
   db.query(query, (err, result) => {
-    if (err) {
-      return res.status(500)
-        .json({
-          err,
-        });
-    }
+    // if (err) {
+    //   return res.status(500)
+    //     .json({
+    //       err,
+    //     });
+    // }
     if (result.rowCount === 1) {
       const sql = {
         text: 'SELECT * FROM requests WHERE id=$1',
@@ -244,12 +212,12 @@ exports.disapproveRequest = (req, res) => {
   };
 
   db.query(query, (err, result) => {
-    if (err) {
-      return res.status(500)
-        .json({
-          err,
-        });
-    }
+    // if (err) {
+    //   return res.status(500)
+    //     .json({
+    //       err,
+    //     });
+    // }
     if (result.rowCount === 1) {
       const sql = {
         text: 'SELECT * FROM requests WHERE id=$1',
@@ -283,12 +251,12 @@ exports.resolveRequest = (req, res) => {
   };
 
   db.query(query, (err, result) => {
-    if (err) {
-      return res.status(500)
-        .json({
-          err,
-        });
-    }
+    // if (err) {
+    //   return res.status(500)
+    //     .json({
+    //       err,
+    //     });
+    // }
     if (result.rowCount === 1) {
       const sql = {
         text: 'SELECT * FROM requests WHERE id=$1',
