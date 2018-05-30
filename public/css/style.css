@@ -147,10 +147,17 @@ label {
     background: #f6ff6c;
     color: #111;
 }
+.btn-edit:hover {
+    border: none;
+}
+
 
 .btn-delete {
     color: white;
     background: #ff4f4f;
+}
+.btn-delete:hover {
+    border: none;
 }
 
 .btn-default:hover {
@@ -168,33 +175,36 @@ label {
 }
 
 .btn-approve {
-    border: 1px solid #21801f;
-    color: #21801f;
-}
-
-.btn-approve:hover {
     background: #21801f;
     color: #fff;
 }
 
-.btn-disapprove {
-    border: 1px solid #ff4f4f;
-    color: #ff4f4f;
+.btn-approve:hover {
+    border: none;
 }
 
-.btn-disapprove:hover {
-    background: #ff4f4f;
-    color: #fff;
-}
+/*.btn-disapprove {*/
+    /*border: 1px solid #ff4f4f;*/
+    /*color: #ff4f4f;*/
+/*}*/
+
+/*.btn-disapprove:hover {*/
+    /*background: #ff4f4f;*/
+    /*color: #fff;*/
+/*}*/
+
+/*.btn-resolve:hover {*/
+    /*border: 1px solid #1e90ff;*/
+    /*color: #1e90ff;*/
+/*}*/
 
 .btn-resolve {
-    border: 1px solid #1e90ff;
-    color: #1e90ff;
+    background: #1e90ff;
+    color: #fff;
 }
 
 .btn-resolve:hover {
-    background: #1e90ff;
-    color: #fff;
+    border: none;
 }
 
 header {
@@ -241,12 +251,12 @@ h3 {
 
 .table th {
     border-bottom: 1px solid #d8bfd8;
-    padding: 5px 5px 5px 0;
+    padding: 5px;
     background: #eeeeee;
 }
 
 .table tr td {
-    padding: 15px 0 15px;
+    padding: 15px 5px 15px;
 }
 
 .table td a {

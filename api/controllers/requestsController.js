@@ -140,7 +140,7 @@ exports.deleteRequest = (req, res) => {
 exports.getAllRequests = (req, res) => {
   // const userId = req.userInfo.id;
   const sql = {
-    text: 'SELECT * FROM requests',
+    text: 'SELECT * FROM requests ORDER BY id ASC',
   };
   db.query(sql, (err, result) => {
     // if (err) {

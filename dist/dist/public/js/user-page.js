@@ -54,5 +54,5 @@ if (token) {
 } else {
   document.getElementById('alert').innerHTML = '\n      <p>\n            Oops!! You do not have access to this page!!\n      </p>\n      ';
 }
-//# sourceMappingURL=user-page.js.map
-//# sourceMappingURL=user-page.js.map
+//# sourceMappingURL=userPage.js.map
+//# sourceMappingURL=userPage.js.map

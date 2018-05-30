@@ -133,7 +133,7 @@ exports.deleteRequest = function (req, res) {
 exports.getAllRequests = function (req, res) {
   // const userId = req.userInfo.id;
   var sql = {
-    text: 'SELECT * FROM requests'
+    text: 'SELECT * FROM requests ORDER BY id ASC'
   };
   _userModel2.default.query(sql, function (err, result) {
     // if (err) {
