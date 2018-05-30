@@ -126,8 +126,31 @@ label {
 .btn {
     border-radius: 10px;
     background: transparent;
-    padding: 0.5rem 1.25rem;
+    padding: 0.2rem 0.85rem;
     color: #363851;
+}
+
+.btn-sm {
+    border: 1px solid #111;
+    border-radius: 3px;
+    padding: 0.1rem 0.75rem;
+    color: #363851;
+    font-size: 11px;
+}
+
+.btn-primary {
+    background: #363851;
+    color: white;
+}
+
+.btn-edit {
+    background: #f6ff6c;
+    color: #111;
+}
+
+.btn-delete {
+    color: white;
+    background: #ff4f4f;
 }
 
 .btn-default:hover {
@@ -204,6 +227,42 @@ h3 {
     margin: 5px;
     padding: 15px 0;
     font-size: 20px;
+    text-align: center;
+}
+
+.table {
+    width: 100%;
+    text-align: left;
+    background-color: #fff;
+    margin: 10px 0 15px;
+    padding: 10px;
+    border-bottom: 1px solid #d8bfd8;
+}
+
+.table th {
+    border-bottom: 1px solid #d8bfd8;
+    padding: 5px 5px 5px 0;
+    background: #eeeeee;
+}
+
+.table tr td {
+    padding: 15px 0 15px;
+}
+
+.table td a {
+    margin: 3px;
+    display: inline-block;
+}
+
+.table th, td {
+    border-bottom: 1px solid #ddd;
+}
+
+/*.table tr:last-child {*/
+/*border: none !important;*/
+/*}*/
+.tableClear {
+    float: none !important;
     text-align: center;
 }
 
@@ -361,6 +420,11 @@ footer p {
 
 /** Media queries **/
 @media only screen and (max-width: 900px) {
+
+    .table-res {
+        overflow-x: auto;
+    }
+
     .form-wrapper {
         width: 90%;
     }
@@ -403,7 +467,7 @@ footer p {
 
     nav.nav-bar ul li {
         float: right;
-        padding: 40px 60px;
+        padding: 40px 20px 40px 0;
 
     }
 
