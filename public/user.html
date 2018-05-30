@@ -11,13 +11,13 @@
     <a class="brand" href="#">M-Tracker</a>
     <nav class="nav-bar">
         <ul>
-            <li><a class="btn btn-default" href="../../front-end/index.html">Logout</a></li>
+            <li><a class="btn btn-default" href="index.html">Logout</a></li>
         </ul>
     </nav>
 </header>
 <div class="wrapper">
     <h3>Create new request</h3>
-    <form>
+    <form id="createRequest" method="post">
         <div class="input-group">
             <!--<label for='name'>Name: </label>-->
             <input type="text" id="name" name="name" placeholder="Enter your name" autofocus/>
@@ -46,37 +46,8 @@
                 <option value='4'>Most recent</option>
             </select>
         </div>
-        <ul class="requests">
-            <li>
-                <a href="user-view-details.html" title="Click to view details">
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus error sint doloremque
-                        laborum excepturi! Nemo recusandae, quod error corrupti modi.
-                    </p>
-                    <span class="request-date">3 days ago</span>
-                    <span class="label label-approved">Approved</span>
-                </a>
-            </li>
+        <ul id="userRequests" class="requests">
 
-            <li>
-                <a href="user-view-details.html" title="Click to view details">
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus error sint doloremque
-                        laborum excepturi! Nemo recusandae, quod error corrupti modi.
-                    </p>
-                    <span class="request-date">2 days ago</span>
-                    <span class="label label-approved">Approved</span>
-                </a>
-            </li>
-
-
-            <li>
-                <a href="user-view-details.html" title="Click to view details">
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus error sint doloremque
-                        laborum excepturi! Nemo recusandae, quod error corrupti modi.
-                    </p>
-                    <span class="request-date">3 days ago</span>
-                    <span class="label label-resolved">Resolved</span>
-                </a>
-            </li>
         </ul>
 
         <ul class="pagination">
@@ -89,5 +60,7 @@
 <footer>
     <p>&copy;2018 VeeqTor</p>
 </footer>
+
+<script src="js/user-page.js"></script>
 </body>
 </html>
