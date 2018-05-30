@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>M-Tracker</title>
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+</head>
+<body>
+<header>
+    <a class="brand" href="#">M-Tracker</a>
+    <nav class="nav-bar">
+        <ul>
+            <li><a class="btn btn-default" href="index.html">Logout</a></li>
+        </ul>
+    </nav>
+</header>
+<div class="wrapper">
+    <section class="list">
+    	<div class="list-header">
+	    	<h3>All requests</h3>
+	        <label for="filter">Filter By:</label>
+	        <select id="filter" name="filter">
+	        	<option value='1'>Approved</option>
+	        	<option value='2'>Disapproved</option>
+	        	<option value='3'>Resolved</option>
+	        	<option value='4'>Pending</option>
+	        	<option value='4'>Most recent</option>
+	        </select>
+    	</div>
+        <ul class="requests">
+            <li>
+                <a href="details.html" title="Click to view details">
+                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus error sint doloremque
+                        laborum excepturi! Nemo recusandae, quod error corrupti modi.
+                    </p>
+                    <span class="request-date">3 days ago</span>
+	                <span class="label label-approved">Approved</span>
+                </a>
+            </li>
+
+            <li>
+                <a href="details.html" title="Click to view details">
+                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus error sint doloremque
+                        laborum excepturi! Nemo recusandae, quod error corrupti modi.
+                    </p>
+                    <span class="request-date">3 days ago</span>
+	                <span class="label label-approved">Approved</span>
+                </a>
+            </li>
+
+
+            <li>
+                <a href="details.html" title="Click to view details">
+                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus error sint doloremque
+                        laborum excepturi! Nemo recusandae, quod error corrupti modi.
+                    </p>
+                    <span class="request-date">3 days ago</span>
+                	<span class="label label-resolved">Resolved</span>
+                </a>
+            </li>
+
+            <li>
+                <a href="details.html" title="Click to view details">
+                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus error sint doloremque
+                        laborum excepturi! Nemo recusandae, quod error corrupti modi.
+                    </p>
+                    <span class="request-date">3 days ago</span>
+	                <span class="label label-pending">Pending</span>
+                </a>
+            </li>
+
+            <li>
+                <a href="details.html" title="Click to view details">
+                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus error sint doloremque
+                        laborum excepturi! Nemo recusandae, quod error corrupti modi.
+                    </p>
+                    <span class="request-date">3 days ago</span>
+	                <span class="label label-disapproved">Disapproved</span>
+                </a>
+            </li>
+        </ul>
+
+        <ul class="pagination">
+            <li class="active"><a href="#">1</a></li>
+            <li><a href="#">2</a></li>
+            <li><a href="#">3</a></li>
+        </ul>
+    </section>
+</div> <!--End of wrapper-->
+<footer>
+	<p>&copy;2018 VeeqTor</p>
+</footer>
+</body>
+</html>

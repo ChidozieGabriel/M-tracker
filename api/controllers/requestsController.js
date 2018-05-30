@@ -1,121 +1,282 @@
-global.data = [
-  {
-    id: 110,
-    name: 'John doe',
-    email: 'example@gmail.com',
-    date: '2018-10-13',
-    dept: 'Accounts',
-    message: 'Lorem ipsum ',
-    Url: 'http://localhost:5000/api/v1/users/requests/110',
-  },
+import db from '../models/userModel';
 
-  {
-    id: 120,
-    name: 'Jane doe',
-    email: 'janedoe@gmail.com',
-    date: '2014-1-25',
-    dept: 'Engineering',
-    message: 'Lorem ipsum Lorem ipsum Lorem',
-    Url: 'http://localhost:5000/api/v1/users/requests/120',
-  },
-  {
-    id: 130,
-    name: 'Frank Moore',
-    email: 'frankmoore@examplemail.me',
-    date: '2011-8-1',
-    dept: 'Logistics',
-    message: 'Lorem ipsum Lorem ipsum Lorem ipsum ',
-    Url: 'http://localhost:5000/api/v1/users/requests/130',
-  },
-];
+exports.getAllUserRequests = (req, res) => {
+  const userId = req.userInfo.id;
+  const sql = {
+    text: 'SELECT * FROM requests WHERE user_id=$1',
+    values: [userId],
+  };
+  db.query(sql, (err, result) => {
+    res.status(200)
+      .set('Access-Control-Allow-Origin', '*')
+      .set('Access-Control-Allow-Credentials', 'true')
+      .set('Access-Control-Allow-Methods', 'POST, GET, OPTIONS, DELETE')
+      .set('Access-Control-Max-Age', '3600')
+      .set('Access-Control-Allow-Headers', 'Content-Type, Accept, X-Requested-With, remember-me')
+      .json({
+        user: req.userInfo,
+        result: result.rows,
+      });
+  });
+};
 
-export default {
-  get_all_requests: (req, res) => {
-    if (global.data.length !== 0) {
+exports.getSingleRequest = (req, res) => {
+  const userId = req.userInfo.id;
+  const id = parseInt(req.params.requestId, 10);
+  const sql = {
+    text: 'SELECT * FROM requests WHERE id=$1 AND user_id=$2',
+    values: [id, userId],
+  };
+  db.query(sql, (err, result) => {
+    // if (err) {
+    //   return res.status(500)
+    //     .json({
+    //       error: err,
+    //     })
+    //     .end();
+    // }
+    if (result.rows.length > 0) {
       return res.status(200)
         .json({
-          status: 'Success',
-          data: global.data,
+          result: result.rows,
         });
     }
-    return res.status(204)
-      .end();
-  },
-
-
-  get_a_request: (req, res) => {
-    const id = parseInt(req.params.requestId, 10);
-    for (let i = 0; i < global.data.length; i += 1) {
-      if (global.data[i].id === id) {
-        return res.status(200)
-          .json({
-            status: 'Success',
-            data: global.data[i],
-          });
-      }
-    }
-    return res.status(404)
+    res.status(404)
       .json({
-        status: 'fail',
-        message: 'Not found',
+        message: 'Request not found',
       });
-  },
+  });
+};
 
-  create_a_request: (req, res) => {
-    if (typeof req.body.id === 'number') {
-      req.body.Url = `http://localhost:5000/api/v1/users/requests/${req.body.id}`;
-      global.data.push(req.body);
-      return res.status(201)
+exports.createRequest = (req, res) => {
+  const userId = req.userInfo.id;
+  const query = {
+    text: 'INSERT INTO requests(user_id, requester_name, requester_email, date, status, request, dept) VALUES($1, $2, $3, NOW() ,$4, $5, $6)',
+    values: [userId, req.body.name, req.body.email, 'pending', req.body.request, req.body.dept],
+  };
+  db.query(query, (err, result) => {
+    // if (err) {
+    //   return res.status(500)
+    //     .json({
+    //       err,
+    //     });
+    // }
+    res.status(201)
+      .json({
+        message: 'Request Created successfully',
+      });
+    if (req.body.name && req.body.email === null) {
+      res.status(400)
         .json({
-          status: 'Success',
-          message: 'Request Created successfully',
+          message: 'Bad Request',
         });
     }
-    return res.status(400)
-      .json({
-        status: 'Fail',
-        message: 'Bad Request',
-      });
-  },
+  });
+};
 
-  modify_a_request: (req, res) => {
-    const id = parseInt(req.params.requestId, 10);
-    for (let i = 0; i < global.data.length; i += 1) {
-      if (global.data[i].id === id) {
-        global.data[i].name = req.body.name;
-        global.data[i].email = req.body.email;
-        global.data[i].date = req.body.date;
-        global.data[i].dept = req.body.dept;
-        global.data[i].message = req.body.message;
-        return res.status(200)
-          .json({
-            status: 'Success',
-            data: global.data[i],
-          });
-      }
+exports.modifyRequest = (req, res) => {
+  const userId = req.userInfo.id;
+  const id = parseInt(req.params.requestId, 10);
+  const query = {
+    text: 'UPDATE requests SET requester_name=$1, requester_email=$2, date=NOW(), request=$3, dept=$4 WHERE id=$5',
+    values: [req.body.name, req.body.email, req.body.request, req.body.dept, id],
+  };
+
+  db.query(query, (err, result) => {
+    if (err) {
+      return res.status(500)
+        .json({
+          err,
+        });
     }
-    return res.status(404)
-      .json({
-        status: 'fail',
-        message: 'Not found',
+    if (result.rowCount === 1) {
+      const sql = {
+        text: 'SELECT * FROM requests WHERE id=$1 AND user_id=$2',
+        values: [id, userId],
+      };
+      db.query(sql, (err, result) => {
+        if (err) {
+          return res.status(500)
+            .json({
+              error: err,
+            })
+            .end();
+        }
+        if (result.rows.length > 0) {
+          return res.status(200)
+            .json({
+              result: result.rows,
+            });
+        }
       });
-  },
-  delete_a_request: (req, res) => {
-    const id = parseInt(req.params.requestId, 10);
-    for (let i = 0; i < global.data.length; i += 1) {
-      if (global.data[i].id === id) {
-        global.data.splice(i, 1);
-        return res.status(200)
-          .json({
-            status: 'Success',
-            message: 'Request deleted successfully',
-          });
-      }
     }
-    return res.status(404)
+  });
+};
+
+exports.deleteRequest = (req, res) => {
+  const id = parseInt(req.params.requestId, 10);
+  const query = {
+    text: 'DELETE FROM requests WHERE id=$1',
+    values: [id],
+  };
+  db.query(query, (err, result) => {
+    // if (err) {
+    //   return res.status(500)
+    //     .json({
+    //       err,
+    //     });
+    // }
+    if (result.rowCount === 0) {
+      return res.status(404)
+        .json({
+          message: 'Request Not found',
+        });
+    }
+    res.status(200)
       .json({
-        status: 'Fail',
-        message: 'Not found',
+        message: 'Request deleted successfully',
       });
-  },
+  });
+};
+
+
+// Admin Controllers
+exports.getAllRequests = (req, res) => {
+  // const userId = req.userInfo.id;
+  const sql = {
+    text: 'SELECT * FROM requests',
+  };
+  db.query(sql, (err, result) => {
+    // if (err) {
+    //   return res.status(500)
+    //     .json({
+    //       err,
+    //     })
+    //     .end();
+    // }
+    // res.set('Access-Control-Allow-Origin', '*');
+    res.status(200)
+      .set('Access-Control-Allow-Origin', '*')
+      .json({
+        user: req.userInfo,
+        result: result.rows,
+      });
+  });
+};
+
+exports.approveRequest = (req, res) => {
+  const userId = req.userInfo.id;
+  const id = parseInt(req.params.requestId, 10);
+  const query = {
+    text: 'UPDATE requests SET status=$1 WHERE id=$2',
+    values: ['approved', id],
+  };
+
+  db.query(query, (err, result) => {
+    // if (err) {
+    //   return res.status(500)
+    //     .json({
+    //       err,
+    //     });
+    // }
+    if (result.rowCount === 1) {
+      const sql = {
+        text: 'SELECT * FROM requests WHERE id=$1',
+        values: [id],
+      };
+      db.query(sql, (err, result) => {
+        if (err) {
+          return res.status(500)
+            .json({
+              error: err,
+            })
+            .end();
+        }
+        if (result.rows.length > 0) {
+          return res.status(200)
+            .json({
+              result: result.rows,
+            });
+        }
+      });
+    }
+  });
+};
+
+exports.disapproveRequest = (req, res) => {
+  const userId = req.userInfo.id;
+  const id = parseInt(req.params.requestId, 10);
+  const query = {
+    text: 'UPDATE requests SET status=$1 WHERE id=$2',
+    values: ['disapproved', id],
+  };
+
+  db.query(query, (err, result) => {
+    // if (err) {
+    //   return res.status(500)
+    //     .json({
+    //       err,
+    //     });
+    // }
+    if (result.rowCount === 1) {
+      const sql = {
+        text: 'SELECT * FROM requests WHERE id=$1',
+        values: [id],
+      };
+      db.query(sql, (err, result) => {
+        if (err) {
+          return res.status(500)
+            .json({
+              error: err,
+            })
+            .end();
+        }
+        if (result.rows.length > 0) {
+          return res.status(200)
+            .json({
+              result: result.rows,
+            });
+        }
+      });
+    }
+  });
+};
+
+exports.resolveRequest = (req, res) => {
+  const userId = req.userInfo.id;
+  const id = parseInt(req.params.requestId, 10);
+  const query = {
+    text: 'UPDATE requests SET status=$1 WHERE id=$2',
+    values: ['resolved', id],
+  };
+
+  db.query(query, (err, result) => {
+    // if (err) {
+    //   return res.status(500)
+    //     .json({
+    //       err,
+    //     });
+    // }
+    if (result.rowCount === 1) {
+      const sql = {
+        text: 'SELECT * FROM requests WHERE id=$1',
+        values: [id],
+      };
+      db.query(sql, (err, result) => {
+        if (err) {
+          return res.status(500)
+            .json({
+              error: err,
+            })
+            .end();
+        }
+        if (result.rows.length > 0) {
+          return res.status(200)
+            .json({
+              result: result.rows,
+            });
+        }
+      });
+    }
+  });
 };
