@@ -3,16 +3,12 @@ import db from '../models/userModel';
 exports.getAllUserRequests = (req, res) => {
   const userId = req.userInfo.id;
   const sql = {
-    text: 'SELECT * FROM requests WHERE user_id=$1',
+    text: 'SELECT * FROM requests WHERE user_id=$1 ORDER BY id ASC',
     values: [userId],
   };
   db.query(sql, (err, result) => {
     res.status(200)
       .set('Access-Control-Allow-Origin', '*')
-      .set('Access-Control-Allow-Credentials', 'true')
-      .set('Access-Control-Allow-Methods', 'POST, GET, OPTIONS, DELETE')
-      .set('Access-Control-Max-Age', '3600')
-      .set('Access-Control-Allow-Headers', 'Content-Type, Accept, X-Requested-With, remember-me')
       .json({
         user: req.userInfo,
         result: result.rows,
@@ -24,7 +20,7 @@ exports.getSingleRequest = (req, res) => {
   const userId = req.userInfo.id;
   const id = parseInt(req.params.requestId, 10);
   const sql = {
-    text: 'SELECT * FROM requests WHERE id=$1 AND user_id=$2',
+    text: 'SELECT * FROM requests WHERE id=$1 AND user_id=$2 ORDER BY id ASC',
     values: [id, userId],
   };
   db.query(sql, (err, result) => {
@@ -181,7 +177,7 @@ exports.approveRequest = (req, res) => {
     // }
     if (result.rowCount === 1) {
       const sql = {
-        text: 'SELECT * FROM requests WHERE id=$1',
+        text: 'SELECT * FROM requests WHERE id=$1 ORDER BY id ASC',
         values: [id],
       };
       db.query(sql, (err, result) => {
@@ -220,7 +216,7 @@ exports.disapproveRequest = (req, res) => {
     // }
     if (result.rowCount === 1) {
       const sql = {
-        text: 'SELECT * FROM requests WHERE id=$1',
+        text: 'SELECT * FROM requests WHERE id=$1 ORDER BY id ASC',
         values: [id],
       };
       db.query(sql, (err, result) => {
@@ -259,7 +255,7 @@ exports.resolveRequest = (req, res) => {
     // }
     if (result.rowCount === 1) {
       const sql = {
-        text: 'SELECT * FROM requests WHERE id=$1',
+        text: 'SELECT * FROM requests WHERE id=$1 ORDER BY id ASC',
         values: [id],
       };
       db.query(sql, (err, result) => {

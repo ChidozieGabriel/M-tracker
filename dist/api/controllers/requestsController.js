@@ -9,11 +9,11 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 exports.getAllUserRequests = function (req, res) {
   var userId = req.userInfo.id;
   var sql = {
-    text: 'SELECT * FROM requests WHERE user_id=$1',
+    text: 'SELECT * FROM requests WHERE user_id=$1 ORDER BY id ASC',
     values: [userId]
   };
   _userModel2.default.query(sql, function (err, result) {
-    res.status(200).set('Access-Control-Allow-Origin', '*').set('Access-Control-Allow-Credentials', 'true').set('Access-Control-Allow-Methods', 'POST, GET, OPTIONS, DELETE').set('Access-Control-Max-Age', '3600').set('Access-Control-Allow-Headers', 'Content-Type, Accept, X-Requested-With, remember-me').json({
+    res.status(200).set('Access-Control-Allow-Origin', '*').json({
       user: req.userInfo,
       result: result.rows
     });
@@ -24,7 +24,7 @@ exports.getSingleRequest = function (req, res) {
   var userId = req.userInfo.id;
   var id = parseInt(req.params.requestId, 10);
   var sql = {
-    text: 'SELECT * FROM requests WHERE id=$1 AND user_id=$2',
+    text: 'SELECT * FROM requests WHERE id=$1 AND user_id=$2 ORDER BY id ASC',
     values: [id, userId]
   };
   _userModel2.default.query(sql, function (err, result) {
@@ -168,7 +168,7 @@ exports.approveRequest = function (req, res) {
     // }
     if (result.rowCount === 1) {
       var sql = {
-        text: 'SELECT * FROM requests WHERE id=$1',
+        text: 'SELECT * FROM requests WHERE id=$1 ORDER BY id ASC',
         values: [id]
       };
       _userModel2.default.query(sql, function (err, result) {
@@ -204,7 +204,7 @@ exports.disapproveRequest = function (req, res) {
     // }
     if (result.rowCount === 1) {
       var sql = {
-        text: 'SELECT * FROM requests WHERE id=$1',
+        text: 'SELECT * FROM requests WHERE id=$1 ORDER BY id ASC',
         values: [id]
       };
       _userModel2.default.query(sql, function (err, result) {
@@ -240,7 +240,7 @@ exports.resolveRequest = function (req, res) {
     // }
     if (result.rowCount === 1) {
       var sql = {
-        text: 'SELECT * FROM requests WHERE id=$1',
+        text: 'SELECT * FROM requests WHERE id=$1 ORDER BY id ASC',
         values: [id]
       };
       _userModel2.default.query(sql, function (err, result) {
