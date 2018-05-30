@@ -12,28 +12,11 @@
     <nav class="nav-bar">
         <ul>
             <li><a class="btn btn-default" href="../index.html">Logout</a></li>
+            <li><a class="btn btn-default" href="create-request.html">Create Request</a></li>
         </ul>
     </nav>
 </header>
 <div class="wrapper">
-    <h3>Create new request</h3>
-    <form>
-        <div class="input-group">
-            <!--<label for='name'>Name: </label>-->
-            <input type="text" id="name" name="name" placeholder="Enter your name" autofocus/>
-            <!--<label for="email">E-mail: </label>-->
-            <input type="email" id="email" name="email" placeholder="Enter your email"/>
-            <!--<label for="dept">Department: </label>-->
-            <input type="text" id="dept" name="dept" placeholder="Enter the department"/><br>
-            <!--<label for="request">Request: </label>-->
-            <textarea rows="5" id="request" name="request"
-                      placeholder="Write the details of the request"></textarea>
-        </div>
-        <div class="input-group">
-            <input type="submit" class="btn btn-default" name="submit" value="Submit request"/>
-        </div>
-    </form>
-
     <section class="list">
         <div class="list-header">
             <h3>My requests</h3>
@@ -46,38 +29,35 @@
                 <option value='4'>Most recent</option>
             </select>
         </div>
-        <ul class="requests">
-            <li>
-                <a href="user-view-details.html" title="Click to view details">
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus error sint doloremque
-                        laborum excepturi! Nemo recusandae, quod error corrupti modi.
-                    </p>
-                    <span class="request-date">3 days ago</span>
-                    <span class="label label-approved">Approved</span>
-                </a>
-            </li>
 
-            <li>
-                <a href="user-view-details.html" title="Click to view details">
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus error sint doloremque
-                        laborum excepturi! Nemo recusandae, quod error corrupti modi.
-                    </p>
-                    <span class="request-date">2 days ago</span>
-                    <span class="label label-approved">Approved</span>
-                </a>
-            </li>
-
-
-            <li>
-                <a href="user-view-details.html" title="Click to view details">
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus error sint doloremque
-                        laborum excepturi! Nemo recusandae, quod error corrupti modi.
-                    </p>
-                    <span class="request-date">3 days ago</span>
-                    <span class="label label-resolved">Resolved</span>
-                </a>
-            </li>
-        </ul>
+        <div class="table-res">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>S/N</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Status</th>
+                    <th>Dept</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>1</td>
+                    <td>Doe</td>
+                    <td>john@example.com</td>
+                    <td><span class="label label-approved tableClear">Approved</span></td>
+                    <td>Engineering</td>
+                    <td>
+                        <a href="user-view-details.html" class="btn-sm btn-primary">View</a>
+                        <a href="edit-request.html" class="btn-sm btn-edit">Edit</a>
+                        <a href="#" class="btn-sm btn-delete">Delete</a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
 
         <ul class="pagination">
             <li class="active"><a href="#">1</a></li>
