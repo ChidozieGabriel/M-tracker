@@ -71,9 +71,9 @@ $ npm test
 
 ## Built With
 
-* [NodeJS](http://www.dropwizard.io/1.0.2/docs/) - The Environment used
-* [PostgreSQL](https://maven.apache.org/) - Database Used
-* [ExpressJS](https://rometools.github.io/rome/) - Library used
+* [NodeJS](http://nodejs.org) - Environment used
+* [PostgreSQL](https://www.postgresql.org/) - Database used
+* [ExpressJS](http://expressjs.com/) - Framework used
 
 ## Authors
 
