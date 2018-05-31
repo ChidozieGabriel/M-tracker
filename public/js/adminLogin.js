@@ -1,7 +1,8 @@
 const login = document.getElementById('login');
+const alertBox = document.getElementById('alert-box');
+
 
 login.addEventListener('submit', (e) => {
-
   e.preventDefault();
   const url = '/api/v1/auth/login';
   const payload = {
@@ -20,14 +21,13 @@ login.addEventListener('submit', (e) => {
   })
     .then(res => res.json())
     .then((data) => {
-      localStorage.setItem('token', JSON.stringify(data.token));
-
-      const token = JSON.parse(localStorage.getItem('token'));
-
-      if (token) {
+      if (data.error) {
+        alertBox.style.display = 'block';
+        alertBox.innerHTML = `<p> ${data.error} </p>`;
+      }
+      if (data.auth) {
+        sessionStorage.setItem('token', JSON.stringify(data));
         window.location.href = 'admin.html';
-      } else {
-        document.getElementById('alert').innerHTML = 'Authentication failed';
       }
     })
     .catch(error => console.error(`Error: ${error}`));

@@ -33,7 +33,7 @@ exports.signUp = function (req, res) {
     }
     if (result.rows.length > 0) {
       return res.status(409).json({
-        message: 'Email already exists'
+        error: 'Email already exists'
       });
     }
     _bcrypt2.default.hash(password, 10, function (err, hash) {
@@ -64,6 +64,7 @@ exports.signUp = function (req, res) {
           });
           res.set('Access-Control-Allow-Origin', '*');
           res.status(201).json({
+            auth: true,
             token: token
           }).end();
         }
@@ -104,15 +105,14 @@ exports.login = function (req, res) {
           });
           res.set('Access-Control-Allow-Origin', '*');
           res.status(200).json({
+            auth: true,
             token: token
           }).end();
         }
       });
     } else {
       res.status(401).json({
-        error: 'Login Authentication Failed',
-        email: email,
-        password: password
+        error: 'Login Authentication Failed'
       }).end();
     }
   });

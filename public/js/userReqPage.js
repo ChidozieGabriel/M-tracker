@@ -1,16 +1,50 @@
 const urlString = window.location.href;
 const url = new URL(urlString);
 const param = url.searchParams.get('id');
-const token = JSON.parse(localStorage.getItem('token'));
+const token = JSON.parse(sessionStorage.getItem('token'));
 const apiUrl = `/api/v1/users/requests/${param}`;
+const apiUrl2 = '/api/v1/users/requests';
 const reqDetails = document.getElementById('user-details');
 const reqBtn = document.getElementById('edit-btn');
+const alertBox = document.getElementById('alert-box');
 
 const myHeaders = new Headers({
-  Authorization: `Bearer ${token}`,
+  Authorization: `Bearer ${token.token}`,
 });
 
-if (token) {
+if (token && token.auth) {
+  fetch(apiUrl2, {
+    headers: myHeaders,
+  })
+    .then(res => res.json())
+    .then((data) => {
+      // console.log(data);
+      if (data.error) {
+        alertBox.innerHTML = `
+    <header>
+        <a class="brand" href="#">M-Tracker</a>
+        <nav class="nav-bar">
+            <ul>
+                <li><a class="btn btn-default" href="../sign-in.html">Log in</a></li>
+            </ul>
+        </nav>
+    </header>
+    <div class="wrapper" style="margin-top: 200px">
+        <div class="alert" id="alert-message">
+            <p>
+                Oops! Sorry, Your session has ended, therefore You are not Authorized to view this page, <strong>kindly log in!</strong>
+            </p>
+        </div>
+    </div>
+    <footer>
+        <p>&copy;2018 VeeqTor</p>
+    </footer>
+      `;
+        document.getElementById('alert-message').style.display = 'block';
+      }
+    })
+    .catch(error => error);
+
   fetch(apiUrl, {
     headers: myHeaders,
   })
@@ -34,10 +68,26 @@ if (token) {
       reqDetails.innerHTML = output;
     });
 } else {
-  document.getElementById('alert').innerHTML = `
-      <p>
-            Oops!! You do not have access to this page!!
-      </p>
+  alertBox.innerHTML = `
+    <header>
+        <a class="brand" href="#">M-Tracker</a>
+        <nav class="nav-bar">
+            <ul>
+                <li><a class="btn btn-default" href="../sign-in.html">Log in</a></li>
+            </ul>
+        </nav>
+    </header>
+    <div class="wrapper" style="margin-top: 200px">
+        <div class="alert" id="alert-message">
+            <p>
+                Oops! Sorry, You do not have access to this page!!
+            </p>
+        </div>
+    </div>
+    <footer>
+        <p>&copy;2018 VeeqTor</p>
+    </footer>
       `;
+  document.getElementById('alert-message').style.display = 'block';
 }
 

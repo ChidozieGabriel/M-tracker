@@ -11,14 +11,15 @@
     <h2 class="title">User Log in</h2>
     <div class="form-inner">
         <form id="login" method="post" action="javascript:void(0)">
-            <span id="alert"></span>
+            <div class="alert" id="alert-box"></div>
+
             <div class="input-group">
                 <!--<label for="email">E-Mail</label>-->
-                <input type="email" id="email" name="email" placeholder="Enter your email">
+                <input type="email" id="email" name="email" placeholder="Enter your email" required>
             </div>
             <div class="input-group">
                 <!--<label for="password">Password</label>-->
-                <input type="password" id="password" name="password" placeholder="Enter your password">
+                <input type="password" id="password" name="password" placeholder="Enter your password" required>
             </div>
             <div class="input-group">
                 <input type="submit" class="btn btn-default" value="Log in">

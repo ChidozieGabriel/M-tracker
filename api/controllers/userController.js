@@ -22,7 +22,7 @@ exports.signUp = (req, res) => {
     if (result.rows.length > 0) {
       return res.status(409)
         .json({
-          message: 'Email already exists',
+          error: 'Email already exists',
         });
     }
     bcrypt.hash(password, 10, (err, hash) => {
@@ -56,6 +56,7 @@ exports.signUp = (req, res) => {
           res.set('Access-Control-Allow-Origin', '*');
           res.status(201)
             .json({
+              auth: true,
               token,
             })
             .end();
@@ -97,6 +98,7 @@ exports.login = (req, res) => {
           res.set('Access-Control-Allow-Origin', '*');
           res.status(200)
             .json({
+              auth: true,
               token,
             })
             .end();
@@ -106,8 +108,6 @@ exports.login = (req, res) => {
       res.status(401)
         .json({
           error: 'Login Authentication Failed',
-          email,
-          password,
         })
         .end();
     }

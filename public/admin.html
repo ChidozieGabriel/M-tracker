@@ -7,54 +7,57 @@
     <link rel="stylesheet" type="text/css" href="css/style.css">
 </head>
 <body>
-<header>
-    <a class="brand" href="#">M-Tracker</a>
-    <nav class="nav-bar">
-        <ul>
-            <li><a class="btn btn-default" href="index.html">Logout</a></li>
-        </ul>
-    </nav>
-</header>
-<div class="wrapper">
-    <section class="list">
-        <div class="list-header">
-            <h3>All requests</h3>
-            <label for="filter">Filter By:</label>
-            <select id="filter" name="filter">
-                <option value='1'>Approved</option>
-                <option value='2'>Disapproved</option>
-                <option value='3'>Resolved</option>
-                <option value='4'>Pending</option>
-                <option value='4'>Most recent</option>
-            </select>
-        </div>
+<div id="alert-box">
+    <header>
+        <a class="brand" href="index.html">M-Tracker</a>
+        <nav class="nav-bar">
+            <ul>
+                <li><a class="btn btn-default" id="logout" href="javascript:void(0)">Logout</a></li>
+            </ul>
+        </nav>
+    </header>
+    <div class="wrapper">
+        <section class="list">
+            <div class="list-header">
+                <h3>All requests</h3>
+                <label for="filter">Filter By:</label>
+                <select id="filter" name="filter">
+                    <option value='1'>Approved</option>
+                    <option value='2'>Disapproved</option>
+                    <option value='3'>Resolved</option>
+                    <option value='4'>Pending</option>
+                    <option value='4'>Most recent</option>
+                </select>
+            </div>
 
-        <div class="table-res">
-            <table class="table">
-                <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Email</th>
-                    <th>Status</th>
-                    <th>Date</th>
-                    <th>Request</th>
-                    <th></th>
-                </tr>
-                </thead>
-                <tbody id="adminRequests"></tbody>
-            </table>
-        </div>
+            <div class="table-res">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Status</th>
+                        <th>Date</th>
+                        <th>Request</th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody id="adminRequests"></tbody>
+                </table>
+            </div>
 
-        <ul class="pagination">
-            <li class="active"><a href="#">1</a></li>
-            <li><a href="#">2</a></li>
-            <li><a href="#">3</a></li>
-        </ul>
-    </section>
-</div> <!--End of wrapper-->
-<footer>
-    <p>&copy;2018 VeeqTor</p>
-</footer>
+            <ul class="pagination">
+                <li class="active"><a href="#">1</a></li>
+                <li><a href="#">2</a></li>
+                <li><a href="#">3</a></li>
+            </ul>
+        </section>
+    </div> <!--End of wrapper-->
+    <footer>
+        <p>&copy;2018 VeeqTor</p>
+    </footer>
+</div>
 <script src="js/adminPage.js"></script>
+<script src="js/logout.js"></script>
 </body>
 </html>

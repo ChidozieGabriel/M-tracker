@@ -1,18 +1,17 @@
 'use strict';
 
 var requests = document.getElementById('adminRequests');
-var token = JSON.parse(localStorage.getItem('token'));
+var token = JSON.parse(sessionStorage.getItem('token'));
+var alertBox = document.getElementById('alert-box');
 var apiUrl = '/api/v1/requests/';
 
-if (token) {
+if (token && token.auth) {
   var approve = function approve(requestId) {
     var res = confirm('ARE YOU SURE?');
     if (res) {
       fetch('api/v1/requests/' + requestId + '/approve', {
         method: 'PUT',
-        headers: new Headers({
-          Authorization: 'Bearer ' + token
-        })
+        headers: myHeader
       }).then(function (resp) {
         return resp.json();
       }).then(function (data) {
@@ -28,9 +27,7 @@ if (token) {
     if (res) {
       fetch('api/v1/requests/' + requestId + '/disapprove', {
         method: 'PUT',
-        headers: new Headers({
-          Authorization: 'Bearer ' + token
-        })
+        headers: myHeader
       }).then(function (resp) {
         return resp.json();
       }).then(function (data) {
@@ -46,9 +43,7 @@ if (token) {
     if (res) {
       fetch('api/v1/requests/' + requestId + '/resolve', {
         method: 'PUT',
-        headers: new Headers({
-          Authorization: 'Bearer ' + token
-        })
+        headers: myHeader
       }).then(function (resp) {
         return resp.json();
       }).then(function (data) {
@@ -59,10 +54,11 @@ if (token) {
     }
   };
 
+  var myHeader = new Headers({
+    Authorization: 'Bearer ' + token.token
+  });
   fetch(apiUrl, {
-    headers: new Headers({
-      Authorization: 'Bearer ' + token
-    })
+    headers: myHeader
   }).then(function (res) {
     return res.json();
   }).then(function (data) {
@@ -72,9 +68,11 @@ if (token) {
     });
     requests.innerHTML = output;
   }).catch(function (error) {
-    return console.error(error);
+    alertBox.innerHTML = '\n    <header>\n        <a class="brand" href="#">M-Tracker</a>\n        <nav class="nav-bar">\n            <ul>\n                <li><a class="btn btn-default" href="../sign-in.html">Log in</a></li>\n            </ul>\n        </nav>\n    </header>\n    <div class="wrapper" style="margin-top: 200px">\n        <div class="alert" id="alert-message">\n            <p>\n                Oops! Sorry, Your session has ended, therefore You are not Authorized to view this page, <strong>kindly log in</strong>!!\n                <br>OR<br>\n                You are not an <strong>Admin.</strong>\n            </p>\n        </div>\n    </div>\n    <footer>\n        <p>&copy;2018 VeeqTor</p>\n    </footer>\n      ';
+    document.getElementById('alert-message').style.display = 'block';
   });
 } else {
-  document.getElementById('alert').innerHTML = '\n      <p>\n            Oops!! You do not have access to this page!!\n      </p>\n      ';
+  alertBox.innerHTML = '\n    <header>\n        <a class="brand" href="#">M-Tracker</a>\n        <nav class="nav-bar">\n            <ul>\n                <li><a class="btn btn-default" href="../sign-in.html">Log in</a></li>\n            </ul>\n        </nav>\n    </header>\n    <div class="wrapper" style="margin-top: 200px">\n        <div class="alert" id="alert-message">\n            <p>\n                Oops! Sorry, You do not have access to this page!!\n            </p>\n        </div>\n    </div>\n    <footer>\n        <p>&copy;2018 VeeqTor</p>\n    </footer>\n      ';
+  document.getElementById('alert-message').style.display = 'block';
 }
 //# sourceMappingURL=adminPage.js.map

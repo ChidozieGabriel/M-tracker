@@ -1,9 +1,9 @@
 'use strict';
 
 var login = document.getElementById('login');
+var alertBox = document.getElementById('alert-box');
 
 login.addEventListener('submit', function (e) {
-
   e.preventDefault();
   var url = '/api/v1/auth/login';
   var payload = {
@@ -22,14 +22,13 @@ login.addEventListener('submit', function (e) {
   }).then(function (res) {
     return res.json();
   }).then(function (data) {
-    localStorage.setItem('token', JSON.stringify(data.token));
-
-    var token = JSON.parse(localStorage.getItem('token'));
-
-    if (token) {
+    if (data.error) {
+      alertBox.style.display = 'block';
+      alertBox.innerHTML = '<p> ' + data.error + ' </p>';
+    }
+    if (data.auth) {
+      sessionStorage.setItem('token', JSON.stringify(data));
       window.location.href = 'admin.html';
-    } else {
-      document.getElementById('alert').innerHTML = 'Authentication failed';
     }
   }).catch(function (error) {
     return console.error('Error: ' + error);

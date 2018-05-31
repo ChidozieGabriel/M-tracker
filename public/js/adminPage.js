@@ -1,12 +1,14 @@
 const requests = document.getElementById('adminRequests');
-const token = JSON.parse(localStorage.getItem('token'));
+const token = JSON.parse(sessionStorage.getItem('token'));
+const alertBox = document.getElementById('alert-box');
 const apiUrl = '/api/v1/requests/';
 
-if (token) {
+if (token && token.auth) {
+  const myHeader = new Headers({
+    Authorization: `Bearer ${token.token}`,
+  });
   fetch(apiUrl, {
-    headers: new Headers({
-      Authorization: `Bearer ${token}`,
-    }),
+    headers: myHeader,
   })
     .then(res => res.json())
     .then((data) => {
@@ -29,16 +31,38 @@ if (token) {
       });
       requests.innerHTML = output;
     })
-    .catch(error => console.error(error));
+    .catch((error) => {
+      alertBox.innerHTML = `
+    <header>
+        <a class="brand" href="#">M-Tracker</a>
+        <nav class="nav-bar">
+            <ul>
+                <li><a class="btn btn-default" href="../sign-in.html">Log in</a></li>
+            </ul>
+        </nav>
+    </header>
+    <div class="wrapper" style="margin-top: 200px">
+        <div class="alert" id="alert-message">
+            <p>
+                Oops! Sorry, Your session has ended, therefore You are not Authorized to view this page, <strong>kindly log in</strong>!!
+                <br>OR<br>
+                You are not an <strong>Admin.</strong>
+            </p>
+        </div>
+    </div>
+    <footer>
+        <p>&copy;2018 VeeqTor</p>
+    </footer>
+      `;
+      document.getElementById('alert-message').style.display = 'block';
+    });
 
   function approve(requestId) {
     const res = confirm('ARE YOU SURE?');
     if (res) {
       fetch(`api/v1/requests/${requestId}/approve`, {
         method: 'PUT',
-        headers: new Headers({
-          Authorization: `Bearer ${token}`,
-        }),
+        headers: myHeader,
       })
         .then(resp => resp.json())
         .then((data) => {
@@ -54,9 +78,7 @@ if (token) {
     if (res) {
       fetch(`api/v1/requests/${requestId}/disapprove`, {
         method: 'PUT',
-        headers: new Headers({
-          Authorization: `Bearer ${token}`,
-        }),
+        headers: myHeader,
       })
         .then(resp => resp.json())
         .then((data) => {
@@ -72,9 +94,7 @@ if (token) {
     if (res) {
       fetch(`api/v1/requests/${requestId}/resolve`, {
         method: 'PUT',
-        headers: new Headers({
-          Authorization: `Bearer ${token}`,
-        }),
+        headers: myHeader,
       })
         .then(resp => resp.json())
         .then((data) => {
@@ -85,9 +105,25 @@ if (token) {
     }
   }
 } else {
-  document.getElementById('alert').innerHTML = `
-      <p>
-            Oops!! You do not have access to this page!!
-      </p>
+  alertBox.innerHTML = `
+    <header>
+        <a class="brand" href="#">M-Tracker</a>
+        <nav class="nav-bar">
+            <ul>
+                <li><a class="btn btn-default" href="../sign-in.html">Log in</a></li>
+            </ul>
+        </nav>
+    </header>
+    <div class="wrapper" style="margin-top: 200px">
+        <div class="alert" id="alert-message">
+            <p>
+                Oops! Sorry, You do not have access to this page!!
+            </p>
+        </div>
+    </div>
+    <footer>
+        <p>&copy;2018 VeeqTor</p>
+    </footer>
       `;
+  document.getElementById('alert-message').style.display = 'block';
 }
