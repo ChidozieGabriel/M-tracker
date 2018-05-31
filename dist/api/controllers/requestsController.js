@@ -6,6 +6,11 @@ var _userModel2 = _interopRequireDefault(_userModel);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+var validateEmail = function validateEmail(email) {
+  var re = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/;
+  return re.test(email);
+};
+
 exports.getAllUserRequests = function (req, res) {
   var userId = req.userInfo.id;
   var sql = {
@@ -45,6 +50,23 @@ exports.getSingleRequest = function (req, res) {
 };
 
 exports.createRequest = function (req, res) {
+  if (req.body.name === '' || typeof req.body.name !== 'string') {
+    return res.status(400).json({
+      error: 'Name is required and must be a string value'
+    });
+  } else if (req.body.dept === '' || typeof req.body.dept !== 'string') {
+    return res.status(400).json({
+      error: 'Department is required and must be a string value'
+    });
+  } else if (req.body.email === '' || !validateEmail(req.body.email)) {
+    return res.status(400).json({
+      error: 'A valid email is required'
+    });
+  } else if (req.body.request === '' || req.body.request.length >= 200 || req.body.request.length <= 10) {
+    return res.status(400).json({
+      error: 'Request cannot be more than 200 characters'
+    });
+  }
   var userId = req.userInfo.id;
   var query = {
     text: 'INSERT INTO requests(user_id, requester_name, requester_email, date, status, request, dept) VALUES($1, $2, $3, NOW() ,$4, $5, $6)',
