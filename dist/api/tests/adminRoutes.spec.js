@@ -18,17 +18,14 @@ var _server2 = _interopRequireDefault(_server);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var server = _supertest2.default.agent(_server2.default);
+var Expect = _chai2.default.expect;
 
 // import { Pool } from 'pg';
 
 // import db from '../models/userModel';
 
-var Expect = _chai2.default.expect;
-
 _chai2.default.use(_chaiHttp2.default);
 
-// let token = null;
 global.tok = null;
 before(function (done) {
   _chai2.default.request(_server2.default).post('/api/v1/auth/login').send({
@@ -40,16 +37,6 @@ before(function (done) {
   });
 });
 
-// afterEach((done) => {
-//   pool.query('DROP DATABASE "testRunning"', (err, results) => {
-//     if (err) {
-//       return err;
-//     }
-//     pool.end();
-//   });
-//   return done();
-// });
-
 describe('ADMIN ROUTES', function () {
   it('Should list ALL requests', function (done) {
     _chai2.default.request(_server2.default).get('/api/v1/requests/').set({ Authorization: 'Bearer ' + global.tok }).end(function (err, res) {
@@ -59,14 +46,14 @@ describe('ADMIN ROUTES', function () {
     done();
   });
 
-  it('Should list approve a request', function (done) {
+  it('Should approve a request', function (done) {
     _chai2.default.request(_server2.default).put('/api/v1/requests/1/approve').set({ Authorization: 'Bearer ' + global.tok }).end(function (err, res) {
       Expect(res.statusCode).to.equal(200);
     });
     done();
   });
 
-  it('Should list Disapprove a request', function (done) {
+  it('Should Disapprove a request', function (done) {
     _chai2.default.request(_server2.default).put('/api/v1/requests/1/disapprove').set({ Authorization: 'Bearer ' + global.tok }).end(function (err, res) {
       Expect(res.statusCode).to.equal(200);
     });
