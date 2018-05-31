@@ -24,13 +24,13 @@ exports.getSingleRequest = (req, res) => {
     values: [id, userId],
   };
   db.query(sql, (err, result) => {
-    // if (err) {
-    //   return res.status(500)
-    //     .json({
-    //       error: err,
-    //     })
-    //     .end();
-    // }
+    if (err) {
+      return res.status(500)
+        .json({
+          error: err,
+        })
+        .end();
+    }
     if (result.rows.length > 0) {
       return res.status(200)
         .json({
@@ -51,12 +51,12 @@ exports.createRequest = (req, res) => {
     values: [userId, req.body.name, req.body.email, 'pending', req.body.request, req.body.dept],
   };
   db.query(query, (err, result) => {
-    // if (err) {
-    //   return res.status(500)
-    //     .json({
-    //       err,
-    //     });
-    // }
+    if (err) {
+      return res.status(500)
+        .json({
+          err,
+        });
+    }
     res.status(201)
       .json({
         message: 'Request Created successfully',
@@ -116,12 +116,12 @@ exports.deleteRequest = (req, res) => {
     values: [id],
   };
   db.query(query, (err, result) => {
-    // if (err) {
-    //   return res.status(500)
-    //     .json({
-    //       err,
-    //     });
-    // }
+    if (err) {
+      return res.status(500)
+        .json({
+          err,
+        });
+    }
     if (result.rowCount === 0) {
       return res.status(404)
         .json({
@@ -138,19 +138,17 @@ exports.deleteRequest = (req, res) => {
 
 // Admin Controllers
 exports.getAllRequests = (req, res) => {
-  // const userId = req.userInfo.id;
   const sql = {
     text: 'SELECT * FROM requests ORDER BY id ASC',
   };
   db.query(sql, (err, result) => {
-    // if (err) {
-    //   return res.status(500)
-    //     .json({
-    //       err,
-    //     })
-    //     .end();
-    // }
-    // res.set('Access-Control-Allow-Origin', '*');
+    if (err) {
+      return res.status(500)
+        .json({
+          err,
+        })
+        .end();
+    }
     res.status(200)
       .set('Access-Control-Allow-Origin', '*')
       .json({
@@ -161,20 +159,18 @@ exports.getAllRequests = (req, res) => {
 };
 
 exports.approveRequest = (req, res) => {
-  const userId = req.userInfo.id;
   const id = parseInt(req.params.requestId, 10);
   const query = {
     text: 'UPDATE requests SET status=$1 WHERE id=$2',
     values: ['approved', id],
   };
-
   db.query(query, (err, result) => {
-    // if (err) {
-    //   return res.status(500)
-    //     .json({
-    //       err,
-    //     });
-    // }
+    if (err) {
+      return res.status(500)
+        .json({
+          err,
+        });
+    }
     if (result.rowCount === 1) {
       const sql = {
         text: 'SELECT * FROM requests WHERE id=$1 ORDER BY id ASC',
@@ -200,20 +196,18 @@ exports.approveRequest = (req, res) => {
 };
 
 exports.disapproveRequest = (req, res) => {
-  const userId = req.userInfo.id;
   const id = parseInt(req.params.requestId, 10);
   const query = {
     text: 'UPDATE requests SET status=$1 WHERE id=$2',
     values: ['disapproved', id],
   };
-
   db.query(query, (err, result) => {
-    // if (err) {
-    //   return res.status(500)
-    //     .json({
-    //       err,
-    //     });
-    // }
+    if (err) {
+      return res.status(500)
+        .json({
+          err,
+        });
+    }
     if (result.rowCount === 1) {
       const sql = {
         text: 'SELECT * FROM requests WHERE id=$1 ORDER BY id ASC',
@@ -239,20 +233,18 @@ exports.disapproveRequest = (req, res) => {
 };
 
 exports.resolveRequest = (req, res) => {
-  const userId = req.userInfo.id;
   const id = parseInt(req.params.requestId, 10);
   const query = {
     text: 'UPDATE requests SET status=$1 WHERE id=$2',
     values: ['resolved', id],
   };
-
   db.query(query, (err, result) => {
-    // if (err) {
-    //   return res.status(500)
-    //     .json({
-    //       err,
-    //     });
-    // }
+    if (err) {
+      return res.status(500)
+        .json({
+          err,
+        });
+    }
     if (result.rowCount === 1) {
       const sql = {
         text: 'SELECT * FROM requests WHERE id=$1 ORDER BY id ASC',

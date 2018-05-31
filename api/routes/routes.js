@@ -17,8 +17,6 @@ import verifyToken from '../middleware/verifyToken';
 import userAuth from '../middleware/userAuth';
 import isAdmin from '../middleware/isAdmin';
 
-// import userAuth from '../middleware/userAuth';
-
 const router = express.Router();
 
 router.get('/users/requests', verifyToken, userAuth, getAllUserRequests);

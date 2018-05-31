@@ -16,13 +16,13 @@ var _supertest = require('supertest');
 
 var _supertest2 = _interopRequireDefault(_supertest);
 
-var _app = require('../../app');
+var _server = require('../../server');
 
-var _app2 = _interopRequireDefault(_app);
+var _server2 = _interopRequireDefault(_server);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var server = _supertest2.default.agent(_app2.default);
+var server = _supertest2.default.agent(_server2.default);
 
 var Expect = _chai2.default.expect;
 

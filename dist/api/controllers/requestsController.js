@@ -28,13 +28,11 @@ exports.getSingleRequest = function (req, res) {
     values: [id, userId]
   };
   _userModel2.default.query(sql, function (err, result) {
-    // if (err) {
-    //   return res.status(500)
-    //     .json({
-    //       error: err,
-    //     })
-    //     .end();
-    // }
+    if (err) {
+      return res.status(500).json({
+        error: err
+      }).end();
+    }
     if (result.rows.length > 0) {
       return res.status(200).json({
         result: result.rows
@@ -53,12 +51,11 @@ exports.createRequest = function (req, res) {
     values: [userId, req.body.name, req.body.email, 'pending', req.body.request, req.body.dept]
   };
   _userModel2.default.query(query, function (err, result) {
-    // if (err) {
-    //   return res.status(500)
-    //     .json({
-    //       err,
-    //     });
-    // }
+    if (err) {
+      return res.status(500).json({
+        err: err
+      });
+    }
     res.status(201).json({
       message: 'Request Created successfully'
     });
@@ -112,12 +109,11 @@ exports.deleteRequest = function (req, res) {
     values: [id]
   };
   _userModel2.default.query(query, function (err, result) {
-    // if (err) {
-    //   return res.status(500)
-    //     .json({
-    //       err,
-    //     });
-    // }
+    if (err) {
+      return res.status(500).json({
+        err: err
+      });
+    }
     if (result.rowCount === 0) {
       return res.status(404).json({
         message: 'Request Not found'
@@ -131,19 +127,15 @@ exports.deleteRequest = function (req, res) {
 
 // Admin Controllers
 exports.getAllRequests = function (req, res) {
-  // const userId = req.userInfo.id;
   var sql = {
     text: 'SELECT * FROM requests ORDER BY id ASC'
   };
   _userModel2.default.query(sql, function (err, result) {
-    // if (err) {
-    //   return res.status(500)
-    //     .json({
-    //       err,
-    //     })
-    //     .end();
-    // }
-    // res.set('Access-Control-Allow-Origin', '*');
+    if (err) {
+      return res.status(500).json({
+        err: err
+      }).end();
+    }
     res.status(200).set('Access-Control-Allow-Origin', '*').json({
       user: req.userInfo,
       result: result.rows
@@ -152,20 +144,17 @@ exports.getAllRequests = function (req, res) {
 };
 
 exports.approveRequest = function (req, res) {
-  var userId = req.userInfo.id;
   var id = parseInt(req.params.requestId, 10);
   var query = {
     text: 'UPDATE requests SET status=$1 WHERE id=$2',
     values: ['approved', id]
   };
-
   _userModel2.default.query(query, function (err, result) {
-    // if (err) {
-    //   return res.status(500)
-    //     .json({
-    //       err,
-    //     });
-    // }
+    if (err) {
+      return res.status(500).json({
+        err: err
+      });
+    }
     if (result.rowCount === 1) {
       var sql = {
         text: 'SELECT * FROM requests WHERE id=$1 ORDER BY id ASC',
@@ -188,20 +177,17 @@ exports.approveRequest = function (req, res) {
 };
 
 exports.disapproveRequest = function (req, res) {
-  var userId = req.userInfo.id;
   var id = parseInt(req.params.requestId, 10);
   var query = {
     text: 'UPDATE requests SET status=$1 WHERE id=$2',
     values: ['disapproved', id]
   };
-
   _userModel2.default.query(query, function (err, result) {
-    // if (err) {
-    //   return res.status(500)
-    //     .json({
-    //       err,
-    //     });
-    // }
+    if (err) {
+      return res.status(500).json({
+        err: err
+      });
+    }
     if (result.rowCount === 1) {
       var sql = {
         text: 'SELECT * FROM requests WHERE id=$1 ORDER BY id ASC',
@@ -224,20 +210,17 @@ exports.disapproveRequest = function (req, res) {
 };
 
 exports.resolveRequest = function (req, res) {
-  var userId = req.userInfo.id;
   var id = parseInt(req.params.requestId, 10);
   var query = {
     text: 'UPDATE requests SET status=$1 WHERE id=$2',
     values: ['resolved', id]
   };
-
   _userModel2.default.query(query, function (err, result) {
-    // if (err) {
-    //   return res.status(500)
-    //     .json({
-    //       err,
-    //     });
-    // }
+    if (err) {
+      return res.status(500).json({
+        err: err
+      });
+    }
     if (result.rowCount === 1) {
       var sql = {
         text: 'SELECT * FROM requests WHERE id=$1 ORDER BY id ASC',

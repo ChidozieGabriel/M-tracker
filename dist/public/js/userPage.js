@@ -70,7 +70,7 @@ function deleteData(requestId) {
       return resp.json();
     }).then(function (data) {
       if (data.message !== '') {
-        window.location.href = 'user.html?success=true&type=3r';
+        window.location.href = 'user.html?success=true&type=3';
       }
     });
   }

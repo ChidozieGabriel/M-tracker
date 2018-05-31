@@ -12,13 +12,13 @@ var _chaiHttp = require('chai-http');
 
 var _chaiHttp2 = _interopRequireDefault(_chaiHttp);
 
-var _app = require('../../app');
+var _server = require('../../server');
 
-var _app2 = _interopRequireDefault(_app);
+var _server2 = _interopRequireDefault(_server);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var server = _supertest2.default.agent(_app2.default);
+var server = _supertest2.default.agent(_server2.default);
 
 // import { Pool } from 'pg';
 
@@ -31,7 +31,7 @@ _chai2.default.use(_chaiHttp2.default);
 // let token = null;
 global.tok = null;
 before(function (done) {
-  _chai2.default.request(_app2.default).post('/api/v1/auth/login').send({
+  _chai2.default.request(_server2.default).post('/api/v1/auth/login').send({
     email: 'admin@admin.com',
     password: '123456'
   }).end(function (err, res) {
@@ -52,7 +52,7 @@ before(function (done) {
 
 describe('ADMIN ROUTES', function () {
   it('Should list ALL requests', function (done) {
-    _chai2.default.request(_app2.default).get('/api/v1/requests/').set({ Authorization: 'Bearer ' + global.tok }).end(function (err, res) {
+    _chai2.default.request(_server2.default).get('/api/v1/requests/').set({ Authorization: 'Bearer ' + global.tok }).end(function (err, res) {
       Expect(res.statusCode).to.equal(200);
       Expect(res).to.be.an('object');
     });
@@ -60,21 +60,21 @@ describe('ADMIN ROUTES', function () {
   });
 
   it('Should list approve a request', function (done) {
-    _chai2.default.request(_app2.default).put('/api/v1/requests/1/approve').set({ Authorization: 'Bearer ' + global.tok }).end(function (err, res) {
+    _chai2.default.request(_server2.default).put('/api/v1/requests/1/approve').set({ Authorization: 'Bearer ' + global.tok }).end(function (err, res) {
       Expect(res.statusCode).to.equal(200);
     });
     done();
   });
 
   it('Should list Disapprove a request', function (done) {
-    _chai2.default.request(_app2.default).put('/api/v1/requests/1/disapprove').set({ Authorization: 'Bearer ' + global.tok }).end(function (err, res) {
+    _chai2.default.request(_server2.default).put('/api/v1/requests/1/disapprove').set({ Authorization: 'Bearer ' + global.tok }).end(function (err, res) {
       Expect(res.statusCode).to.equal(200);
     });
     done();
   });
 
   it('Should list Resolve a request', function (done) {
-    _chai2.default.request(_app2.default).put('/api/v1/requests/1/resolve').set({ Authorization: 'Bearer ' + global.tok }).end(function (err, res) {
+    _chai2.default.request(_server2.default).put('/api/v1/requests/1/resolve').set({ Authorization: 'Bearer ' + global.tok }).end(function (err, res) {
       Expect(res.statusCode).to.equal(200);
     });
     done();

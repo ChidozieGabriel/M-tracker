@@ -7,7 +7,7 @@ import db from '../models/userModel';
 
 import superTest from 'supertest';
 
-import app from '../../app';
+import app from '../../server';
 
 const server = superTest.agent(app);
 

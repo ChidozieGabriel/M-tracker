@@ -4,10 +4,28 @@ import jwt from 'jsonwebtoken';
 
 import user from '../models/userModel';
 
-
+const validateEmail = (email) => {
+  const re = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/;
+  return re.test(email);
+};
 exports.signUp = (req, res) => {
   const { name, email, password } = req.body;
-
+  if (name === '' || typeof name !== 'string') {
+    return res.status(400)
+      .json({
+        error: 'Name is required and must be a string value',
+      });
+  } else if (email === '' || !validateEmail(email)) {
+    return res.status(400)
+      .json({
+        error: 'A valid email is required',
+      });
+  } else if (password === '' || password.length >= 8 || password.length <= 4) {
+    return res.status(400)
+      .json({
+        error: 'Password is required and must be less than 8 characters or greater than 4 characters',
+      });
+  }
   const sql = {
     text: 'SELECT * FROM users WHERE email= $1',
     values: [email],
@@ -32,7 +50,6 @@ exports.signUp = (req, res) => {
             err,
           });
       }
-      // const password = hash;
       const query = {
         text: 'INSERT INTO users(email, name, password, admin) VALUES($1, $2, $3, $4 ) RETURNING id',
         values: [email, name, hash, false],
@@ -45,7 +62,6 @@ exports.signUp = (req, res) => {
             });
         }
         if (result.rowCount === 1) {
-          // Create token
           const token = jwt.sign({
             id: result.rows[0].id,
             email,
@@ -53,7 +69,6 @@ exports.signUp = (req, res) => {
           }, process.env.JWT_KEY, {
             expiresIn: '1hr',
           });
-          res.set('Access-Control-Allow-Origin', '*');
           res.status(201)
             .json({
               auth: true,
@@ -66,14 +81,24 @@ exports.signUp = (req, res) => {
   });
 };
 
+
 exports.login = (req, res) => {
   const { email, password } = req.body;
-
+  if (email === '' || !validateEmail(email)) {
+    return res.status(400)
+      .json({
+        error: 'A valid email is required',
+      });
+  } else if (password === '' || password.length >= 8 || password.length <= 4) {
+    return res.status(400)
+      .json({
+        error: 'Password is required and must be less than 8 characters or greater than 4 characters',
+      });
+  }
   const sql = {
     text: 'SELECT * FROM users WHERE email= $1',
     values: [email],
   };
-
   user.query(sql, (err, result) => {
     if (err) {
       return res.status(500)
@@ -82,11 +107,10 @@ exports.login = (req, res) => {
         })
         .end();
     }
-    // res.json(result.rows.length);
     if (result && result.rows.length === 1) {
-      bcrypt.compare(password, result.rows[0].password, (err, match) => {
+      bcrypt.compare(password, result.rows[0].password, (error, match) => {
+        if (error) throw error;
         if (match) {
-          // Create token
           const token = jwt.sign({
             id: result.rows[0].id,
             email: result.rows[0].email,
@@ -95,11 +119,16 @@ exports.login = (req, res) => {
           }, process.env.JWT_KEY, {
             expiresIn: '1h',
           });
-          res.set('Access-Control-Allow-Origin', '*');
           res.status(200)
             .json({
               auth: true,
               token,
+            })
+            .end();
+        } else {
+          res.status(401)
+            .json({
+              error: 'Login Authentication failed',
             })
             .end();
         }

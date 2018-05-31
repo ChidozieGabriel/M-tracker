@@ -63,7 +63,11 @@ http://localhost:5000
 
 ## Running the tests
 
-Explain how to run the automated tests for this system
+To run the test script
+
+```
+$ npm test
+```
 
 
 ### Break down into end to end tests
@@ -76,31 +80,15 @@ Give an example
 
 ### And coding style tests
 
-
-Explain what these tests test and why
-
-```
-Give an example
 ```
 
-## Deployment
-
-Add additional notes about how to deploy this on a live system
+```
 
 ## Built With
 
 * [NodeJS](http://www.dropwizard.io/1.0.2/docs/) - The Environment used
 * [PostgreSQL](https://maven.apache.org/) - Database Used
 * [ExpressJS](https://rometools.github.io/rome/) - Library used
-
-## Contributing
-
-Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c63ec426) for details on our code of conduct, and the process for submitting pull requests to us.
-
-
-## Versioning
-
-We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/your/project/tags). 
 
 ## Authors
 

@@ -123,7 +123,7 @@ function deleteData(requestId) {
       .then(resp => resp.json())
       .then((data) => {
         if (data.message !== '') {
-          window.location.href = 'user.html?success=true&type=3r';
+          window.location.href = 'user.html?success=true&type=3';
         }
       });
   }

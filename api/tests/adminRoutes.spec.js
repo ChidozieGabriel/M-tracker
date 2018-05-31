@@ -8,7 +8,7 @@ import superTest from 'supertest';
 
 import chaiHttp from 'chai-http';
 
-import app from '../../app';
+import app from '../../server';
 
 const server = superTest.agent(app);
 

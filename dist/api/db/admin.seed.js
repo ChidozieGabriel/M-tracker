@@ -16,15 +16,5 @@ _userModel2.default.query(admin, function (err, res) {
     return err;
   }
   _userModel2.default.end();
-  // const request = {
-  //   text: 'INSERT INTO requests(user_id, requester_name, requester_email, date, status, request, dept) VALUES($1, $2, $3, NOW() ,$4, $5, $6)',
-  //   values: [res.rows[0].id, 'example', 'example@gmail.com', 'pending', 'Fix fan', 'Accounts'],
-  // };
-  // db.query(request, (err, res) => {
-  //   if (err) {
-  //     return err;
-  //   }
-  //   db.end();
-  // });
 });
 //# sourceMappingURL=admin.seed.js.map
