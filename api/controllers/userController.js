@@ -10,17 +10,17 @@ const validateEmail = (email) => {
 };
 exports.signUp = (req, res) => {
   const { name, email, password } = req.body;
-  if (name === '' || typeof name !== 'string') {
+  if (name.trim() === '' || typeof name !== 'string') {
     return res.status(400)
       .json({
         error: 'Name is required and must be a string value',
       });
-  } else if (email === '' || !validateEmail(email)) {
+  } else if (email.trim() === '' || !validateEmail(email)) {
     return res.status(400)
       .json({
         error: 'A valid email is required',
       });
-  } else if (password === '' || password.length >= 8 || password.length <= 4) {
+  } else if (password.trim() === '' || password.length >= 8 || password.length <= 4) {
     return res.status(400)
       .json({
         error: 'Password is required and must be less than 8 characters or greater than 4 characters',
@@ -84,12 +84,12 @@ exports.signUp = (req, res) => {
 
 exports.login = (req, res) => {
   const { email, password } = req.body;
-  if (email === '' || !validateEmail(email)) {
+  if (email.trim() === '' || !validateEmail(email)) {
     return res.status(400)
       .json({
         error: 'A valid email is required',
       });
-  } else if (password === '' || password.length >= 8 || password.length <= 4) {
+  } else if (password.trim() === '' || password.length >= 8 || password.length <= 4) {
     return res.status(400)
       .json({
         error: 'Password is required and must be less than 8 characters or greater than 4 characters',

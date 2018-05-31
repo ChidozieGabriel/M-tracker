@@ -50,19 +50,19 @@ exports.getSingleRequest = function (req, res) {
 };
 
 exports.createRequest = function (req, res) {
-  if (req.body.name === '' || typeof req.body.name !== 'string') {
+  if (req.body.name.trim() === '' || typeof req.body.name !== 'string') {
     return res.status(400).json({
       error: 'Name is required and must be a string value'
     });
-  } else if (req.body.dept === '' || typeof req.body.dept !== 'string') {
+  } else if (req.body.dept.trim() === '' || typeof req.body.dept !== 'string') {
     return res.status(400).json({
       error: 'Department is required and must be a string value'
     });
-  } else if (req.body.email === '' || !validateEmail(req.body.email)) {
+  } else if (req.body.email.trim() === '' || !validateEmail(req.body.email)) {
     return res.status(400).json({
       error: 'A valid email is required'
     });
-  } else if (req.body.request === '' || req.body.request.length >= 200 || req.body.request.length <= 10) {
+  } else if (req.body.request.trim() === '' || req.body.request.length >= 200 || req.body.request.length <= 10) {
     return res.status(400).json({
       error: 'Request cannot be more than 200 characters'
     });
@@ -96,7 +96,6 @@ exports.modifyRequest = function (req, res) {
     text: 'UPDATE requests SET requester_name=$1, requester_email=$2, date=NOW(), request=$3, dept=$4 WHERE id=$5',
     values: [req.body.name, req.body.email, req.body.request, req.body.dept, id]
   };
-
   _userModel2.default.query(query, function (err, result) {
     if (err) {
       return res.status(500).json({
