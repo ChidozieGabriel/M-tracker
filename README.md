@@ -69,21 +69,6 @@ To run the test script
 $ npm test
 ```
 
-
-### Break down into end to end tests
-
-Explain what these tests test and why
-
-```
-Give an example
-```
-
-### And coding style tests
-
-```
-
-```
-
 ## Built With
 
 * [NodeJS](http://www.dropwizard.io/1.0.2/docs/) - The Environment used
