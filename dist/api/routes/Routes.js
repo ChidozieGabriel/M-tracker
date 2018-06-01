@@ -26,8 +26,6 @@ var _isAdmin2 = _interopRequireDefault(_isAdmin);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-// import userAuth from '../middleware/userAuth';
-
 var router = _express2.default.Router();
 
 router.get('/users/requests', _verifyToken2.default, _userAuth2.default, _requestsController.getAllUserRequests);

@@ -1,18 +1,20 @@
 import db from '../models/userModel';
 
+const validateEmail = (email) => {
+  const re = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/;
+  return re.test(email);
+};
+
+
 exports.getAllUserRequests = (req, res) => {
   const userId = req.userInfo.id;
   const sql = {
-    text: 'SELECT * FROM requests WHERE user_id=$1',
+    text: 'SELECT * FROM requests WHERE user_id=$1 ORDER BY id ASC',
     values: [userId],
   };
   db.query(sql, (err, result) => {
     res.status(200)
       .set('Access-Control-Allow-Origin', '*')
-      .set('Access-Control-Allow-Credentials', 'true')
-      .set('Access-Control-Allow-Methods', 'POST, GET, OPTIONS, DELETE')
-      .set('Access-Control-Max-Age', '3600')
-      .set('Access-Control-Allow-Headers', 'Content-Type, Accept, X-Requested-With, remember-me')
       .json({
         user: req.userInfo,
         result: result.rows,
@@ -24,17 +26,17 @@ exports.getSingleRequest = (req, res) => {
   const userId = req.userInfo.id;
   const id = parseInt(req.params.requestId, 10);
   const sql = {
-    text: 'SELECT * FROM requests WHERE id=$1 AND user_id=$2',
+    text: 'SELECT * FROM requests WHERE id=$1 AND user_id=$2 ORDER BY id ASC',
     values: [id, userId],
   };
   db.query(sql, (err, result) => {
-    // if (err) {
-    //   return res.status(500)
-    //     .json({
-    //       error: err,
-    //     })
-    //     .end();
-    // }
+    if (err) {
+      return res.status(500)
+        .json({
+          error: err,
+        })
+        .end();
+    }
     if (result.rows.length > 0) {
       return res.status(200)
         .json({
@@ -49,18 +51,39 @@ exports.getSingleRequest = (req, res) => {
 };
 
 exports.createRequest = (req, res) => {
+  if ((req.body.name).trim() === '' || typeof req.body.name !== 'string') {
+    return res.status(400)
+      .json({
+        error: 'Name is required and must be a string value',
+      });
+  } else if ((req.body.dept).trim() === '' || typeof req.body.dept !== 'string') {
+    return res.status(400)
+      .json({
+        error: 'Department is required and must be a string value',
+      });
+  } else if ((req.body.email).trim() === '' || !validateEmail(req.body.email)) {
+    return res.status(400)
+      .json({
+        error: 'A valid email is required',
+      });
+  } else if ((req.body.request).trim() === '' || req.body.request.length >= 200 || req.body.request.length <= 10) {
+    return res.status(400)
+      .json({
+        error: 'Request cannot be more than 200 characters',
+      });
+  }
   const userId = req.userInfo.id;
   const query = {
     text: 'INSERT INTO requests(user_id, requester_name, requester_email, date, status, request, dept) VALUES($1, $2, $3, NOW() ,$4, $5, $6)',
     values: [userId, req.body.name, req.body.email, 'pending', req.body.request, req.body.dept],
   };
   db.query(query, (err, result) => {
-    // if (err) {
-    //   return res.status(500)
-    //     .json({
-    //       err,
-    //     });
-    // }
+    if (err) {
+      return res.status(500)
+        .json({
+          err,
+        });
+    }
     res.status(201)
       .json({
         message: 'Request Created successfully',
@@ -81,7 +104,6 @@ exports.modifyRequest = (req, res) => {
     text: 'UPDATE requests SET requester_name=$1, requester_email=$2, date=NOW(), request=$3, dept=$4 WHERE id=$5',
     values: [req.body.name, req.body.email, req.body.request, req.body.dept, id],
   };
-
   db.query(query, (err, result) => {
     if (err) {
       return res.status(500)
@@ -120,12 +142,12 @@ exports.deleteRequest = (req, res) => {
     values: [id],
   };
   db.query(query, (err, result) => {
-    // if (err) {
-    //   return res.status(500)
-    //     .json({
-    //       err,
-    //     });
-    // }
+    if (err) {
+      return res.status(500)
+        .json({
+          err,
+        });
+    }
     if (result.rowCount === 0) {
       return res.status(404)
         .json({
@@ -142,19 +164,17 @@ exports.deleteRequest = (req, res) => {
 
 // Admin Controllers
 exports.getAllRequests = (req, res) => {
-  // const userId = req.userInfo.id;
   const sql = {
-    text: 'SELECT * FROM requests',
+    text: 'SELECT * FROM requests ORDER BY id ASC',
   };
   db.query(sql, (err, result) => {
-    // if (err) {
-    //   return res.status(500)
-    //     .json({
-    //       err,
-    //     })
-    //     .end();
-    // }
-    // res.set('Access-Control-Allow-Origin', '*');
+    if (err) {
+      return res.status(500)
+        .json({
+          err,
+        })
+        .end();
+    }
     res.status(200)
       .set('Access-Control-Allow-Origin', '*')
       .json({
@@ -165,23 +185,21 @@ exports.getAllRequests = (req, res) => {
 };
 
 exports.approveRequest = (req, res) => {
-  const userId = req.userInfo.id;
   const id = parseInt(req.params.requestId, 10);
   const query = {
     text: 'UPDATE requests SET status=$1 WHERE id=$2',
     values: ['approved', id],
   };
-
   db.query(query, (err, result) => {
-    // if (err) {
-    //   return res.status(500)
-    //     .json({
-    //       err,
-    //     });
-    // }
+    if (err) {
+      return res.status(500)
+        .json({
+          err,
+        });
+    }
     if (result.rowCount === 1) {
       const sql = {
-        text: 'SELECT * FROM requests WHERE id=$1',
+        text: 'SELECT * FROM requests WHERE id=$1 ORDER BY id ASC',
         values: [id],
       };
       db.query(sql, (err, result) => {
@@ -204,23 +222,21 @@ exports.approveRequest = (req, res) => {
 };
 
 exports.disapproveRequest = (req, res) => {
-  const userId = req.userInfo.id;
   const id = parseInt(req.params.requestId, 10);
   const query = {
     text: 'UPDATE requests SET status=$1 WHERE id=$2',
     values: ['disapproved', id],
   };
-
   db.query(query, (err, result) => {
-    // if (err) {
-    //   return res.status(500)
-    //     .json({
-    //       err,
-    //     });
-    // }
+    if (err) {
+      return res.status(500)
+        .json({
+          err,
+        });
+    }
     if (result.rowCount === 1) {
       const sql = {
-        text: 'SELECT * FROM requests WHERE id=$1',
+        text: 'SELECT * FROM requests WHERE id=$1 ORDER BY id ASC',
         values: [id],
       };
       db.query(sql, (err, result) => {
@@ -243,23 +259,21 @@ exports.disapproveRequest = (req, res) => {
 };
 
 exports.resolveRequest = (req, res) => {
-  const userId = req.userInfo.id;
   const id = parseInt(req.params.requestId, 10);
   const query = {
     text: 'UPDATE requests SET status=$1 WHERE id=$2',
     values: ['resolved', id],
   };
-
   db.query(query, (err, result) => {
-    // if (err) {
-    //   return res.status(500)
-    //     .json({
-    //       err,
-    //     });
-    // }
+    if (err) {
+      return res.status(500)
+        .json({
+          err,
+        });
+    }
     if (result.rowCount === 1) {
       const sql = {
-        text: 'SELECT * FROM requests WHERE id=$1',
+        text: 'SELECT * FROM requests WHERE id=$1 ORDER BY id ASC',
         values: [id],
       };
       db.query(sql, (err, result) => {

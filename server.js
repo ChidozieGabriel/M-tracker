@@ -1,10 +1,47 @@
-import http from 'http';
+import express from 'express';
 
-import app from './app';
+import bodyParser from 'body-parser';
+
+import path from 'path';
+
+import Routes from './api/routes/routes';
+
+const app = express();
+
+app.use(bodyParser.json());
+
+app.use(bodyParser.urlencoded({ extended: false }));
+
+app.use(express.static(path.join(__dirname, 'public')));
+
+
+app.use('/api/v1', Routes);
+
+
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, '/public/index.html'));
+});
+
+
+app.use((req, res, next) => {
+  const error = new Error('Not Found');
+  error.status = 404;
+  next(error);
+});
+
+
+app.use((err, req, res, next) => {
+  res.status(err.status || 500);
+  res.json({
+    error: err.message,
+  });
+});
+
 
 const port = process.env.PORT || 5000;
 
-http.createServer(app)
-  .listen(port, () => {
-    console.log(`Server running on port: ${port}`);
-  });
+app.listen(port, () => {
+  console.log(`listening on ${port}`);
+});
+
+export default app;
