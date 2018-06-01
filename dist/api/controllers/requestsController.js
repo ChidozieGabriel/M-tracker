@@ -58,19 +58,15 @@ exports.createRequest = function (req, res) {
     return res.status(400).json({
       error: 'Department is required and must be a string value'
     });
-  } else if (req.body.email.trim() === '' || !validateEmail(req.body.email)) {
-    return res.status(400).json({
-      error: 'A valid email is required'
-    });
   } else if (req.body.request.trim() === '' || req.body.request.length >= 200 || req.body.request.length <= 10) {
     return res.status(400).json({
-      error: 'Request cannot be more than 200 characters'
+      error: 'Request cannot be empty or more than 200 characters'
     });
   }
   var userId = req.userInfo.id;
   var query = {
     text: 'INSERT INTO requests(user_id, requester_name, requester_email, date, status, request, dept) VALUES($1, $2, $3, NOW() ,$4, $5, $6)',
-    values: [userId, req.body.name, req.body.email, 'pending', req.body.request, req.body.dept]
+    values: [userId, req.body.name, req.userInfo.email, 'pending', req.body.request, req.body.dept]
   };
   _userModel2.default.query(query, function (err, result) {
     if (err) {
@@ -90,11 +86,24 @@ exports.createRequest = function (req, res) {
 };
 
 exports.modifyRequest = function (req, res) {
+  if (req.body.name.trim() === '' || typeof req.body.name !== 'string') {
+    return res.status(400).json({
+      error: 'Name is required and must be a string value'
+    });
+  } else if (req.body.dept.trim() === '' || typeof req.body.dept !== 'string') {
+    return res.status(400).json({
+      error: 'Department is required and must be a string value'
+    });
+  } else if (req.body.request === '' || req.body.request.length >= 200 || req.body.request.length <= 10) {
+    return res.status(400).json({
+      error: 'Request cannot be empty or more than 200 characters'
+    });
+  }
   var userId = req.userInfo.id;
   var id = parseInt(req.params.requestId, 10);
   var query = {
-    text: 'UPDATE requests SET requester_name=$1, requester_email=$2, date=NOW(), request=$3, dept=$4 WHERE id=$5',
-    values: [req.body.name, req.body.email, req.body.request, req.body.dept, id]
+    text: 'UPDATE requests SET requester_name=$1, date=NOW(), request=$2, dept=$3 WHERE id=$4',
+    values: [req.body.name, req.body.request, req.body.dept, id]
   };
   _userModel2.default.query(query, function (err, result) {
     if (err) {
@@ -157,7 +166,7 @@ exports.getAllRequests = function (req, res) {
         err: err
       }).end();
     }
-    res.status(200).set('Access-Control-Allow-Origin', '*').json({
+    res.status(200).json({
       user: req.userInfo,
       result: result.rows
     });
