@@ -18,7 +18,7 @@ exports.getAllUserRequests = function (req, res) {
     values: [userId]
   };
   _userModel2.default.query(sql, function (err, result) {
-    res.status(200).set('Access-Control-Allow-Origin', '*').json({
+    res.status(200).json({
       user: req.userInfo,
       result: result.rows
     });
@@ -86,6 +86,7 @@ exports.createRequest = function (req, res) {
 };
 
 exports.modifyRequest = function (req, res) {
+  var id = parseInt(req.params.requestId, 10);
   if (req.body.name.trim() === '' || typeof req.body.name !== 'string') {
     return res.status(400).json({
       error: 'Name is required and must be a string value'
@@ -99,58 +100,66 @@ exports.modifyRequest = function (req, res) {
       error: 'Request cannot be empty or more than 200 characters'
     });
   }
-  var userId = req.userInfo.id;
-  var id = parseInt(req.params.requestId, 10);
-  var query = {
-    text: 'UPDATE requests SET requester_name=$1, date=NOW(), request=$2, dept=$3 WHERE id=$4',
-    values: [req.body.name, req.body.request, req.body.dept, id]
-  };
-  _userModel2.default.query(query, function (err, result) {
+  _userModel2.default.query('SELECT status FROM requests WHERE id=$1', [id], function (err, response) {
     if (err) {
       return res.status(500).json({
         err: err
       });
     }
-    if (result.rowCount === 1) {
-      var sql = {
-        text: 'SELECT * FROM requests WHERE id=$1 AND user_id=$2',
-        values: [id, userId]
-      };
-      _userModel2.default.query(sql, function (err, result) {
-        if (err) {
-          return res.status(500).json({
-            error: err
-          }).end();
-        }
-        if (result.rows.length > 0) {
-          return res.status(200).json({
-            result: result.rows
-          });
-        }
+    if (response.rows.length !== 0 && (response.rows[0].status === 'approved' || response.rows[0].status === 'resolved')) {
+      return res.status(409).json({
+        error: 'Cannot edit!, Request has already been approved'
       });
     }
+    var query = {
+      text: 'UPDATE requests SET requester_name=$1, date=NOW(), request=$2, dept=$3 WHERE id=$4 RETURNING *',
+      values: [req.body.name, req.body.request, req.body.dept, id]
+    };
+    _userModel2.default.query(query, function (err, result) {
+      if (err) {
+        return res.status(500).json({
+          err: err
+        });
+      }
+      if (result.rowCount === 1 && result.rows.length > 0) {
+        return res.status(200).json({
+          result: result.rows
+        });
+      }
+      res.status(404).json({
+        message: 'Request Not found'
+      });
+    });
   });
 };
 
 exports.deleteRequest = function (req, res) {
   var id = parseInt(req.params.requestId, 10);
-  var query = {
-    text: 'DELETE FROM requests WHERE id=$1',
-    values: [id]
-  };
-  _userModel2.default.query(query, function (err, result) {
+  _userModel2.default.query('SELECT status FROM requests WHERE id=$1', [id], function (err, response) {
     if (err) {
       return res.status(500).json({
         err: err
       });
     }
-    if (result.rowCount === 0) {
-      return res.status(404).json({
-        message: 'Request Not found'
+    if (response.rows.length !== 0 && (response.rows[0].status === 'approved' || response.rows[0].status === 'resolved')) {
+      return res.status(409).json({
+        error: 'Cannot Delete!, Request has already been approved'
       });
     }
-    res.status(200).json({
-      message: 'Request deleted successfully'
+    _userModel2.default.query('DELETE FROM requests WHERE id=$1', [id], function (err, result) {
+      if (err) {
+        return res.status(500).json({
+          err: err
+        });
+      }
+      if (result.rowCount === 0) {
+        return res.status(404).json({
+          message: 'Request Not found'
+        });
+      }
+      res.status(200).json({
+        message: 'Request deleted successfully'
+      });
     });
   });
 };
