@@ -4,10 +4,6 @@ var _chai = require('chai');
 
 var _chai2 = _interopRequireDefault(_chai);
 
-var _supertest = require('supertest');
-
-var _supertest2 = _interopRequireDefault(_supertest);
-
 var _chaiHttp = require('chai-http');
 
 var _chaiHttp2 = _interopRequireDefault(_chaiHttp);
@@ -19,10 +15,6 @@ var _server2 = _interopRequireDefault(_server);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var Expect = _chai2.default.expect;
-
-// import { Pool } from 'pg';
-
-// import db from '../models/userModel';
 
 _chai2.default.use(_chaiHttp2.default);
 
@@ -60,7 +52,7 @@ describe('ADMIN ROUTES', function () {
     done();
   });
 
-  it('Should list Resolve a request', function (done) {
+  it('Should Resolve a request', function (done) {
     _chai2.default.request(_server2.default).put('/api/v1/requests/1/resolve').set({ Authorization: 'Bearer ' + global.tok }).end(function (err, res) {
       Expect(res.statusCode).to.equal(200);
     });

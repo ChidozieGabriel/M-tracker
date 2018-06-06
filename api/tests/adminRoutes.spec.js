@@ -1,11 +1,5 @@
 import chai from 'chai';
 
-// import { Pool } from 'pg';
-
-// import db from '../models/userModel';
-
-import superTest from 'supertest';
-
 import chaiHttp from 'chai-http';
 
 import app from '../../server';
@@ -71,7 +65,7 @@ describe('ADMIN ROUTES', () => {
     done();
   });
 
-  it('Should list Resolve a request', (done) => {
+  it('Should Resolve a request', (done) => {
     chai.request(app)
       .put('/api/v1/requests/1/resolve')
       .set({ Authorization: 'Bearer ' + global.tok })

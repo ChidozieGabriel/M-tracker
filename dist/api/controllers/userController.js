@@ -42,32 +42,17 @@ exports.signUp = function (req, res) {
     values: [email]
   };
   _userModel2.default.query(sql, function (err, result) {
-    if (err) {
-      return res.status(500).json({
-        err: err
-      });
-    }
     if (result.rows.length > 0) {
       return res.status(409).json({
         error: 'Email already exists'
       });
     }
     _bcrypt2.default.hash(password, 10, function (err, hash) {
-      if (err) {
-        return res.status(500).json({
-          err: err
-        });
-      }
       var query = {
         text: 'INSERT INTO users(email, name, password, admin) VALUES($1, $2, $3, $4 ) RETURNING id',
         values: [email, name, hash, false]
       };
       _userModel2.default.query(query, function (err, result) {
-        if (err) {
-          return res.status(500).json({
-            err: err
-          });
-        }
         if (result.rowCount === 1) {
           var token = _jsonwebtoken2.default.sign({
             id: result.rows[0].id,
@@ -105,14 +90,8 @@ exports.login = function (req, res) {
     values: [email]
   };
   _userModel2.default.query(sql, function (err, result) {
-    if (err) {
-      return res.status(500).json({
-        err: err
-      }).end();
-    }
     if (result && result.rows.length === 1) {
       _bcrypt2.default.compare(password, result.rows[0].password, function (error, match) {
-        if (error) throw error;
         if (match) {
           var token = _jsonwebtoken2.default.sign({
             id: result.rows[0].id,
@@ -134,7 +113,7 @@ exports.login = function (req, res) {
       });
     } else {
       res.status(401).json({
-        error: 'Login Authentication Failed'
+        error: 'Login Authentication failed'
       }).end();
     }
   });
