@@ -178,7 +178,7 @@ label {
 }
 
 .btn-sm {
-    border: 1px solid #111;
+    border: none;
     border-radius: 3px;
     padding: 0.1rem 0.75rem;
     color: #363851;
