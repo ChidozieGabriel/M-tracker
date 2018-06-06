@@ -103,7 +103,6 @@ describe('USER REQUEST CONTROLLER API ENDPOINT', function () {
   it('should update a SINGLE request on user/requests/:requestId PUT', function (done) {
     var data = {
       name: 'Janet May',
-      email: 'janetMaye@yahoomail.com',
       dept: 'Engineering HQ',
       request: 'Lorem ipsum owjjfndfnmnxnfj Lorem ipsum Lorem'
     };
@@ -116,7 +115,12 @@ describe('USER REQUEST CONTROLLER API ENDPOINT', function () {
   });
 
   it('should get an error when a request is not found on user/requests/:requestId  PUT', function (done) {
-    _chai2.default.request(_server2.default).put('/api/v1/users/requests/1100').set({ Authorization: 'Bearer ' + global.token }).end(function (err, res) {
+    var data = {
+      name: 'Janet May',
+      dept: 'Engineering HQ',
+      request: 'Lorem ipsum owjjfndfnmnxnfj Lorem ipsum Lorem'
+    };
+    _chai2.default.request(_server2.default).put('/api/v1/users/requests/1100').send(data).set({ Authorization: 'Bearer ' + global.token }).end(function (err, res) {
       Expect(res.statusCode).to.equal(404);
     });
     done();

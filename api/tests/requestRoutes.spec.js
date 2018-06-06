@@ -128,7 +128,6 @@ describe('USER REQUEST CONTROLLER API ENDPOINT', () => {
   it('should update a SINGLE request on user/requests/:requestId PUT', (done) => {
     const data = {
       name: 'Janet May',
-      email: 'janetMaye@yahoomail.com',
       dept: 'Engineering HQ',
       request: 'Lorem ipsum owjjfndfnmnxnfj Lorem ipsum Lorem',
     };
@@ -153,8 +152,14 @@ describe('USER REQUEST CONTROLLER API ENDPOINT', () => {
   });
 
   it('should get an error when a request is not found on user/requests/:requestId  PUT', (done) => {
+    const data = {
+      name: 'Janet May',
+      dept: 'Engineering HQ',
+      request: 'Lorem ipsum owjjfndfnmnxnfj Lorem ipsum Lorem',
+    };
     chai.request(app)
       .put('/api/v1/users/requests/1100')
+      .send(data)
       .set({ Authorization: 'Bearer ' + global.token })
       .end((err, res) => {
         Expect(res.statusCode)

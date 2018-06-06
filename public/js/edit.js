@@ -5,6 +5,8 @@ const apiUrl = `/api/v1/users/requests/${id}`;
 const apiUrl2 = '/api/v1/users/requests/';
 const token = JSON.parse(sessionStorage.getItem('token'));
 const alertBox = document.getElementById('alert-box');
+const messageBox = document.getElementById('alert-warning');
+
 const myHeader = new Headers({
   Authorization: `Bearer ${token.token}`,
 });
@@ -71,8 +73,13 @@ if (token && token.auth) {
     })
       .then(res => res.json())
       .then((data) => {
-        console.log(data);
-        if (data.message !== '') {
+        if (data.error) {
+          messageBox.innerHTML = `<p>${data.error}</p>`;
+          messageBox.style.display = 'block';
+          setTimeout(() => {
+            messageBox.style.display = 'none';
+          }, 10000);
+        } else if (data.message !== '') {
           window.location.href = 'user.html?success=true&type=1';
         }
       })

@@ -56,7 +56,7 @@ if (token && token.auth) {
                 <li><strong>Date created:</strong>&nbsp;${result.result[0].date}</li>
                 <li><strong>Department:</strong>&nbsp;${result.result[0].dept}</li>
                 <li><strong>Status:&nbsp;</strong>${result.result[0].status}</li>
-                <li>${result.result[0].request}</li>
+                <li><strong>Request details:&nbsp;</strong>${result.result[0].request}</li>
        
       `;
       const output2 = ` 

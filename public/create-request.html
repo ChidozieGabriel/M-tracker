@@ -8,38 +8,37 @@
 </head>
 <body>
 <div id="alert-box">
-<header>
-    <a class="brand" href="#">M-Tracker</a>
-    <nav class="nav-bar">
-        <ul>
-            <li><a class="btn btn-default" id="logout" href="javascript:void(0)">Logout</a></li>
-            <li><a class="btn btn-default" href="user.html">Back</a></li>
+    <header>
+        <a class="brand" href="#">M-Tracker</a>
+        <nav class="nav-bar">
+            <ul>
+                <li><a class="btn btn-default" id="logout" href="javascript:void(0)">Logout</a></li>
+                <li><a class="btn btn-default" href="user.html">Back</a></li>
 
-        </ul>
-    </nav>
-</header>
-<div class="wrapper">
-    <h3>Create new request</h3>
-    <form id="createRequest" method="post">
-        <div class="input-group">
-            <!--<label for='name'>Name: </label>-->
-            <input type="text" id="name" name="name" placeholder="Enter your name" autofocus/>
-            <!--<label for="email">E-mail: </label>-->
-            <input type="email" id="email" name="email" placeholder="Enter your email"/>
-            <!--<label for="dept">Department: </label>-->
-            <input type="text" id="dept" name="dept" placeholder="Enter the department"/><br>
-            <!--<label for="request">Request: </label>-->
-            <textarea rows="5" id="request" name="request"
-                      placeholder="Write the details of the request"></textarea>
-        </div>
-        <div class="input-group">
-            <input type="submit" class="btn btn-default" name="submit" value="Create Request"/>
-        </div>
-    </form>
-</div> <!--End of wrapper-->
-<footer>
-    <p>&copy;2018 VeeqTor</p>
-</footer>
+            </ul>
+        </nav>
+    </header>
+    <div class="wrapper">
+        <h3>Create new request</h3>
+        <form id="createRequest" method="post">
+            <span id="alert-warning"></span>
+            <div class="input-group">
+                <!--<label for='name'>Name: </label>-->
+                <input type="text" id="name" name="name" placeholder="Enter your name" autofocus/>
+                <!--<label for="dept">Department: </label>-->
+                <input type="text" id="dept" name="dept" placeholder="Enter the department"/><br>
+                <!--<label for="request">Request: </label>-->
+                <textarea rows="5" id="request" name="request"
+                          placeholder="Write the details of the request"></textarea>
+            </div>
+            <div class="input-group">
+                <input type="submit" class="btn btn-default" name="submit" value="Create Request"/>
+            </div>
+        </form>
+    </div> <!--End of wrapper-->
+    <footer>
+        <p>&copy;2018 VeeqTor</p>
+    </footer>
 </div>
 <script src="js/create.js"></script>
 <script src="js/logout.js"></script>

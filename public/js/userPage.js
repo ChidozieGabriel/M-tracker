@@ -6,6 +6,7 @@ const url = new URL(window.location.href);
 const successMessage = url.searchParams.get('success');
 const successType = url.searchParams.get('type');
 const messageBox = document.getElementById('alert-success');
+const errorBox = document.getElementById('alert-warning');
 
 if (successMessage === 'true') {
   switch (successType) {
@@ -23,6 +24,25 @@ if (successMessage === 'true') {
   }
   setTimeout(() => {
     messageBox.style.display = 'none';
+  }, 3000);
+}
+
+if (successMessage === 'false') {
+  switch (successType) {
+    case '1':
+      errorBox.innerHTML = '<p>Update was not successful</p>';
+      errorBox.style.display = 'block';
+      break;
+    case '2':
+      errorBox.innerHTML = '<p>Creation of new request not successful</p>';
+      errorBox.style.display = 'block';
+      break;
+    case '3':
+      errorBox.innerHTML = '<p>Sorry Request cannot be deleted</p>';
+      errorBox.style.display = 'block';
+  }
+  setTimeout(() => {
+    errorBox.style.display = 'none';
   }, 3000);
 }
 
@@ -114,16 +134,17 @@ if (token && token.auth) {
 }
 
 function deleteData(requestId) {
-  const res = confirm('Are you sure?');
-  if (res) {
+  if (confirm('Are you sure?')) {
     fetch(`api/v1/users/requests/${requestId}/delete`, {
       method: 'DELETE',
       headers: myHeader,
     })
       .then(resp => resp.json())
       .then((data) => {
-        if (data.message !== '') {
+        if (data.message !== '' && data.error === undefined) {
           window.location.href = 'user.html?success=true&type=3';
+        } else if (data.error !== '' && data.message === undefined) {
+          window.location.href = 'user.html?success=false&type=3';
         }
       });
   }

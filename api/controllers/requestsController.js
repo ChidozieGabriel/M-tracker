@@ -14,7 +14,6 @@ exports.getAllUserRequests = (req, res) => {
   };
   db.query(sql, (err, result) => {
     res.status(200)
-      .set('Access-Control-Allow-Origin', '*')
       .json({
         user: req.userInfo,
         result: result.rows,
@@ -61,21 +60,16 @@ exports.createRequest = (req, res) => {
       .json({
         error: 'Department is required and must be a string value',
       });
-  } else if ((req.body.email).trim() === '' || !validateEmail(req.body.email)) {
-    return res.status(400)
-      .json({
-        error: 'A valid email is required',
-      });
   } else if ((req.body.request).trim() === '' || req.body.request.length >= 200 || req.body.request.length <= 10) {
     return res.status(400)
       .json({
-        error: 'Request cannot be more than 200 characters',
+        error: 'Request cannot be empty or more than 200 characters',
       });
   }
   const userId = req.userInfo.id;
   const query = {
     text: 'INSERT INTO requests(user_id, requester_name, requester_email, date, status, request, dept) VALUES($1, $2, $3, NOW() ,$4, $5, $6)',
-    values: [userId, req.body.name, req.body.email, 'pending', req.body.request, req.body.dept],
+    values: [userId, req.body.name, req.userInfo.email, 'pending', req.body.request, req.body.dept],
   };
   db.query(query, (err, result) => {
     if (err) {
@@ -98,66 +92,94 @@ exports.createRequest = (req, res) => {
 };
 
 exports.modifyRequest = (req, res) => {
-  const userId = req.userInfo.id;
   const id = parseInt(req.params.requestId, 10);
-  const query = {
-    text: 'UPDATE requests SET requester_name=$1, requester_email=$2, date=NOW(), request=$3, dept=$4 WHERE id=$5',
-    values: [req.body.name, req.body.email, req.body.request, req.body.dept, id],
-  };
-  db.query(query, (err, result) => {
+  if ((req.body.name).trim() === '' || typeof req.body.name !== 'string') {
+    return res.status(400)
+      .json({
+        error: 'Name is required and must be a string value',
+      });
+  } else if ((req.body.dept).trim() === '' || typeof req.body.dept !== 'string') {
+    return res.status(400)
+      .json({
+        error: 'Department is required and must be a string value',
+      });
+  } else if (req.body.request === '' || req.body.request.length >= 200 || req.body.request.length <= 10) {
+    return res.status(400)
+      .json({
+        error: 'Request cannot be empty or more than 200 characters',
+      });
+  }
+  db.query('SELECT status FROM requests WHERE id=$1', [id], (err, response) => {
     if (err) {
       return res.status(500)
         .json({
           err,
         });
     }
-    if (result.rowCount === 1) {
-      const sql = {
-        text: 'SELECT * FROM requests WHERE id=$1 AND user_id=$2',
-        values: [id, userId],
-      };
-      db.query(sql, (err, result) => {
-        if (err) {
-          return res.status(500)
-            .json({
-              error: err,
-            })
-            .end();
-        }
-        if (result.rows.length > 0) {
-          return res.status(200)
-            .json({
-              result: result.rows,
-            });
-        }
-      });
+    if (response.rows.length !== 0 && (response.rows[0].status === 'approved' ||response.rows[0].status === 'resolved' )) {
+      return res.status(409)
+        .json({
+          error: 'Cannot edit!, Request has already been approved',
+        });
     }
+    const query = {
+      text: 'UPDATE requests SET requester_name=$1, date=NOW(), request=$2, dept=$3 WHERE id=$4 RETURNING *',
+      values: [req.body.name, req.body.request, req.body.dept, id],
+    };
+    db.query(query, (err, result) => {
+      if (err) {
+        return res.status(500)
+          .json({
+            err,
+          });
+      }
+      if (result.rowCount === 1 && result.rows.length > 0) {
+        return res.status(200)
+          .json({
+            result: result.rows,
+          });
+      }
+      res.status(404)
+        .json({
+          message: 'Request Not found',
+        });
+    });
   });
 };
 
 exports.deleteRequest = (req, res) => {
   const id = parseInt(req.params.requestId, 10);
-  const query = {
-    text: 'DELETE FROM requests WHERE id=$1',
-    values: [id],
-  };
-  db.query(query, (err, result) => {
+  db.query('SELECT status FROM requests WHERE id=$1', [id], (err, response) => {
     if (err) {
       return res.status(500)
         .json({
           err,
         });
     }
-    if (result.rowCount === 0) {
-      return res.status(404)
+    if (response.rows.length !== 0 && (response.rows[0].status === 'approved' || response.rows[0].status === 'resolved')) {
+      return res.status(409)
         .json({
-          message: 'Request Not found',
+          error: 'Cannot Delete!, Request has already been approved',
         });
     }
-    res.status(200)
-      .json({
-        message: 'Request deleted successfully',
-      });
+    db.query('DELETE FROM requests WHERE id=$1', [id], (err, result) => {
+      if (err) {
+        return res.status(500)
+          .json({
+            err,
+          });
+      }
+      if (result.rowCount === 0) {
+        return res.status(404)
+          .json({
+            message: 'Request Not found',
+          });
+      }
+      res.status(200)
+        .json({
+          message: 'Request deleted successfully',
+        });
+    });
   });
 };
 
@@ -176,7 +198,6 @@ exports.getAllRequests = (req, res) => {
         .end();
     }
     res.status(200)
-      .set('Access-Control-Allow-Origin', '*')
       .json({
         user: req.userInfo,
         result: result.rows,
