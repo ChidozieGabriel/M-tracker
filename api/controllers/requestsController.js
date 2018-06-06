@@ -116,7 +116,7 @@ exports.modifyRequest = (req, res) => {
           err,
         });
     }
-    if (response.rows.length !== 0 && (response.rows[0].status === 'approved' ||response.rows[0].status === 'resolved' )) {
+    if (response.rows.length !== 0 && (response.rows[0].status === 'approved' || response.rows[0].status === 'resolved')) {
       return res.status(409)
         .json({
           error: 'Cannot edit!, Request has already been approved',

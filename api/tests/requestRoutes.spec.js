@@ -1,22 +1,13 @@
 import chai from 'chai';
 
-// import { Pool } from 'pg';
-
-import db from '../models/userModel';
-
-import superTest from 'supertest';
-
 import chaiHttp from 'chai-http';
 
 import app from '../../server';
-
-const server = superTest.agent(app);
 
 const Expect = chai.expect;
 
 chai.use(chaiHttp);
 
-// let token = null;
 global.token = null;
 before((done) => {
   chai.request(app)
@@ -31,24 +22,16 @@ before((done) => {
     });
 });
 
-
-// afterEach((done) => {
-//   pool.query('DROP DATABASE "testRunning"', (err, results) => {
-//     if (err) {
-//       return err;
-//     }
-//     pool.end();
-//   });
-//   return done();
-// });
-
 describe('USER REQUEST CONTROLLER API ENDPOINT', () => {
   it('Should list ALL requests on /user/request GET', (done) => {
     chai.request(app)
       .get('/api/v1/users/requests/')
       .set({ Authorization: 'Bearer ' + global.token })
       .end((err, res) => {
-        Expect(err).to.be.null;
+        Expect(err)
+          .to
+          .be
+          .equal(null);
         Expect(res.statusCode)
           .to
           .equal(200);
@@ -59,7 +42,6 @@ describe('USER REQUEST CONTROLLER API ENDPOINT', () => {
         done();
       });
   });
-
 
   it('Should list ONE requests on /user/request/:requestId GET', (done) => {
     chai.request(app)
@@ -89,16 +71,12 @@ describe('USER REQUEST CONTROLLER API ENDPOINT', () => {
     done();
   });
 
-  const data1 = {
-    name: 'Janet May',
-    email: 'janetMaye@yahoomail.com',
-    date: '2011-11-21',
-    dept: 'Engineering HQ',
-    request: 'Lorem ipsum owjjfndfnmnxnfj Lorem ipsum Lorem',
-  };
-
   it('should create a SINGLE request user/requests/ POST', (done) => {
-
+    const data1 = {
+      name: 'Janet May',
+      dept: 'Engineering HQ',
+      request: 'Lorem ipsum owjjfndfnmnxnfj Lorem ipsum Lorem',
+    };
     chai.request(app)
       .post('/api/v1/users/requests')
       .set({ Authorization: 'Bearer ' + global.token })
@@ -112,6 +90,11 @@ describe('USER REQUEST CONTROLLER API ENDPOINT', () => {
   });
 
   it('should get an error when a bad request is sent on user/requests/  POST', (done) => {
+    const data1 = {
+      name: '',
+      dept: 'Engineering HQ',
+      request: 'Lorem ipsum owjjfndfnmnxnfj Lorem ipsum Lorem',
+    };
     chai.request(app)
       .post('/api/v1/users/requests/')
       .set({ Authorization: 'Bearer ' + global.token })
@@ -123,7 +106,6 @@ describe('USER REQUEST CONTROLLER API ENDPOINT', () => {
       });
     done();
   });
-
 
   it('should update a SINGLE request on user/requests/:requestId PUT', (done) => {
     const data = {
@@ -139,14 +121,6 @@ describe('USER REQUEST CONTROLLER API ENDPOINT', () => {
         Expect(res.statusCode)
           .to
           .equal(200);
-        Expect(res)
-          .to
-          .be
-          .an('object');
-        Expect(res.body.data)
-          .to
-          .be
-          .an('object');
       });
     done();
   });
@@ -155,7 +129,7 @@ describe('USER REQUEST CONTROLLER API ENDPOINT', () => {
     const data = {
       name: 'Janet May',
       dept: 'Engineering HQ',
-      request: 'Lorem ipsum owjjfndfnmnxnfj Lorem ipsum Lorem',
+      request: 'Lorem ipsum owjjfndfnmnxnfj Loremorem',
     };
     chai.request(app)
       .put('/api/v1/users/requests/1100')
@@ -169,7 +143,6 @@ describe('USER REQUEST CONTROLLER API ENDPOINT', () => {
     done();
   });
 
-  //
   it('should get an error when a request is not found on user/requests/:requestId  DELETE', (done) => {
     chai.request(app)
       .delete('/api/v1/users/requests/1110/delete')
@@ -184,11 +157,12 @@ describe('USER REQUEST CONTROLLER API ENDPOINT', () => {
 
   it('should delete a request on user/requests/:requestId  DELETE', (done) => {
     chai.request(app)
-      .delete('/api/v1/users/requests/1/delete')
+      .delete('/api/v1/users/requests/2/delete')
       .set({ Authorization: 'Bearer ' + global.token })
       .end((err, res) => {
         Expect(res.statusCode)
-          .to.equal(200);
+          .to
+          .equal(200);
       });
     done();
   });
@@ -199,10 +173,9 @@ describe('USER REQUEST CONTROLLER API ENDPOINT', () => {
       .set({ Authorization: 'Bearer ' + global.token })
       .end((err, res) => {
         Expect(res.statusCode)
-          .to.equal(403);
+          .to
+          .equal(403);
       });
     done();
   });
-
-
 });

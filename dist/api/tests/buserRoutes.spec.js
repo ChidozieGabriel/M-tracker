@@ -121,4 +121,4 @@ describe('USER CONTROLLER TESTS', function () {
     });
   });
 });
-//# sourceMappingURL=userRoutes.spec.js.map
+//# sourceMappingURL=buserRoutes.spec.js.map

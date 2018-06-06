@@ -4,6 +4,14 @@ var _chai = require('chai');
 
 var _chai2 = _interopRequireDefault(_chai);
 
+var _userModel = require('../models/userModel');
+
+var _userModel2 = _interopRequireDefault(_userModel);
+
+var _supertest = require('supertest');
+
+var _supertest2 = _interopRequireDefault(_supertest);
+
 var _chaiHttp = require('chai-http');
 
 var _chaiHttp2 = _interopRequireDefault(_chaiHttp);
@@ -14,10 +22,15 @@ var _server2 = _interopRequireDefault(_server);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+// import { Pool } from 'pg';
+
+var server = _supertest2.default.agent(_server2.default);
+
 var Expect = _chai2.default.expect;
 
 _chai2.default.use(_chaiHttp2.default);
 
+// let token = null;
 global.token = null;
 before(function (done) {
   _chai2.default.request(_server2.default).post('/api/v1/auth/login').send({
@@ -102,6 +115,7 @@ describe('USER REQUEST CONTROLLER API ENDPOINT', function () {
     done();
   });
 
+  //
   it('should get an error when a request is not found on user/requests/:requestId  DELETE', function (done) {
     _chai2.default.request(_server2.default).delete('/api/v1/users/requests/1110/delete').set({ Authorization: 'Bearer ' + global.token }).end(function (err, res) {
       Expect(res.statusCode).to.equal(404);
