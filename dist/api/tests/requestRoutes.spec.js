@@ -29,6 +29,24 @@ before(function (done) {
   });
 });
 
+describe('SERVER', function () {
+  it('Should return 200 on root Endpoint  ', function (done) {
+    _chai2.default.request(_server2.default).get('/').end(function (err, res) {
+      Expect(err).to.be.equal(null);
+      Expect(res.statusCode).to.equal(200);
+      done();
+    });
+  });
+
+  it('Should return 404 when an invalid route is entered', function (done) {
+    _chai2.default.request(_server2.default).get('/open').end(function (err, res) {
+      Expect(err).to.be.equal(null);
+      Expect(res.statusCode).to.equal(404);
+      done();
+    });
+  });
+});
+
 describe('USER REQUEST CONTROLLER API ENDPOINT', function () {
   it('Should list ALL requests on /user/request GET', function (done) {
     _chai2.default.request(_server2.default).get('/api/v1/users/requests/').set({ Authorization: 'Bearer ' + global.token }).end(function (err, res) {
@@ -66,6 +84,18 @@ describe('USER REQUEST CONTROLLER API ENDPOINT', function () {
     done();
   });
 
+  it('should update a SINGLE request on user/requests/:requestId PUT', function (done) {
+    var data = {
+      name: 'Janet May',
+      dept: 'Engineering HQ',
+      request: 'Lorem ipsum owjjfndfnmnxnfj Lorem ipsum Lorem'
+    };
+    _chai2.default.request(_server2.default).put('/api/v1/users/requests/3').set({ Authorization: 'Bearer ' + global.token }).send(data).end(function (err, res) {
+      Expect(res.statusCode).to.equal(200);
+    });
+    done();
+  });
+
   it('should get an error when a bad request is sent on user/requests/  POST', function (done) {
     var data1 = {
       name: '',
@@ -74,18 +104,6 @@ describe('USER REQUEST CONTROLLER API ENDPOINT', function () {
     };
     _chai2.default.request(_server2.default).post('/api/v1/users/requests/').set({ Authorization: 'Bearer ' + global.token }).send(data1).end(function (err, res) {
       Expect(res.statusCode).to.equal(400);
-    });
-    done();
-  });
-
-  it('should update a SINGLE request on user/requests/:requestId PUT', function (done) {
-    var data = {
-      name: 'Janet May',
-      dept: 'Engineering HQ',
-      request: 'Lorem ipsum owjjfndfnmnxnfj Lorem ipsum Lorem'
-    };
-    _chai2.default.request(_server2.default).put('/api/v1/users/requests/1').set({ Authorization: 'Bearer ' + global.token }).send(data).end(function (err, res) {
-      Expect(res.statusCode).to.equal(200);
     });
     done();
   });

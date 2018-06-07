@@ -16,14 +16,23 @@ _userModel2.default.query(user, function (err, res) {
     return err;
   }
   var request = {
-    text: 'INSERT INTO requests(user_id, requester_name, requester_email, date, status, request, dept) VALUES($1, $2, $3, NOW() ,$4, $5, $6)',
+    text: 'INSERT INTO requests(user_id, requester_name, requester_email, date, status, request, dept) VALUES($1, $2, $3, NOW() ,$4, $5, $6) RETURNING id',
     values: [res.rows[0].id, 'example', 'example@gmail.com', 'pending', 'Fix fan', 'Accounts']
   };
   _userModel2.default.query(request, function (err, res) {
     if (err) {
       return err;
     }
-    _userModel2.default.end();
+    var request2 = {
+      text: 'INSERT INTO requests(user_id, requester_name, requester_email, date, status, request, dept) VALUES($1, $2, $3, NOW() ,$4, $5, $6)',
+      values: [res.rows[0].id, 'example', 'example@gmail.com', 'pending', 'AC fixing', 'Engineering']
+    };
+    _userModel2.default.query(request2, function (err, res) {
+      if (err) {
+        return err;
+      }
+      _userModel2.default.end();
+    });
   });
 });
 //# sourceMappingURL=user.seed.js.map
