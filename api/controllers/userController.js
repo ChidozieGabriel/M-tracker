@@ -60,10 +60,8 @@ exports.signUp = (req, res) => {
   });
 };
 
-
 exports.login = (req, res) => {
   const { email, password } = req.body;
-
   Joi.validate({
     email,
     password,

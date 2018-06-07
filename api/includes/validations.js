@@ -30,8 +30,11 @@ exports.signUpValidation = Joi.object()
       .trim()
       .required(),
     password: Joi.string()
-      .regex(/^[a-zA-Z0-9]{4,8}$/)
-      .error(() => 'invalid password '),
+      .trim()
+      .alphanum()
+      .min(4)
+      .max(8)
+      .required(),
   });
 
 exports.loginValidation = Joi.object()
@@ -41,7 +44,9 @@ exports.loginValidation = Joi.object()
       .trim()
       .required(),
     password: Joi.string()
-      .regex(/^[a-zA-Z0-9]{4,8}$/)
-      .length(8)
-      .error(() => 'invalid password'),
+      .trim()
+      .alphanum()
+      .min(4)
+      .max(8)
+      .required(),
   });

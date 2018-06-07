@@ -6,11 +6,13 @@ import {
   createRequest,
   modifyRequest,
   deleteRequest,
+} from '../controllers/requestsController';
+import {
   getAllRequests,
   approveRequest,
   disapproveRequest,
   resolveRequest,
-} from '../controllers/requestsController';
+} from '../controllers/adminController';
 
 import { login, signUp } from '../controllers/userController';
 import verifyToken from '../middleware/verifyToken';
@@ -36,8 +38,7 @@ router.post('/auth/signup', signUp);
 router.post('/auth/login', login);
 
 
-//ADMIN ROUTES
-//
+// ADMIN ROUTES
 router.get('/requests', verifyToken, userAuth, isAdmin, getAllRequests);
 
 router.put('/requests/:requestId/approve', verifyToken, userAuth, isAdmin, approveRequest);

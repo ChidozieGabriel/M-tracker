@@ -10,6 +10,8 @@ var _express2 = _interopRequireDefault(_express);
 
 var _requestsController = require('../controllers/requestsController');
 
+var _adminController = require('../controllers/adminController');
+
 var _userController = require('../controllers/userController');
 
 var _verifyToken = require('../middleware/verifyToken');
@@ -43,15 +45,14 @@ router.post('/auth/signup', _userController.signUp);
 
 router.post('/auth/login', _userController.login);
 
-//ADMIN ROUTES
-//
-router.get('/requests', _verifyToken2.default, _userAuth2.default, _isAdmin2.default, _requestsController.getAllRequests);
+// ADMIN ROUTES
+router.get('/requests', _verifyToken2.default, _userAuth2.default, _isAdmin2.default, _adminController.getAllRequests);
 
-router.put('/requests/:requestId/approve', _verifyToken2.default, _userAuth2.default, _isAdmin2.default, _requestsController.approveRequest);
+router.put('/requests/:requestId/approve', _verifyToken2.default, _userAuth2.default, _isAdmin2.default, _adminController.approveRequest);
 
-router.put('/requests/:requestId/disapprove', _verifyToken2.default, _userAuth2.default, _isAdmin2.default, _requestsController.disapproveRequest);
+router.put('/requests/:requestId/disapprove', _verifyToken2.default, _userAuth2.default, _isAdmin2.default, _adminController.disapproveRequest);
 
-router.put('/requests/:requestId/resolve', _verifyToken2.default, _userAuth2.default, _isAdmin2.default, _requestsController.resolveRequest);
+router.put('/requests/:requestId/resolve', _verifyToken2.default, _userAuth2.default, _isAdmin2.default, _adminController.resolveRequest);
 
 exports.default = router;
 //# sourceMappingURL=routes.js.map

@@ -77,7 +77,6 @@ exports.login = function (req, res) {
       email = _req$body2.email,
       password = _req$body2.password;
 
-
   _joi2.default.validate({
     email: email,
     password: password
