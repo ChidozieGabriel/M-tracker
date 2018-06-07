@@ -32,7 +32,7 @@ describe('USER CONTROLLER TESTS', function () {
   describe('User sign up', function () {
     it('Should return a token and a status code of 201', function (done) {
       var newUser = {
-        name: 'John doe',
+        name: 'John',
         email: 'example2@gmail.com',
         password: '123456'
       };
@@ -65,7 +65,7 @@ describe('USER CONTROLLER TESTS', function () {
         password: '123456'
       };
       server.post('/api/v1/auth/signup').send(newUser).end(function (err, res) {
-        Expect(res.statusCode).to.equal(500);
+        Expect(res.statusCode).to.equal(400);
         Expect(res.body).to.have.property('error');
       });
       return done();
@@ -103,7 +103,7 @@ describe('USER CONTROLLER TESTS', function () {
         password: '1234567'
       };
       server.post('/api/v1/auth/login').send(User).end(function (err, res) {
-        Expect(res.statusCode).to.equal(500);
+        Expect(res.statusCode).to.equal(400);
       });
       return done();
     });

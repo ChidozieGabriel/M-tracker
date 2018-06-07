@@ -13,7 +13,7 @@ exports.requestValidation = _joi2.default.object().keys({
 
 });
 exports.signUpValidation = _joi2.default.object().keys({
-  name: _joi2.default.string().alphanum().min(3).max(30).trim().required(),
+  name: _joi2.default.string().min(3).max(30).trim().required(),
   email: _joi2.default.string().email().trim().required(),
   password: _joi2.default.string().trim().alphanum().min(4).max(8).required()
 });

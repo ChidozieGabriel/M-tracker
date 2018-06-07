@@ -20,7 +20,6 @@ exports.requestValidation = Joi.object()
 exports.signUpValidation = Joi.object()
   .keys({
     name: Joi.string()
-      .alphanum()
       .min(3)
       .max(30)
       .trim()

@@ -22,6 +22,28 @@ before((done) => {
     });
 });
 
+describe('SERVER', () => {
+  it('Should return 200 on root Endpoint  ', (done) => {
+    chai.request(app)
+      .get('/')
+      .end((err, res) => {
+        Expect(err).to.be.equal(null);
+        Expect(res.statusCode).to.equal(200);
+        done();
+      });
+  });
+
+  it('Should return 404 when an invalid route is entered', (done) => {
+    chai.request(app)
+      .get('/open')
+      .end((err, res) => {
+        Expect(err).to.be.equal(null);
+        Expect(res.statusCode).to.equal(404);
+        done();
+      });
+  });
+});
+
 describe('USER REQUEST CONTROLLER API ENDPOINT', () => {
   it('Should list ALL requests on /user/request GET', (done) => {
     chai.request(app)
@@ -89,6 +111,24 @@ describe('USER REQUEST CONTROLLER API ENDPOINT', () => {
     done();
   });
 
+  it('should update a SINGLE request on user/requests/:requestId PUT', (done) => {
+    const data = {
+      name: 'Janet May',
+      dept: 'Engineering HQ',
+      request: 'Lorem ipsum owjjfndfnmnxnfj Lorem ipsum Lorem',
+    };
+    chai.request(app)
+      .put('/api/v1/users/requests/3')
+      .set({ Authorization: 'Bearer ' + global.token })
+      .send(data)
+      .end((err, res) => {
+        Expect(res.statusCode)
+          .to
+          .equal(200);
+      });
+    done();
+  });
+
   it('should get an error when a bad request is sent on user/requests/  POST', (done) => {
     const data1 = {
       name: '',
@@ -103,24 +143,6 @@ describe('USER REQUEST CONTROLLER API ENDPOINT', () => {
         Expect(res.statusCode)
           .to
           .equal(400);
-      });
-    done();
-  });
-
-  it('should update a SINGLE request on user/requests/:requestId PUT', (done) => {
-    const data = {
-      name: 'Janet May',
-      dept: 'Engineering HQ',
-      request: 'Lorem ipsum owjjfndfnmnxnfj Lorem ipsum Lorem',
-    };
-    chai.request(app)
-      .put('/api/v1/users/requests/1')
-      .set({ Authorization: 'Bearer ' + global.token })
-      .send(data)
-      .end((err, res) => {
-        Expect(res.statusCode)
-          .to
-          .equal(200);
       });
     done();
   });

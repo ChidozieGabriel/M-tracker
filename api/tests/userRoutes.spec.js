@@ -19,7 +19,7 @@ describe('USER CONTROLLER TESTS', () => {
   describe('User sign up', () => {
     it('Should return a token and a status code of 201', (done) => {
       const newUser = {
-        name: 'John doe',
+        name: 'John',
         email: 'example2@gmail.com',
         password: '123456',
       };
@@ -61,7 +61,7 @@ describe('USER CONTROLLER TESTS', () => {
         .post('/api/v1/auth/signup')
         .send(newUser)
         .end((err, res) => {
-          Expect(res.statusCode).to.equal(500);
+          Expect(res.statusCode).to.equal(400);
           Expect(res.body).to.have.property('error');
         });
       return done();
@@ -108,7 +108,7 @@ describe('USER CONTROLLER TESTS', () => {
         .post('/api/v1/auth/login')
         .send(User)
         .end((err, res) => {
-          Expect(res.statusCode).to.equal(500);
+          Expect(res.statusCode).to.equal(400);
         });
       return done();
     });
