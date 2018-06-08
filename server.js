@@ -4,7 +4,11 @@ import bodyParser from 'body-parser';
 
 import path from 'path';
 
+import swaggerUI from 'swagger-ui-express';
+
 import Routes from './api/routes/routes';
+
+import swaggerDoc from './swagger.json';
 
 const app = express();
 
@@ -14,6 +18,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.use('/api/v1/docs', swaggerUI.serve, swaggerUI.setup(swaggerDoc));
 
 app.use('/api/v1', Routes);
 
