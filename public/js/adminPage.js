@@ -1,20 +1,21 @@
 const requests = document.getElementById('adminRequests');
 const token = JSON.parse(sessionStorage.getItem('token'));
 const alertBox = document.getElementById('alert-box');
-const apiUrl = '/api/v1/requests/';
+const filter = document.getElementById('filter');
 
-if (token && token.auth) {
-  const myHeader = new Headers({
-    Authorization: `Bearer ${token.token}`,
-  });
-  fetch(apiUrl, {
-    headers: myHeader,
-  })
-    .then(res => res.json())
-    .then((data) => {
-      let output = '';
-      data.result.forEach((request) => {
-        output += `
+const displayTable = (apiUrl) => {
+  if (token && token.auth) {
+    const myHeader = new Headers({
+      Authorization: `Bearer ${token.token}`,
+    });
+    fetch(apiUrl, {
+      headers: myHeader,
+    })
+      .then(res => res.json())
+      .then((data) => {
+        let output = '';
+        data.result.forEach((request) => {
+          output += `
                 <tr>
                     <td>${request.requester_name}</td>
                     <td>${request.requester_email}</td>
@@ -28,11 +29,11 @@ if (token && token.auth) {
                     </td>
                 </tr>
         `;
-      });
-      requests.innerHTML = output;
-    })
-    .catch((error) => {
-      alertBox.innerHTML = `
+        });
+        requests.innerHTML = output;
+      })
+      .catch((error) => {
+        alertBox.innerHTML = `
     <header>
         <a class="brand" href="#">M-Tracker</a>
         <nav class="nav-bar">
@@ -54,58 +55,58 @@ if (token && token.auth) {
         <p>&copy;2018 VeeqTor</p>
     </footer>
       `;
-      document.getElementById('alert-message').style.display = 'block';
-    });
+        document.getElementById('alert-message').style.display = 'block';
+      });
 
-  function approve(requestId) {
-    const res = confirm('ARE YOU SURE?');
-    if (res) {
-      fetch(`api/v1/requests/${requestId}/approve`, {
-        method: 'PUT',
-        headers: myHeader,
-      })
-        .then(resp => resp.json())
-        .then((data) => {
-          if (data.message !== '') {
-            window.location.href = 'admin.html';
-          }
-        });
+    function approve(requestId) {
+      const res = confirm('ARE YOU SURE?');
+      if (res) {
+        fetch(`api/v1/requests/${requestId}/approve`, {
+          method: 'PUT',
+          headers: myHeader,
+        })
+          .then(resp => resp.json())
+          .then((data) => {
+            if (data.message !== '') {
+              window.location.href = 'admin.html';
+            }
+          });
+      }
     }
-  }
 
-  function disapprove(requestId) {
-    const res = confirm('ARE YOU SURE?');
-    if (res) {
-      fetch(`api/v1/requests/${requestId}/disapprove`, {
-        method: 'PUT',
-        headers: myHeader,
-      })
-        .then(resp => resp.json())
-        .then((data) => {
-          if (data.message !== '') {
-            window.location.href = 'admin.html';
-          }
-        });
+    function disapprove(requestId) {
+      const res = confirm('ARE YOU SURE?');
+      if (res) {
+        fetch(`api/v1/requests/${requestId}/disapprove`, {
+          method: 'PUT',
+          headers: myHeader,
+        })
+          .then(resp => resp.json())
+          .then((data) => {
+            if (data.message !== '') {
+              window.location.href = 'admin.html';
+            }
+          });
+      }
     }
-  }
 
-  function resolve(requestId) {
-    const res = confirm('ARE YOU SURE?');
-    if (res) {
-      fetch(`api/v1/requests/${requestId}/resolve`, {
-        method: 'PUT',
-        headers: myHeader,
-      })
-        .then(resp => resp.json())
-        .then((data) => {
-          if (data.message !== '') {
-            window.location.href = 'admin.html';
-          }
-        });
+    function resolve(requestId) {
+      const res = confirm('ARE YOU SURE?');
+      if (res) {
+        fetch(`api/v1/requests/${requestId}/resolve`, {
+          method: 'PUT',
+          headers: myHeader,
+        })
+          .then(resp => resp.json())
+          .then((data) => {
+            if (data.message !== '') {
+              window.location.href = 'admin.html';
+            }
+          });
+      }
     }
-  }
-} else {
-  alertBox.innerHTML = `
+  } else {
+    alertBox.innerHTML = `
     <header>
         <a class="brand" href="#">M-Tracker</a>
         <nav class="nav-bar">
@@ -125,5 +126,29 @@ if (token && token.auth) {
         <p>&copy;2018 VeeqTor</p>
     </footer>
       `;
-  document.getElementById('alert-message').style.display = 'block';
-}
+    document.getElementById('alert-message').style.display = 'block';
+  }
+};
+
+displayTable('/api/v1/requests/');
+
+filter.addEventListener('change', () => {
+  const selectedValue = filter.options[filter.selectedIndex].value;
+  switch (selectedValue) {
+    case '1':
+      displayTable('/api/v1/requests/approved');
+      break;
+    case '2':
+      displayTable('/api/v1/requests/disapproved');
+      break;
+    case '3':
+      displayTable('/api/v1/requests/resolved');
+      break;
+    case '4':
+      displayTable('/api/v1/requests/pending');
+      break;
+    default:
+      displayTable('/api/v1/requests/');
+      break;
+  }
+});

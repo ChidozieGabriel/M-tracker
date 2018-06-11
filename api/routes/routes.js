@@ -1,6 +1,13 @@
 import express from 'express';
 
 import {
+  getAllPendingRequests,
+  getAllApprovedRequests,
+  getAllDisapprovedRequests,
+  getAllResolvedRequests
+} from '../controllers/filterController';
+
+import {
   getAllUserRequests,
   getSingleRequest,
   createRequest,
@@ -40,6 +47,14 @@ router.post('/auth/login', login);
 
 // ADMIN ROUTES
 router.get('/requests', verifyToken, userAuth, isAdmin, getAllRequests);
+
+router.get('/requests/pending', verifyToken, userAuth, isAdmin, getAllPendingRequests);
+
+router.get('/requests/approved', verifyToken, userAuth, isAdmin, getAllApprovedRequests);
+
+router.get('/requests/disapproved', verifyToken, userAuth, isAdmin, getAllDisapprovedRequests);
+
+router.get('/requests/resolved', verifyToken, userAuth, isAdmin, getAllResolvedRequests);
 
 router.put('/requests/:requestId/approve', verifyToken, userAuth, isAdmin, approveRequest);
 

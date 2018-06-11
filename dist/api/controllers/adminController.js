@@ -8,7 +8,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 exports.getAllRequests = function (req, res) {
   var sql = {
-    text: 'SELECT * FROM requests ORDER BY id ASC'
+    text: 'SELECT * FROM requests ORDER BY date DESC'
   };
   _userModel2.default.query(sql, function (err, result) {
     if (err) {

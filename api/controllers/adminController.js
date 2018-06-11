@@ -2,7 +2,7 @@ import db from '../models/userModel';
 
 exports.getAllRequests = (req, res) => {
   const sql = {
-    text: 'SELECT * FROM requests ORDER BY id ASC',
+    text: 'SELECT * FROM requests ORDER BY date DESC',
   };
   db.query(sql, (err, result) => {
     if (err) {

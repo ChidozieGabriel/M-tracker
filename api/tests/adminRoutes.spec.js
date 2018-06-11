@@ -24,22 +24,6 @@ before((done) => {
 });
 
 describe('ADMIN ROUTES', () => {
-  it('Should list ALL requests', (done) => {
-    chai.request(app)
-      .get('/api/v1/requests/')
-      .set({ Authorization: 'Bearer ' + global.tok })
-      .end((err, res) => {
-        Expect(res.statusCode)
-          .to
-          .equal(200);
-        Expect(res)
-          .to
-          .be
-          .an('object');
-      });
-    done();
-  });
-
 
   it('Should approve a request', (done) => {
     chai.request(app)
@@ -73,6 +57,86 @@ describe('ADMIN ROUTES', () => {
         Expect(res.statusCode)
           .to
           .equal(200);
+      });
+    done();
+  });
+
+  it('Should list ALL requests ordered by date', (done) => {
+    chai.request(app)
+      .get('/api/v1/requests/')
+      .set({ Authorization: 'Bearer ' + global.tok })
+      .end((err, res) => {
+        Expect(res.statusCode)
+          .to
+          .equal(200);
+        Expect(res)
+          .to
+          .be
+          .an('object');
+      });
+    done();
+  });
+
+  it('Should list ALL requests ordered by resolved', (done) => {
+    chai.request(app)
+      .get('/api/v1/requests/resolved')
+      .set({ Authorization: 'Bearer ' + global.tok })
+      .end((err, res) => {
+        Expect(res.statusCode)
+          .to
+          .equal(200);
+        Expect(res)
+          .to
+          .be
+          .an('object');
+      });
+    done();
+  });
+
+  it('Should list ALL requests ordered by approved', (done) => {
+    chai.request(app)
+      .get('/api/v1/requests/approved')
+      .set({ Authorization: 'Bearer ' + global.tok })
+      .end((err, res) => {
+        Expect(res.statusCode)
+          .to
+          .equal(200);
+        Expect(res)
+          .to
+          .be
+          .an('object');
+      });
+    done();
+  });
+
+  it('Should list ALL requests ordered by disapproved', (done) => {
+    chai.request(app)
+      .get('/api/v1/requests/disapproved')
+      .set({ Authorization: 'Bearer ' + global.tok })
+      .end((err, res) => {
+        Expect(res.statusCode)
+          .to
+          .equal(200);
+        Expect(res)
+          .to
+          .be
+          .an('object');
+      });
+    done();
+  });
+
+  it('Should list ALL requests ordered by pending', (done) => {
+    chai.request(app)
+      .get('/api/v1/requests/pending')
+      .set({ Authorization: 'Bearer ' + global.tok })
+      .end((err, res) => {
+        Expect(res.statusCode)
+          .to
+          .equal(200);
+        Expect(res)
+          .to
+          .be
+          .an('object');
       });
     done();
   });

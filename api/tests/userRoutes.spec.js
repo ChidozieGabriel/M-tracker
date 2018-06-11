@@ -2,14 +2,7 @@ import chai from 'chai';
 
 import chaiHttp from 'chai-http';
 
-
-import db from '../models/userModel';
-
-import superTest from 'supertest';
-
 import app from '../../server';
-
-const server = superTest.agent(app);
 
 const Expect = chai.expect;
 
@@ -20,10 +13,10 @@ describe('USER CONTROLLER TESTS', () => {
     it('Should return a token and a status code of 201', (done) => {
       const newUser = {
         name: 'John',
-        email: 'example2@gmail.com',
+        email: 'example25@gmail.com',
         password: '123456',
       };
-      server
+      chai.request(app)
         .post('/api/v1/auth/signup')
         .send(newUser)
         .end((err, res) => {
@@ -41,7 +34,7 @@ describe('USER CONTROLLER TESTS', () => {
         email: 'example@gmail.com',
         password: '123456',
       };
-      server
+      chai.request(app)
         .post('/api/v1/auth/signup')
         .send(newUser)
         .end((err, res) => {
@@ -57,7 +50,7 @@ describe('USER CONTROLLER TESTS', () => {
         email: 12456874,
         password: '123456',
       };
-      server
+      chai.request(app)
         .post('/api/v1/auth/signup')
         .send(newUser)
         .end((err, res) => {
@@ -74,7 +67,7 @@ describe('USER CONTROLLER TESTS', () => {
         email: 'example@gmail.com',
         password: '123456',
       };
-      server
+      chai.request(app)
         .post('/api/v1/auth/login')
         .send(User)
         .end((err, res) => {
@@ -90,7 +83,7 @@ describe('USER CONTROLLER TESTS', () => {
         email: 'example21233@gmail.com',
         password: '12345',
       };
-      server
+      chai.request(app)
         .post('/api/v1/auth/login')
         .send(User)
         .end((err, res) => {
@@ -104,7 +97,7 @@ describe('USER CONTROLLER TESTS', () => {
         email: 12,
         password: '1234567',
       };
-      server
+      chai.request(app)
         .post('/api/v1/auth/login')
         .send(User)
         .end((err, res) => {
@@ -118,7 +111,7 @@ describe('USER CONTROLLER TESTS', () => {
         email: 'example@gmail.com',
         password: '1234567',
       };
-      server
+      chai.request(app)
         .post('/api/v1/auth/login')
         .send(User)
         .end((err, res) => {

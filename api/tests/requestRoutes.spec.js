@@ -7,7 +7,6 @@ import app from '../../server';
 const Expect = chai.expect;
 
 chai.use(chaiHttp);
-
 global.token = null;
 before((done) => {
   chai.request(app)
@@ -22,13 +21,23 @@ before((done) => {
     });
 });
 
+after((done) => {
+  global.token = null;
+  done();
+});
+
 describe('SERVER', () => {
   it('Should return 200 on root Endpoint  ', (done) => {
     chai.request(app)
       .get('/')
       .end((err, res) => {
-        Expect(err).to.be.equal(null);
-        Expect(res.statusCode).to.equal(200);
+        Expect(err)
+          .to
+          .be
+          .equal(null);
+        Expect(res.statusCode)
+          .to
+          .equal(200);
         done();
       });
   });
@@ -37,14 +46,20 @@ describe('SERVER', () => {
     chai.request(app)
       .get('/open')
       .end((err, res) => {
-        Expect(err).to.be.equal(null);
-        Expect(res.statusCode).to.equal(404);
+        Expect(err)
+          .to
+          .be
+          .equal(null);
+        Expect(res.statusCode)
+          .to
+          .equal(404);
         done();
       });
   });
 });
 
 describe('USER REQUEST CONTROLLER API ENDPOINT', () => {
+
   it('Should list ALL requests on /user/request GET', (done) => {
     chai.request(app)
       .get('/api/v1/users/requests/')

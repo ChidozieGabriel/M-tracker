@@ -4,7 +4,7 @@
   "description": "API for Maintenance-tracker",
   "main": "app.js",
   "scripts": {
-    "test": "cross-env NODE_ENV=test nyc --reporter=html --reporter=text mocha --require dotenv/config --require babel-register api/tests/* --timeout 10000",
+    "test": "cross-env NODE_ENV=test nyc --reporter=html --reporter=text mocha --require dotenv/config --require babel-register api/tests/requestRoutes.spec.js api/tests/adminRoutes.spec.js api/tests/userRoutes.spec.js --timeout 10000",
     "start": "cross-env NODE_ENV=development nodemon -r dotenv/config -r babel-register server.js",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
     "pretest": "cross-env NODE_ENV=test node --require dotenv/config -r babel-register api/db/createTable.js && cross-env NODE_ENV=test node --require dotenv/config -r babel-register api/db/user.seed.js && cross-env NODE_ENV=test node --require dotenv/config -r babel-register api/db/admin.seed.js",
