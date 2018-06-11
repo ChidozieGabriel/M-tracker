@@ -8,6 +8,8 @@ var _express = require('express');
 
 var _express2 = _interopRequireDefault(_express);
 
+var _filterController = require('../controllers/filterController');
+
 var _requestsController = require('../controllers/requestsController');
 
 var _adminController = require('../controllers/adminController');
@@ -47,6 +49,14 @@ router.post('/auth/login', _userController.login);
 
 // ADMIN ROUTES
 router.get('/requests', _verifyToken2.default, _userAuth2.default, _isAdmin2.default, _adminController.getAllRequests);
+
+router.get('/requests/pending', _verifyToken2.default, _userAuth2.default, _isAdmin2.default, _filterController.getAllPendingRequests);
+
+router.get('/requests/approved', _verifyToken2.default, _userAuth2.default, _isAdmin2.default, _filterController.getAllApprovedRequests);
+
+router.get('/requests/disapproved', _verifyToken2.default, _userAuth2.default, _isAdmin2.default, _filterController.getAllDisapprovedRequests);
+
+router.get('/requests/resolved', _verifyToken2.default, _userAuth2.default, _isAdmin2.default, _filterController.getAllResolvedRequests);
 
 router.put('/requests/:requestId/approve', _verifyToken2.default, _userAuth2.default, _isAdmin2.default, _adminController.approveRequest);
 
