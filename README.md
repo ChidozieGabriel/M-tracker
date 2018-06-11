@@ -1,5 +1,6 @@
 [![Build Status](https://travis-ci.org/veeqtor/M-tracker.svg?branch=develop)](https://travis-ci.org/veeqtor/M-tracker) [![Coverage Status](https://coveralls.io/repos/github/veeqtor/M-tracker/badge.svg?branch=develop)](https://coveralls.io/github/veeqtor/M-tracker?branch=develop) [![Maintainability](https://api.codeclimate.com/v1/badges/ecbcabd190ca98ce3b31/maintainability)](https://codeclimate.com/github/veeqtor/M-tracker/maintainability) 
 
+
 # M-tracker
 Maintenance Tracker App is an application that provides users with the ability to reach out to operations or repairs department regarding repair or maintenance requests and monitor the status of their request.
 
@@ -37,7 +38,7 @@ CREATE TABLE IF NOT EXISTS users(id SERIAL PRIMARY KEY, email VARCHAR(40) NOT NU
 CREATE TABLE IF NOT EXISTS requests(id SERIAL PRIMARY KEY NOT NULL, user_id INTEGER, requester_name VARCHAR(40) NOT NULL, requester_email VARCHAR(40), date timestamp without time zone, status VARCHAR(20) NOT NULL, request VARCHAR(255) NOT NULL, dept VARCHAR(255))
 ```
 
-create a .env file in the root directory filling the datebase URl and the JWT_KEY
+create a .env file in the root directory fill in the datebase URl and the JWT_KEY
 ````
 JWT_KEY= Your JWT key 
 
