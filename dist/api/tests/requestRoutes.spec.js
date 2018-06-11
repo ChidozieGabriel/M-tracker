@@ -17,7 +17,6 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var Expect = _chai2.default.expect;
 
 _chai2.default.use(_chaiHttp2.default);
-
 global.token = null;
 before(function (done) {
   _chai2.default.request(_server2.default).post('/api/v1/auth/login').send({
@@ -27,6 +26,11 @@ before(function (done) {
     global.token = res.body.token;
     done();
   });
+});
+
+after(function (done) {
+  global.token = null;
+  done();
 });
 
 describe('SERVER', function () {
@@ -48,6 +52,7 @@ describe('SERVER', function () {
 });
 
 describe('USER REQUEST CONTROLLER API ENDPOINT', function () {
+
   it('Should list ALL requests on /user/request GET', function (done) {
     _chai2.default.request(_server2.default).get('/api/v1/users/requests/').set({ Authorization: 'Bearer ' + global.token }).end(function (err, res) {
       Expect(err).to.be.equal(null);

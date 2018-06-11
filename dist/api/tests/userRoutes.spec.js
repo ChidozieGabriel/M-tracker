@@ -8,21 +8,11 @@ var _chaiHttp = require('chai-http');
 
 var _chaiHttp2 = _interopRequireDefault(_chaiHttp);
 
-var _userModel = require('../models/userModel');
-
-var _userModel2 = _interopRequireDefault(_userModel);
-
-var _supertest = require('supertest');
-
-var _supertest2 = _interopRequireDefault(_supertest);
-
 var _server = require('../../server');
 
 var _server2 = _interopRequireDefault(_server);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var server = _supertest2.default.agent(_server2.default);
 
 var Expect = _chai2.default.expect;
 
@@ -33,10 +23,10 @@ describe('USER CONTROLLER TESTS', function () {
     it('Should return a token and a status code of 201', function (done) {
       var newUser = {
         name: 'John',
-        email: 'example2@gmail.com',
+        email: 'example25@gmail.com',
         password: '123456'
       };
-      server.post('/api/v1/auth/signup').send(newUser).end(function (err, res) {
+      _chai2.default.request(_server2.default).post('/api/v1/auth/signup').send(newUser).end(function (err, res) {
         Expect(err).to.equal(null);
         Expect(res.statusCode).to.equal(201);
         Expect(res.body[0]).to.have.property('token');
@@ -51,7 +41,7 @@ describe('USER CONTROLLER TESTS', function () {
         email: 'example@gmail.com',
         password: '123456'
       };
-      server.post('/api/v1/auth/signup').send(newUser).end(function (err, res) {
+      _chai2.default.request(_server2.default).post('/api/v1/auth/signup').send(newUser).end(function (err, res) {
         Expect(err).to.equal(null);
         Expect(res.statusCode).to.equal(409);
       });
@@ -64,7 +54,7 @@ describe('USER CONTROLLER TESTS', function () {
         email: 12456874,
         password: '123456'
       };
-      server.post('/api/v1/auth/signup').send(newUser).end(function (err, res) {
+      _chai2.default.request(_server2.default).post('/api/v1/auth/signup').send(newUser).end(function (err, res) {
         Expect(res.statusCode).to.equal(400);
         Expect(res.body).to.have.property('error');
       });
@@ -78,7 +68,7 @@ describe('USER CONTROLLER TESTS', function () {
         email: 'example@gmail.com',
         password: '123456'
       };
-      server.post('/api/v1/auth/login').send(User).end(function (err, res) {
+      _chai2.default.request(_server2.default).post('/api/v1/auth/login').send(User).end(function (err, res) {
         Expect(err).to.equal(null);
         Expect(res.statusCode).to.equal(200);
         Expect(res.body[0]).to.be.have.property('token');
@@ -91,7 +81,7 @@ describe('USER CONTROLLER TESTS', function () {
         email: 'example21233@gmail.com',
         password: '12345'
       };
-      server.post('/api/v1/auth/login').send(User).end(function (err, res) {
+      _chai2.default.request(_server2.default).post('/api/v1/auth/login').send(User).end(function (err, res) {
         Expect(res.statusCode).to.equal(401);
       });
       return done();
@@ -102,7 +92,7 @@ describe('USER CONTROLLER TESTS', function () {
         email: 12,
         password: '1234567'
       };
-      server.post('/api/v1/auth/login').send(User).end(function (err, res) {
+      _chai2.default.request(_server2.default).post('/api/v1/auth/login').send(User).end(function (err, res) {
         Expect(res.statusCode).to.equal(400);
       });
       return done();
@@ -113,7 +103,7 @@ describe('USER CONTROLLER TESTS', function () {
         email: 'example@gmail.com',
         password: '1234567'
       };
-      server.post('/api/v1/auth/login').send(User).end(function (err, res) {
+      _chai2.default.request(_server2.default).post('/api/v1/auth/login').send(User).end(function (err, res) {
         Expect(err).to.equal(null);
         Expect(res.statusCode).to.equal(401);
       });

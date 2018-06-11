@@ -30,13 +30,6 @@ before(function (done) {
 });
 
 describe('ADMIN ROUTES', function () {
-  it('Should list ALL requests', function (done) {
-    _chai2.default.request(_server2.default).get('/api/v1/requests/').set({ Authorization: 'Bearer ' + global.tok }).end(function (err, res) {
-      Expect(res.statusCode).to.equal(200);
-      Expect(res).to.be.an('object');
-    });
-    done();
-  });
 
   it('Should approve a request', function (done) {
     _chai2.default.request(_server2.default).put('/api/v1/requests/1/approve').set({ Authorization: 'Bearer ' + global.tok }).end(function (err, res) {
@@ -55,6 +48,46 @@ describe('ADMIN ROUTES', function () {
   it('Should Resolve a request', function (done) {
     _chai2.default.request(_server2.default).put('/api/v1/requests/1/resolve').set({ Authorization: 'Bearer ' + global.tok }).end(function (err, res) {
       Expect(res.statusCode).to.equal(200);
+    });
+    done();
+  });
+
+  it('Should list ALL requests ordered by date', function (done) {
+    _chai2.default.request(_server2.default).get('/api/v1/requests/').set({ Authorization: 'Bearer ' + global.tok }).end(function (err, res) {
+      Expect(res.statusCode).to.equal(200);
+      Expect(res).to.be.an('object');
+    });
+    done();
+  });
+
+  it('Should list ALL requests ordered by resolved', function (done) {
+    _chai2.default.request(_server2.default).get('/api/v1/requests/resolved').set({ Authorization: 'Bearer ' + global.tok }).end(function (err, res) {
+      Expect(res.statusCode).to.equal(200);
+      Expect(res).to.be.an('object');
+    });
+    done();
+  });
+
+  it('Should list ALL requests ordered by approved', function (done) {
+    _chai2.default.request(_server2.default).get('/api/v1/requests/approved').set({ Authorization: 'Bearer ' + global.tok }).end(function (err, res) {
+      Expect(res.statusCode).to.equal(200);
+      Expect(res).to.be.an('object');
+    });
+    done();
+  });
+
+  it('Should list ALL requests ordered by disapproved', function (done) {
+    _chai2.default.request(_server2.default).get('/api/v1/requests/disapproved').set({ Authorization: 'Bearer ' + global.tok }).end(function (err, res) {
+      Expect(res.statusCode).to.equal(200);
+      Expect(res).to.be.an('object');
+    });
+    done();
+  });
+
+  it('Should list ALL requests ordered by pending', function (done) {
+    _chai2.default.request(_server2.default).get('/api/v1/requests/pending').set({ Authorization: 'Bearer ' + global.tok }).end(function (err, res) {
+      Expect(res.statusCode).to.equal(200);
+      Expect(res).to.be.an('object');
     });
     done();
   });
