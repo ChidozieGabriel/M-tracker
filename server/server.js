@@ -4,44 +4,31 @@ import bodyParser from 'body-parser';
 
 import path from 'path';
 
+import dotenv from 'dotenv';
+
 import swaggerUI from 'swagger-ui-express';
 
-import Routes from './api/routes/routes';
+import routes from './routes/v1/index';
 
-import swaggerDoc from './swagger.json';
+import swaggerDoc from '../swagger.json';
 
 const app = express();
+
+dotenv.config();
 
 app.use(bodyParser.json());
 
 app.use(bodyParser.urlencoded({ extended: false }));
 
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, '../client')));
 
 app.use('/api/v1/docs', swaggerUI.serve, swaggerUI.setup(swaggerDoc));
 
-app.use('/api/v1', Routes);
-
+app.use('/api/v1', routes);
 
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, '/public/index.html'));
+  res.sendFile(path.join(__dirname, '../client/index.html'));
 });
-
-
-app.use((req, res, next) => {
-  const error = new Error('Not Found');
-  error.status = 404;
-  next(error);
-});
-
-
-app.use((err, req, res, next) => {
-  res.status(err.status || 500);
-  res.json({
-    error: err.message,
-  });
-});
-
 
 const port = process.env.PORT || 5000;
 

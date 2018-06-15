@@ -2,7 +2,7 @@ import chai from 'chai';
 
 import chaiHttp from 'chai-http';
 
-import app from '../../server';
+import app from '../server';
 
 const Expect = chai.expect;
 
