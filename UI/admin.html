@@ -5,23 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>M-Tracker</title>
     <link rel="stylesheet" type="text/css" href="css/style.css">
-
 </head>
 <body>
 <header>
-    <a class="brand" href="#">M-Tracker</a>
+    <a class="brand" href="admin.html">M-Tracker</a>
     <nav class="nav-bar">
         <ul>
-            <li><a class="btn btn-default" href="index.html"><i class="fa fa-sign-out"></i> Logout</a></li>
-            <li><a class="btn btn-default" href="create-request.html"><i class="fa fa-plus"></i> Create Request</a></li>
+            <li><a class="btn btn-default" href="index.html">Logout</a></li>
         </ul>
     </nav>
 </header>
 <div class="wrapper">
     <section class="list">
-
         <div class="list-header">
-            <h3>My requests</h3>
+            <h3>All requests</h3>
             <label for="filter">Order By:</label>
             <select id="filter" name="filter">
                 <option value='1'>Approved</option>
@@ -31,59 +28,59 @@
                 <option value='4'>Most recent</option>
             </select>
         </div>
-        <span class="alert alert-warning">Error message</span>
-        <span class="alert alert-success">Error message</span>
+
         <div class="table-res">
             <table class="table">
                 <thead>
                 <tr>
                     <th>S/N</th>
-                    <th>Name</th>
                     <th>Email</th>
                     <th>Status</th>
-                    <th>Dept</th>
+                    <th>Time</th>
                     <th>Action</th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr>
                     <td>1</td>
-                    <td>Doe</td>
+                    <td>john@example.com</td>
+                    <td class="resolved"><small>Resolved</small></td>
+                    <td>Yesterday</td>
+                    <td>
+                        <a href="admin-view-details.html" class="btn-sm btn-primary">View</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>1</td>
                     <td>john@example.com</td>
                     <td class="approved"><small>Approved</small></td>
-                    <td>Engineering</td>
+                    <td>12:35 PM</td>
                     <td>
-                        <a href="user-view-details.html" class="btn-sm btn-primary" title="Click to view request"><i class="fa fa-eye"></i></a>
-                        <a href="#" class="btn-sm btn-delete" title="Click to delete request"><i class="fa fa-trash"></i></a>
+                        <a href="user-view-details.html" class="btn-sm btn-primary">View</a>
                     </td>
                 </tr>
                 <tr>
-                    <td>2</td>
-                    <td>Doe</td>
+                    <td>1</td>
                     <td>john@example.com</td>
-                    <td>Approved</td>
-                    <td>Engineering</td>
+                    <td class="disapproved"><small>Disapproved</small></td>
+                    <td>12:35 PM</td>
                     <td>
-                        <!--<a href="user-view-admin-view-details.html" class="btn-sm btn-primary"><i class="fa fa-edit"></i> </a>-->
-                        <a href="user-view-details.html" class="btn-sm btn-primary" title="Click to view request"><i class="fa fa-eye"></i></a>
-                        <a href="#" class="btn-sm btn-delete" title="Click to delete request"><i class="fa fa-trash"></i></a>
+                        <a href="user-view-details.html" class="btn-sm btn-primary">View</a>
                     </td>
                 </tr>
                 <tr>
-                    <td>3</td>
-                    <td>Doe</td>
+                    <td>1</td>
                     <td>john@example.com</td>
-                    <td>Approved</td>
-                    <td>Engineering</td>
+                    <td class="pending"><small>Pending</small></td>
+                    <td>12:35 PM</td>
                     <td>
-                        <!--<a href="user-view-admin-view-details.html" class="btn-sm btn-primary"><i class="fa fa-edit"></i> </a>-->
-                        <a href="user-view-details.html" class="btn-sm btn-primary" title="Click to view request"><i class="fa fa-eye"></i></a>
-                        <a href="#" class="btn-sm btn-delete" title="Click to delete request"><i class="fa fa-trash"></i></a>
+                        <a href="user-view-details.html" class="btn-sm btn-primary">View</a>
                     </td>
                 </tr>
                 </tbody>
             </table>
         </div>
+
 
         <ul class="pagination">
             <li class="active"><a href="#">1</a></li>

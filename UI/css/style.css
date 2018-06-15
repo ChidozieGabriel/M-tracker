@@ -1,5 +1,7 @@
 @import url('https://fonts.googleapis.com/css?family=Lato:400,900|Ubuntu:400,700');
 @import url('https://fonts.googleapis.com/css?family=Fredoka+One|Kaushan+Script|Permanent+Marker');
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css');
+
 
 * {
     padding: 0;
@@ -12,7 +14,6 @@ body, html {
     line-height: 1.4;
     background: #eeeeee;
     font-size: 14px;
-    /*height: 100%;*/
 }
 
 a {
@@ -20,11 +21,23 @@ a {
     color: #363851;
 }
 
+.left {
+    float: left;
+}
+
+.right {
+    float: right;
+}
+
+.clearfix {
+    clear: both;
+}
+
 .bg {
     background-image: url("../img/bg5.jpeg");
     background-position: center;
     background-size: cover;
-    background-attachment: fixed;
+    /*background-attachment: fixed;*/
     background-repeat: no-repeat;
 }
 
@@ -32,7 +45,6 @@ a {
     width: 70%;
     margin: 0 auto;
     min-height: 100vh;
-    position: relative;
 }
 
 .flex {
@@ -54,6 +66,33 @@ a {
     box-shadow: 1px 4px 10px #bebebe;
 }
 
+.request-wrapper {
+    padding: 0 2%;
+    background: #F7F7F7;
+    border-radius: 3px;
+    width: 70%;
+    margin: 50px auto;
+    border-bottom: 1px solid #bebebe;
+    box-shadow: 1px 4px 10px #bebebe;
+}
+
+.card {
+    max-width: 70%;
+    margin: auto;
+    padding-bottom: 5%;
+
+}
+
+.card .table {
+    color: #363851;
+    padding: 5px 0;
+}
+
+.card .table tr td {
+    padding: 10px;
+    border: none;
+}
+
 .input-group {
     display: flex;
     flex-direction: column;
@@ -69,8 +108,6 @@ a {
 h2.title {
     text-transform: uppercase;
     color: #363851;
-    letter-spacing: 2px;
-    text-align: center;
     font-weight: 900;
     font-size: 2em;
     padding: 2%;
@@ -82,11 +119,10 @@ input[type="password"],
 input[type="email"],
 textarea, select {
     margin: 10px 0;
-    border: none;
+    border-radius: 3px;
     background: transparent;
-    border-bottom: 1px solid #D6D6D6;
+    border: 1px solid #d8bfd8;
     padding: 8px 5px;
-    text-align: center;
     font-family: 'Ubuntu', sans-serif;
     letter-spacing: 2px;
 }
@@ -97,11 +133,17 @@ input[type="email"]:focus,
 textarea:focus {
     background: #fff;
     outline: none;
-    border: 1px solid #d8bfd8;
+    border: 1px solid #363851;
 }
 
 input[type="submit"] {
     margin: 10px 0;
+}
+
+::placeholder {
+    color: #c3c3c3;
+    font-size: 12px;
+    padding-left: 2%;
 }
 
 .input-group p {
@@ -123,19 +165,49 @@ label {
     font-family: 'Ubuntu', sans-serif;
 }
 
-.btn {
-    border-radius: 10px;
+.btn-landing {
+    transition: all 500ms;
+    border-radius: 3px;
     background: transparent;
-    padding: 0.2rem 0.85rem;
+    padding: 0.625rem 2.85rem;
+    border: 1px solid #fff;
+    color: white;
+}
+
+.btn-landing:hover {
+    border-radius: 10px;
+    padding: 0.8rem 3.25rem;
+    font-size: 16px;
+}
+
+ul.admin-btn {
+    text-align: center;
+    list-style: none;
+}
+
+.admin-btn li {
+    margin: 20px auto;
+    display: inline-block;
+}
+
+.btn {
+    transition: all 500ms;
+    border-radius: 3px;
+    background: transparent;
+    padding: 0.5rem 0.85rem;
     color: #363851;
+    cursor: pointer;
+    font-size: 16px;
+    line-height: 1;
+    margin: 10px 0;
 }
 
 .btn-sm {
-    border: 1px solid #111;
+    cursor: pointer;
+    border: 1px solid #9c9c9c;
     border-radius: 3px;
-    padding: 0.1rem 0.75rem;
+    padding: 0.35rem 0.85rem;
     color: #363851;
-    font-size: 11px;
 }
 
 .btn-primary {
@@ -143,38 +215,43 @@ label {
     color: white;
 }
 
+.btn-primary:hover {
+    background: #17192a;
+}
+
 .btn-edit {
-    background: #f6ff6c;
-    color: #111;
+    background: #d8bfd8;
+    color: #363851;
+}
+
+.btn-delete:hover {
+    background: #7e3b3b;
 }
 
 .btn-delete {
     color: white;
-    background: #ff4f4f;
+    background: #b16464;
 }
 
 .btn-default:hover {
-    background: #363851;
+    background: #111130;
     color: #fff;
 }
 
 .btn-default {
-    border: 1px solid #363851;
-}
-
-.btn-landing {
-    border: 1px solid #fff;
-    color: white;
+    background: #363851;
+    color: #fff;
+    border: 1px solid transparent;
 }
 
 .btn-approve {
-    border: 1px solid #21801f;
-    color: #21801f;
+    background: #aef0b2;
+    color: #363851;
 }
 
 .btn-approve:hover {
-    background: #21801f;
-    color: #fff;
+    background: #9ad99e;
+    color: #363851;
 }
 
 .btn-disapprove {
@@ -210,7 +287,7 @@ header {
     text-transform: uppercase;
     font-size: 26px;
     letter-spacing: 5px;
-    font-family: 'Ubuntu', sans-serif;
+    font-family: 'Fredoka One', cursive, sans-serif;
     font-weight: 900;
     border-bottom: 1px solid #6aa1c4;
 }
@@ -227,16 +304,40 @@ h3 {
     margin: 5px;
     padding: 15px 0;
     font-size: 20px;
-    text-align: center;
+}
+
+.card .table {
+    text-align: left;
 }
 
 .table {
     width: 100%;
-    text-align: left;
+    text-align: center;
     background-color: #fff;
     margin: 10px 0 15px;
     padding: 10px;
     border-bottom: 1px solid #d8bfd8;
+}
+
+td.approved {
+    background: #aef0b2;
+    text-align: center;
+}
+
+td.pending {
+    background: #bebebe;
+    text-align: center;
+}
+
+td.resolved {
+    background: #d8bfd8;
+    text-align: center;
+}
+
+td.disapproved {
+    background: #b16464;
+    text-align: center;
+    color: white;
 }
 
 .table th {
@@ -246,7 +347,7 @@ h3 {
 }
 
 .table tr td {
-    padding: 15px 0 15px;
+    padding: 5px 0 5px;
 }
 
 .table td a {
@@ -256,67 +357,6 @@ h3 {
 
 .table th, td {
     border-bottom: 1px solid #ddd;
-}
-
-/*.table tr:last-child {*/
-/*border: none !important;*/
-/*}*/
-.tableClear {
-    float: none !important;
-    text-align: center;
-}
-
-.requests {
-    list-style: none;
-
-}
-
-.requests li a {
-    background: #fff;
-    display: block;
-    margin: 10px 0 15px;
-    padding: 10px;
-    overflow: hidden;
-    border-bottom: 1px solid #d8bfd8;
-}
-
-.request-date {
-    margin: 5px 0 5px 5px;
-    padding: 2px 0;
-    display: block;
-    font-size: 12px;
-    float: left;
-    font-style: italic;
-    color: #9c9c9c;
-}
-
-.label {
-    margin: 5px 5px 5px 0;
-    padding: 2px 5px;
-    display: block;
-    font-size: 10px;
-    float: right;
-    border-radius: 10px;
-}
-
-.label-approved {
-    background: #21801f;
-    color: #fff;
-}
-
-.label-disapproved {
-    background: #ff4f4f;
-    color: #fff;
-}
-
-.label-resolved {
-    background: #1e90ff;
-    color: #111;
-}
-
-.label-pending {
-    background: #f6ff6c;
-    color: #111;
 }
 
 .pagination {
@@ -351,42 +391,10 @@ h3 {
     color: #fff;
 }
 
-.details {
-    list-style: none;
-    background: #cecece;
-    padding: 10px;
-    border-radius: 5px;
-    border-bottom: 1px solid #bebebe;
-    margin-bottom: 20px;
-    overflow: hidden;
-}
-
-.details div a {
-    margin: 5px 5px 5px 5px;
-}
-
-.details li {
-    background: #fff;
-    display: block;
-    margin: 0 5px;
-    padding: 15px;
-    border-bottom: 1px solid #d8bfd8;
-}
-
-.details li:first-child {
-    border-top-left-radius: 5px;
-    border-top-right-radius: 5px;
-}
-
-.details li:last-child {
-    border-bottom-left-radius: 5px;
-    border-bottom-right-radius: 5px;
-    margin-bottom: 10px;
-}
-
 footer {
     background: #363851;
     width: 100%;
+    margin-top: 50px;
 }
 
 footer p {
@@ -418,6 +426,34 @@ footer p {
     text-shadow: 3px 3px 1px #181818;
 }
 
+.alert {
+    transition: all 500ms;
+    text-align: center;
+    display: block;
+    margin: 15px;
+    padding: 10px;
+    letter-spacing: 2px;
+    text-transform: capitalize
+}
+
+.alert-warning {
+    color: #363851;
+    background: #f5dcd2;
+    border: 1px solid #b74138;
+}
+
+.alert-success {
+    color: #363851;
+    background: #aef0b2;
+    border: 1px solid #41b737;
+}
+
+.disabled {
+    cursor: not-allowed;
+    pointer-events: none;
+    opacity: 0.5;
+}
+
 /** Media queries **/
 @media only screen and (max-width: 900px) {
 
@@ -427,6 +463,14 @@ footer p {
 
     .form-wrapper {
         width: 90%;
+    }
+
+    .card {
+        max-width: 100%;
+    }
+
+    .request-wrapper {
+        width: 100%;
     }
 
     .landing h1 {
