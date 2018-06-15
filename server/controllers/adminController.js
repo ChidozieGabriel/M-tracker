@@ -1,17 +1,10 @@
-import db from '../models/userModel';
+import db from '../config/config';
 
 exports.getAllRequests = (req, res) => {
   const sql = {
     text: 'SELECT * FROM requests ORDER BY date DESC',
   };
   db.query(sql, (err, result) => {
-    if (err) {
-      return res.status(500)
-        .json({
-          err,
-        })
-        .end();
-    }
     res.status(200)
       .json({
         user: req.userInfo,
@@ -27,12 +20,6 @@ exports.approveRequest = (req, res) => {
     values: ['approved', id],
   };
   db.query(query, (err, result) => {
-    if (err) {
-      return res.status(500)
-        .json({
-          err,
-        });
-    }
     if (result.rows.length > 0) {
       return res.status(200)
         .json({
@@ -49,12 +36,6 @@ exports.disapproveRequest = (req, res) => {
     values: ['disapproved', id],
   };
   db.query(query, (err, result) => {
-    if (err) {
-      return res.status(500)
-        .json({
-          err,
-        });
-    }
     if (result.rows.length > 0) {
       return res.status(200)
         .json({
@@ -71,12 +52,6 @@ exports.resolveRequest = (req, res) => {
     values: ['resolved', id],
   };
   db.query(query, (err, result) => {
-    if (err) {
-      return res.status(500)
-        .json({
-          err,
-        });
-    }
     if (result.rows.length > 0) {
       return res.status(200)
         .json({

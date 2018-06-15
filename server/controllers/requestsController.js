@@ -1,8 +1,8 @@
 import Joi from 'joi';
 
-import db from '../models/userModel';
+import db from '../config/config';
 
-import { requestValidation } from '../includes/validations';
+import { requestValidation } from '../helpers/validations';
 
 exports.getAllUserRequests = (req, res) => {
   const userId = req.userInfo.id;
@@ -27,13 +27,6 @@ exports.getSingleRequest = (req, res) => {
     values: [id, userId],
   };
   db.query(sql, (err, result) => {
-    if (err) {
-      return res.status(500)
-        .json({
-          error: err,
-        })
-        .end();
-    }
     if (result.rows.length > 0) {
       return res.status(200)
         .json({
@@ -61,12 +54,6 @@ exports.createRequest = (req, res) => {
         values: [userId, value.name, req.userInfo.email, 'pending', value.request, value.department],
       };
       db.query(query, (err, result) => {
-        if (err) {
-          return res.status(500)
-            .json({
-              err,
-            });
-        }
         res.status(201)
           .json({
             message: 'Request Created successfully',
@@ -84,10 +71,6 @@ exports.createRequest = (req, res) => {
 exports.modifyRequest = (req, res) => {
   const id = parseInt(req.params.requestId, 10);
   db.query('SELECT status FROM requests WHERE id=$1', [id], (err, response) => {
-    if (err) {
-      return res.status(500)
-        .json({ err });
-    }
     if (response.rows.length !== 0 && (response.rows[0].status === 'approved' || response.rows[0].status === 'resolved')) {
       return res.status(409)
         .json({
@@ -106,10 +89,6 @@ exports.modifyRequest = (req, res) => {
           values: [value.name, value.request, value.department, id],
         };
         db.query(query, (err, result) => {
-          if (err) {
-            return res.status(500)
-              .json({ err });
-          }
           if (result.rowCount === 1 && result.rows.length > 0) {
             return res.status(200)
               .json({ result: result.rows });
@@ -132,12 +111,6 @@ exports.modifyRequest = (req, res) => {
 exports.deleteRequest = (req, res) => {
   const id = parseInt(req.params.requestId, 10);
   db.query('SELECT status FROM requests WHERE id=$1', [id], (err, response) => {
-    if (err) {
-      return res.status(500)
-        .json({
-          err,
-        });
-    }
     if (response.rows.length !== 0 && (response.rows[0].status === 'approved' || response.rows[0].status === 'resolved')) {
       return res.status(409)
         .json({
@@ -145,12 +118,6 @@ exports.deleteRequest = (req, res) => {
         });
     }
     db.query('DELETE FROM requests WHERE id=$1', [id], (err, result) => {
-      if (err) {
-        return res.status(500)
-          .json({
-            err,
-          });
-      }
       if (result.rowCount === 0) {
         return res.status(404)
           .json({

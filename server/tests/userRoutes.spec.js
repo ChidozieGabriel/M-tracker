@@ -109,7 +109,7 @@ describe('USER CONTROLLER TESTS', () => {
     it('Should return a status code of 401 for incorrect password', (done) => {
       const User = {
         email: 'example@gmail.com',
-        password: '1234567',
+        password: '102157',
       };
       chai.request(app)
         .post('/api/v1/auth/login')

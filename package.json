@@ -2,18 +2,24 @@
   "name": "m-tracker",
   "version": "1.0.0",
   "description": "API for Maintenance-tracker",
-  "main": "app.js",
+  "main": "server/server.js",
   "scripts": {
-    "test": "cross-env NODE_ENV=test nyc --reporter=html --reporter=text mocha --require dotenv/config --require babel-register api/tests/requestRoutes.spec.js api/tests/adminRoutes.spec.js api/tests/userRoutes.spec.js --timeout 10000",
-    "start": "cross-env NODE_ENV=development nodemon -r dotenv/config -r babel-register server.js",
+    "test": "cross-env NODE_ENV=test nyc --reporter=html --reporter=text mocha server/tests/**.spec.js --require babel-register --timeout 10000",
+    "start": "cross-env NODE_ENV=development nodemon -r babel-register server/server.js",
+    "createTable" : "cross-env NODE_ENV=test node -r babel-register server/migrations/createTable.js",
+    "dropTable" : "cross-env NODE_ENV=test node -r babel-register server/migrations/dropTable.js",
+    "userSeed" : "cross-env NODE_ENV=test node -r babel-register server/migrations/user.seed.js",
+    "adminSeed" : "cross-env NODE_ENV=test node -r babel-register server/migrations/admin.seed.js",
+    "migration": "npm run dropTable && npm run createTable",
+    "seeder" : "npm run userSeed && npm run adminSeed",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
-    "pretest": "cross-env NODE_ENV=test node --require dotenv/config -r babel-register api/db/createTable.js && cross-env NODE_ENV=test node --require dotenv/config -r babel-register api/db/user.seed.js && cross-env NODE_ENV=test node --require dotenv/config -r babel-register api/db/admin.seed.js",
-    "posttest": "cross-env NODE_ENV=test node --require dotenv/config -r babel-register api/db/dropTable.js"
+    "pretest": "npm run migration && npm run seeder",
+    "posttest": ""
   },
   "nyc": {
     "exclude": [
       "**/*.spec.js",
-      "api/models/userModel.js"
+      "server/config/config.js"
     ]
   },
   "repository": {
@@ -52,11 +58,12 @@
     "nyc": "^11.8.0",
     "pg": "^7.4.3",
     "supertest": "^3.1.0",
-    "swagger-ui-express": "^3.0.9"
+    "swagger-ui-express": "^3.0.9",
+    "dotenv": "^5.0.1"
+
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
-    "cross-env": "^5.1.6",
-    "dotenv": "^5.0.1"
+    "cross-env": "^5.1.6"
   }
 }

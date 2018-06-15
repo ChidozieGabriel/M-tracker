@@ -4,9 +4,9 @@ import jwt from 'jsonwebtoken';
 
 import Joi from 'joi';
 
-import user from '../models/userModel';
+import user from '../config/config';
 
-import { signUpValidation, loginValidation } from '../includes/validations';
+import { signUpValidation, loginValidation } from '../helpers/validations';
 
 exports.signUp = (req, res) => {
   const { name, email, password } = req.body;

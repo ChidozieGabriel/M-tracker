@@ -20,45 +20,38 @@ before((done) => {
       done();
     });
 });
-
-after((done) => {
-  global.token = null;
-  done();
-});
-
-describe('SERVER', () => {
-  it('Should return 200 on root Endpoint  ', (done) => {
-    chai.request(app)
-      .get('/')
-      .end((err, res) => {
-        Expect(err)
-          .to
-          .be
-          .equal(null);
-        Expect(res.statusCode)
-          .to
-          .equal(200);
-        done();
-      });
-  });
-
-  it('Should return 404 when an invalid route is entered', (done) => {
-    chai.request(app)
-      .get('/open')
-      .end((err, res) => {
-        Expect(err)
-          .to
-          .be
-          .equal(null);
-        Expect(res.statusCode)
-          .to
-          .equal(404);
-        done();
-      });
-  });
-});
-
 describe('USER REQUEST CONTROLLER API ENDPOINT', () => {
+
+  it('Should not have access to requests on no token GET', (done) => {
+    chai.request(app)
+      .get('/api/v1/users/requests/')
+      .end((err, res) => {
+        Expect(err)
+          .to
+          .be
+          .equal(null);
+        Expect(res.statusCode)
+          .to
+          .equal(403);
+        done();
+      });
+  });
+
+  it('Should not have access to requests on invalid token GET', (done) => {
+    chai.request(app)
+      .get('/api/v1/users/requests/')
+      .set({ Authorization: 'Bearer diiiooihweohfowehfohwhioo' })
+      .end((err, res) => {
+        Expect(err)
+          .to
+          .be
+          .equal(null);
+        Expect(res.statusCode)
+          .to
+          .equal(401);
+        done();
+      });
+  });
 
   it('Should list ALL requests on /user/request GET', (done) => {
     chai.request(app)
@@ -214,5 +207,38 @@ describe('USER REQUEST CONTROLLER API ENDPOINT', () => {
           .equal(403);
       });
     done();
+  });
+});
+
+describe('SERVER', () => {
+
+  it('Should return 200 on root Endpoint  ', (done) => {
+    chai.request(app)
+      .get('/')
+      .end((err, res) => {
+        Expect(err)
+          .to
+          .be
+          .equal(null);
+        Expect(res.statusCode)
+          .to
+          .equal(200);
+        done();
+      });
+  });
+
+  it('Should return 404 when an invalid route is entered', (done) => {
+    chai.request(app)
+      .get('/api/v1/open')
+      .end((err, res) => {
+        Expect(err)
+          .to
+          .be
+          .equal(null);
+        Expect(res.statusCode)
+          .to
+          .equal(404);
+        done();
+      });
   });
 });
