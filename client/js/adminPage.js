@@ -1,5 +1,5 @@
 const requests = document.getElementById('adminRequests');
-const token = JSON.parse(sessionStorage.getItem('token'));
+const token = JSON.parse(localStorage.getItem('token'));
 const alertBox = document.getElementById('alert-box');
 const filter = document.getElementById('filter');
 
@@ -19,13 +19,10 @@ const displayTable = (apiUrl) => {
                 <tr>
                     <td>${request.requester_name}</td>
                     <td>${request.requester_email}</td>
-                    <td><span class="label label-${request.status} tableClear">${request.status}</span></td>
+                    <td class="${request.status}"><small>${request.status}</small></td>
                     <td>${request.date}</td>
-                    <td>${request.request}</td>
                     <td>
-                        <a href="#" onClick=approve(${request.id}); class="btn-sm btn-approve">Approve</a>
-                        <a href="#" onClick=disapprove(${request.id}); class="btn-sm btn-delete">Disapprove</a>
-                        <a href="#" onClick=resolve(${request.id}); class="btn-sm btn-resolve">Resolve</a>
+                        <a href="admin-view-details.html?id=${request.id}" class="btn-sm btn-primary">View</a>
                     </td>
                 </tr>
         `;

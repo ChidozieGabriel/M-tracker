@@ -3,9 +3,9 @@ const id = url.searchParams.get('id');
 const editRequest = document.getElementById('edit');
 const apiUrl = `/api/v1/users/requests/${id}`;
 const apiUrl2 = '/api/v1/users/requests/';
-const token = JSON.parse(sessionStorage.getItem('token'));
+const token = JSON.parse(localStorage.getItem('token'));
 const alertBox = document.getElementById('alert-box');
-const messageBox = document.getElementById('alert-warning');
+const editBtn = document.getElementById('edit-btn');
 
 const myHeader = new Headers({
   Authorization: `Bearer ${token.token}`,
@@ -48,24 +48,26 @@ if (token && token.auth) {
   })
     .then(res => res.json())
     .then((result) => {
-      document.getElementById('name').value = result.result[0].requester_name;
-      document.getElementById('email').value = result.result[0].requester_email;
+      let output = '';
       document.getElementById('dept').value = result.result[0].dept;
       document.getElementById('request').value = result.result[0].request;
+
+      output += `<a class="left btn btn-default" href="user-view-details.html?id=${result.result[0].id}"><i class="fa fa-arrow-left"></i> Back</a>
+                    <button type="submit" class="right btn btn-default" name="submit"><i class="fa fa-edit"></i> Edit
+                    </button>`;
+      editBtn.innerHTML = output;
     });
 
   editRequest.addEventListener('submit', (e) => {
     e.preventDefault();
     const payload = {
-      name: document.getElementById('name').value,
-      email: document.getElementById('email').value,
       dept: document.getElementById('dept').value,
       request: document.getElementById('request').value,
     };
 
     fetch(apiUrl, {
       method: 'PUT',
-      body: `name=${payload.name}&email=${payload.email}&dept=${payload.dept}&request=${payload.request}`,
+      body: `dept=${payload.dept}&request=${payload.request}`,
       headers: new Headers({
         'Content-Type': 'application/x-www-form-urlencoded',
         Authorization: `Bearer ${token.token}`,
@@ -74,11 +76,8 @@ if (token && token.auth) {
       .then(res => res.json())
       .then((data) => {
         if (data.error) {
-          messageBox.innerHTML = `<p>${data.error}</p>`;
-          messageBox.style.display = 'block';
-          setTimeout(() => {
-            messageBox.style.display = 'none';
-          }, 10000);
+          alertBox.innerHTML = `${data.error}`;
+          alertBox.style.display = 'block';
         } else if (data.message !== '') {
           window.location.href = 'user.html?success=true&type=1';
         }

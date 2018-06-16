@@ -1,6 +1,6 @@
 const requests = document.getElementById('userRequests');
 const alertBox = document.getElementById('alert-box');
-const token = JSON.parse(sessionStorage.getItem('token'));
+const token = JSON.parse(localStorage.getItem('token'));
 
 const url = new URL(window.location.href);
 const successMessage = url.searchParams.get('success');
@@ -67,15 +67,13 @@ if (token && token.auth) {
                     <td>${count += 1}</td>
                     <td>${request.requester_name}</td>
                     <td>${request.requester_email}</td>
-                    <td><span class="label label-${request.status} tableClear">${request.status}</span></td>
+                    <td class="${request.status}"><small>${request.status}</small></td>
                     <td>${request.date}</td>
                     <td>
-                        <a href="user-view-details.html?id=${request.id}" class="btn-sm btn-primary">View</a>
-                        <a href="edit-request.html?id=${request.id}" class="btn-sm btn-edit">Edit</a>
-                        <a href="javascript:void(0)" onClick=deleteData(${request.id}); class="btn-sm btn-delete">Delete</a>
+                        <a href="user-view-details.html?id=${request.id}" class="btn-sm btn-primary" title="Click to view request"><i class="fa fa-eye"></i></a>
+                        <a href="javascript:void(0)" class="btn-sm btn-delete" onClick='deleteData(${request.id})' title="Click to delete request"><i class="fa fa-trash"></i></a>
                     </td>
-                </tr>
-        `;
+                </tr>`;
         });
         requests.innerHTML = output;
       } else {
@@ -99,7 +97,7 @@ if (token && token.auth) {
     <div class="wrapper" style="margin-top: 200px">
         <div class="alert" id="alert-message">
             <p>
-                Oops! Sorry, Your session has ended, therefore You are not Authorized to view this page, <strong>kindly log in!</strong>
+                Oops! Sorry, You are not Authorized to view this page, <strong>kindly log in!</strong>
             </p>
         </div>
     </div>
@@ -120,7 +118,7 @@ if (token && token.auth) {
         </nav>
     </header>
     <div class="wrapper" style="margin-top: 200px">
-        <div class="alert" id="alert-message">
+        <div class="alert" id="alert-warning">
             <p>
                 Oops! Sorry, You do not have access to this page!!
             </p>
@@ -130,7 +128,7 @@ if (token && token.auth) {
         <p>&copy;2018 VeeqTor</p>
     </footer>
       `;
-  document.getElementById('alert-message').style.display = 'block';
+  document.getElementById('alert-warning').style.display = 'block';
 }
 
 function deleteData(requestId) {

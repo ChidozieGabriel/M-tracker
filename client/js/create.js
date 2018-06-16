@@ -1,8 +1,8 @@
-const token = JSON.parse(sessionStorage.getItem('token'));
-const alertBox = document.getElementById('alert-box');
+const token = JSON.parse(localStorage.getItem('token'));
+const messageBox = document.getElementById('alert-box');
 const apiUrl = '/api/v1/users/requests/';
 const createRequest = document.getElementById('createRequest');
-const messageBox = document.getElementById('alert-warning');
+const alertBox = document.getElementById('alert-box');
 
 
 if (token && token.auth) {
@@ -42,13 +42,12 @@ if (token && token.auth) {
   createRequest.addEventListener('submit', (e) => {
     e.preventDefault();
     const payload = {
-      name: document.getElementById('name').value,
       dept: document.getElementById('dept').value,
       request: document.getElementById('request').value,
     };
     fetch(apiUrl, {
       method: 'POST',
-      body: `name=${payload.name}&dept=${payload.dept}&request=${payload.request}`,
+      body: `dept=${payload.dept}&request=${payload.request}`,
       headers: new Headers({
         'Content-Type': 'application/x-www-form-urlencoded',
         Authorization: `Bearer ${token.token}`,
@@ -57,10 +56,10 @@ if (token && token.auth) {
       .then(res => res.json())
       .then((data) => {
         if (data.error) {
-          messageBox.innerHTML = `<p>${data.error}</p>`;
-          messageBox.style.display = 'block';
+          alertBox.innerHTML = `${data.error}`;
+          alertBox.style.display = 'block';
           setTimeout(() => {
-            messageBox.style.display = 'none';
+            alertBox.style.display = 'none';
           }, 10000);
         } else if (data.message !== '') {
           window.location.href = 'user.html?success=true&type=2';

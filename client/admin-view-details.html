@@ -18,55 +18,16 @@
 <div class="wrapper">
     <div class="request-wrapper">
         <div class="list-header">
-            <h3>Request Details</h3>
+            <h3>Details</h3>
         </div>
         <div class="card">
-            <span class="alert alert-warning">Error message</span>
-            <span class="alert alert-success">Error message</span>
+            <span id="alert-box" class="alert alert-warning">Error message</span>
             <div class="table-res">
                 <table class="table">
-                    <tbody>
-                    <tr>
-                        <td><i>Created&nbsp;by:</i></td>
-                        <td>John Doe</td>
-                    </tr>
-                    <tr>
-                        <td><i>Email:</i></td>
-                        <td>john@example.com</td>
-                    </tr>
-                    <tr>
-                        <td><i>Date&nbsp;created:</i></td>
-                        <td>2-Jan-2022</td>
-                    </tr>
-                    <tr>
-                        <td><i>Department:</i></td>
-                        <td>Accounts department</td>
-                    </tr>
-                    <tr>
-                        <td><i>Status:</i></td>
-                        <td class="approved">Approved</td>
-                    </tr>
-                    <tr>
-                        <td><i>Request:</i></td>
-                        <td>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Tempora deserunt nisi dolor ex
-                                unde
-                                repellendus ad
-                                quia eligendi, aspernatur doloribus, incidunt porro odio iusto! Harum velit similique
-                                aliquam
-                            </p>
-                        </td>
-                    </tr>
-                    </tbody>
+                    <tbody id="user-details"></tbody>
                 </table>
             </div>
-            <ul class="admin-btn">
-               <li><a href="admin.html" class="btn btn-approve disabled" title="Click to go back"><i class="fa fa-thumbs-up"></i> Approve</a></li>
-               <li><a href="admin.html" class="btn btn-edit" title="Click to go back"><i class="fa fa-check-square"></i> Resolve</a></li>
-                <li><a href="admin.html" class="btn btn-delete" title="Click to go back"><i class="fa fa-thumbs-down"></i> Disapprove</a></li>
-                <li><a href="admin.html" class="btn btn-default" title="Click to go back"><i class="fa fa-arrow-left"></i> Back</a></li>
-            </ul>
-            <!--<div class="clearfix"></div>-->
+            <ul id="admin-btn" class="admin-btn"></ul>
         </div>
     </div> <!--End of wrapper-->
 
@@ -74,5 +35,6 @@
 <footer>
     <p>&copy;2018 VeeqTor</p>
 </footer>
+<script src="js/adminReqDetails.js"></script>
 </body>
 </html>

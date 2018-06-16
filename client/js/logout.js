@@ -2,6 +2,6 @@ const logout = document.getElementById('logout');
 
 logout.addEventListener('click', (e) => {
   e.preventDefault();
-  sessionStorage.clear();
+  localStorage.removeItem('token');
   window.location.href = 'index.html';
 });

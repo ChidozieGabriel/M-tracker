@@ -7,36 +7,31 @@
     <link rel="stylesheet" type="text/css" href="css/style.css">
 </head>
 <body>
-<div id="alert-box">
+<div id="aler-box">
     <header>
         <a class="brand" href="#">M-Tracker</a>
         <nav class="nav-bar">
             <ul>
                 <li><a class="btn btn-default" id="logout" href="javascript:void(0)">Logout</a></li>
-                <li><a class="btn btn-default" href="user.html">Back</a></li>
             </ul>
         </nav>
     </header>
+
     <div class="wrapper">
-        <h3>Create new request</h3>
-        <form id="edit" method="post">
-            <span id="alert-warning"></span>
-            <div class="input-group">
-                <!--<label for='name'>Name: </label>-->
-                <input type="text" id="name" name="name" placeholder="Enter your name"/>
-                <!--<label for="email">E-mail: </label>-->
-                <input type="email" id="email" name="email" placeholder="Enter your email" disabled/>
-                <!--<label for="dept">Department: </label>-->
-                <input type="text" id="dept" name="dept" placeholder="Enter the department"/><br>
-                <!--<label for="request">Request: </label>-->
-                <textarea rows="5" id="request" name="request"
-                          placeholder="Write the details of the request"></textarea>
-            </div>
-            <div class="input-group">
-                <input type="submit" class="btn btn-default" name="submit" value="Update request"/>
-            </div>
-        </form>
-    </div> <!--End of wrapper-->
+        <div class="request-wrapper">
+            <h3>Edit request</h3>
+            <form id="edit" method="post">
+                <span id="alert-box" class="alert alert-warning"></span>
+                <div class="input-group">
+                    <input type="text" id="dept" name="dept" placeholder="Enter the department"/><br>
+                    <textarea rows="5" id="request" name="request"
+                              placeholder="Write the details of the request"></textarea>
+                </div>
+                <div id="edit-btn"></div>
+                <div class="clearfix"></div>
+            </form>
+        </div> <!--End of wrapper-->
+    </div>
     <footer>
         <p>&copy;2018 VeeqTor</p>
     </footer>

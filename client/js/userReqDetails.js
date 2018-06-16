@@ -20,24 +20,24 @@ if (token && token.auth) {
     .then((data) => {
       if (data.error) {
         alertBox.innerHTML = `
-    <header>
-        <a class="brand" href="#">M-Tracker</a>
-        <nav class="nav-bar">
-            <ul>
-                <li><a class="btn btn-default" href="../sign-in.html">Log in</a></li>
-            </ul>
-        </nav>
-    </header>
-    <div class="wrapper" style="margin-top: 200px">
-        <div class="alert" id="alert-message">
-            <p>
-                Oops! Sorry, Your session has ended, therefore You are not Authorized to view this page, <strong>kindly log in!</strong>
-            </p>
-        </div>
-    </div>
-    <footer>
-        <p>&copy;2018 VeeqTor</p>
-    </footer>
+                <header>
+                    <a class="brand" href="#">M-Tracker</a>
+                    <nav class="nav-bar">
+                        <ul>
+                            <li><a class="btn btn-default" href="../sign-in.html">Log in</a></li>
+                        </ul>
+                    </nav>
+                </header>
+                <div class="wrapper" style="margin-top: 200px">
+                    <div class="alert" id="alert-message">
+                        <p>
+                            Oops! Sorry, Your session has ended, therefore You are not Authorized to view this page, <strong>kindly log in!</strong>
+                        </p>
+                    </div>
+                </div>
+                <footer>
+                    <p>&copy;2018 VeeqTor</p>
+                </footer>
       `;
         document.getElementById('alert-message').style.display = 'block';
       }
