@@ -1,11 +1,7 @@
 import Joi from 'joi';
 
-
-exports.requestValidation = Joi.object()
+export const requestValidation = Joi.object()
   .keys({
-    name: Joi.string()
-      .trim()
-      .required(),
     department: Joi.string()
       .trim()
       .required(),
@@ -17,7 +13,7 @@ exports.requestValidation = Joi.object()
 
 
   });
-exports.signUpValidation = Joi.object()
+export const signUpValidation = Joi.object()
   .keys({
     name: Joi.string()
       .min(3)
@@ -35,8 +31,7 @@ exports.signUpValidation = Joi.object()
       .max(8)
       .required(),
   });
-
-exports.loginValidation = Joi.object()
+export const loginValidation = Joi.object()
   .keys({
     email: Joi.string()
       .email()

@@ -4,7 +4,7 @@ import db from '../config/config';
 
 import { requestValidation } from '../helpers/validations';
 
-exports.getAllUserRequests = (req, res) => {
+export const getAllUserRequests = (req, res) => {
   const userId = req.userInfo.id;
   const sql = {
     text: 'SELECT * FROM requests WHERE user_id=$1 ORDER BY id ASC',
@@ -19,14 +19,14 @@ exports.getAllUserRequests = (req, res) => {
   });
 };
 
-exports.getSingleRequest = (req, res) => {
+export const getSingleRequest = (req, res) => {
   const userId = req.userInfo.id;
   const id = parseInt(req.params.requestId, 10);
-  const sql = {
+  const singleSelectQuery = {
     text: 'SELECT * FROM requests WHERE id=$1 AND user_id=$2 ORDER BY id ASC',
     values: [id, userId],
   };
-  db.query(sql, (err, result) => {
+  db.query(singleSelectQuery, (err, result) => {
     if (result.rows.length > 0) {
       return res.status(200)
         .json({
@@ -40,24 +40,30 @@ exports.getSingleRequest = (req, res) => {
   });
 };
 
-exports.createRequest = (req, res) => {
-  const { name, dept, request } = req.body;
-  Joi.validate({
-    name,
-    department: dept,
-    request,
-  }, requestValidation, (err, value) => {
+export const createRequest = (req, res) => {
+  const { dept, request } = req.body;
+  Joi.validate({ department: dept, request }, requestValidation, (err, value) => {
     if (err === null) {
       const userId = req.userInfo.id;
-      const query = {
-        text: 'INSERT INTO requests(user_id, requester_name, requester_email, date, status, request, dept) VALUES($1, $2, $3, NOW() ,$4, $5, $6)',
-        values: [userId, value.name, req.userInfo.email, 'pending', value.request, value.department],
+      const getUserQuery = {
+        text: `SELECT email, name, admin FROM users WHERE id=${userId}`,
       };
-      db.query(query, (err, result) => {
-        res.status(201)
-          .json({
-            message: 'Request Created successfully',
-          });
+      db.query(getUserQuery, (err, result) => {
+        const createRequestQuery = {
+          text: 'INSERT INTO ' +
+          'requests(user_id, requester_name, ' +
+          'requester_email, date, status, request, dept)' +
+          ' VALUES($1, $2, $3, NOW() ,$4, $5, $6)',
+          values: [userId, result.rows[0].name, result.rows[0].email,
+            0, value.request, value.department],
+        };
+        db.query(createRequestQuery, (err, result) => {
+          res.status(201)
+            .json({
+              status: true,
+              message: 'Request Created successfully',
+            });
+        });
       });
     } else {
       res.status(400)
@@ -68,7 +74,7 @@ exports.createRequest = (req, res) => {
   });
 };
 
-exports.modifyRequest = (req, res) => {
+export const modifyRequest = (req, res) => {
   const id = parseInt(req.params.requestId, 10);
   db.query('SELECT status FROM requests WHERE id=$1', [id], (err, response) => {
     if (response.rows.length !== 0 && (response.rows[0].status === 'approved' || response.rows[0].status === 'resolved')) {
@@ -77,18 +83,15 @@ exports.modifyRequest = (req, res) => {
           error: 'Cannot edit!, Request has already been approved',
         });
     }
-    const { name, dept, request } = req.body;
-    Joi.validate({
-      name,
-      department: dept,
-      request,
-    }, requestValidation, (err, value) => {
+    const { dept, request } = req.body;
+    Joi.validate({ department: dept, request }, requestValidation, (err, value) => {
       if (err === null) {
-        const query = {
-          text: 'UPDATE requests SET requester_name=$1, date=NOW(), request=$2, dept=$3 WHERE id=$4 RETURNING *',
-          values: [value.name, value.request, value.department, id],
+        const updateQuery = {
+          text: 'UPDATE requests SET ' +
+          'date=NOW(), request=$1, dept=$2 WHERE id=$3 RETURNING *',
+          values: [value.request, value.department, id],
         };
-        db.query(query, (err, result) => {
+        db.query(updateQuery, (err, result) => {
           if (result.rowCount === 1 && result.rows.length > 0) {
             return res.status(200)
               .json({ result: result.rows });
@@ -108,7 +111,7 @@ exports.modifyRequest = (req, res) => {
   });
 };
 
-exports.deleteRequest = (req, res) => {
+export const deleteRequest = (req, res) => {
   const id = parseInt(req.params.requestId, 10);
   db.query('SELECT status FROM requests WHERE id=$1', [id], (err, response) => {
     if (response.rows.length !== 0 && (response.rows[0].status === 'approved' || response.rows[0].status === 'resolved')) {
