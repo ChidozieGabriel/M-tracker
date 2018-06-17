@@ -1,21 +1,20 @@
 language: node_js
 
-#services:
-#  - postgresql
+services:
+  - postgresql
 
 node_js:
- - "8"
- 
-#before_script:
-#  - psql -c 'drop database if exists travis;' -U postgres
-#  - psql -c 'create database travis;' -U postgres
+ - "stable"
 
 before_install:
-  - npm install -g mocha
+#  - npm install -g mocha
   - npm install
 
+before_script:
+  - psql -c 'create database travis_test;' -U postgres
+
 script:
- - npm run test
+ - npm test
 
 after_success:
  - npm run coverage
