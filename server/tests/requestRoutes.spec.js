@@ -139,8 +139,7 @@ describe('USER REQUEST CONTROLLER API ENDPOINT', () => {
 
   it('should get an error when a bad request is sent on user/requests/  POST', (done) => {
     const data1 = {
-      name: '',
-      dept: 'Engineering HQ',
+      dept: '',
       request: 'Lorem ipsum owjjfndfnmnxnfj Lorem ipsum Lorem',
     };
     chai.request(app)
