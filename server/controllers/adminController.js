@@ -13,22 +13,17 @@ exports.getAllRequests = (req, res) => {
   });
 };
 
-exports.getSingleRequest = (req, res) => {
+exports.getOneRequest = (req, res) => {
   const id = parseInt(req.params.requestId, 10);
   const sql = {
-    text: 'SELECT * FROM requests WHERE id=$1 ORDER BY id ASC',
+    text: 'SELECT * FROM requests WHERE id=$1 ORDER BY date ASC',
     values: [id],
   };
   db.query(sql, (err, result) => {
-    if (result.rows.length > 0) {
-      return res.status(200)
-        .json({
-          result: result.rows,
-        });
-    }
-    res.status(404)
+    return res.status(200)
       .json({
-        message: 'Request not found',
+        user: req.userInfo,
+        result: result.rows,
       });
   });
 };
