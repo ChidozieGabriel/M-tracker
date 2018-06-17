@@ -1,5 +1,3 @@
-import Joi from 'joi';
-
 import Validator from 'validatorjs';
 
 import db from '../config/config';
@@ -112,7 +110,7 @@ export const modifyRequest = (req, res) => {
   });
 };
 
-  export const deleteRequest = (req, res) => {
+export const deleteRequest = (req, res) => {
     const id = parseInt(req.params.requestId, 10);
     db.query('SELECT status FROM requests WHERE id=$1', [id], (err, response) => {
       if (response.rows.length !== 0 && (response.rows[0].status === 'approved' || response.rows[0].status === 'resolved')) {
