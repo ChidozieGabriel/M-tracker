@@ -7,7 +7,7 @@ import {
 
 import {
   approveRequest,
-  disapproveRequest, getAllRequests,
+  disapproveRequest, getAllRequests, getSingleRequest,
   resolveRequest,
 } from '../../controllers/adminController';
 import userAuth from '../../middleware/userAuth';
@@ -16,6 +16,8 @@ import verifyToken from '../../middleware/verifyToken';
 const admin = express.Router();
 
 admin.get('/requests', verifyToken, userAuth, isAdmin, getAllRequests);
+
+admin.get('/requests/:requestId', verifyToken, userAuth, isAdmin, getSingleRequest);
 
 admin.get('/requests/pending', verifyToken, userAuth, isAdmin, getAllPendingRequests);
 

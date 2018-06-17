@@ -13,6 +13,26 @@ exports.getAllRequests = (req, res) => {
   });
 };
 
+exports.getSingleRequest = (req, res) => {
+  const id = parseInt(req.params.requestId, 10);
+  const sql = {
+    text: 'SELECT * FROM requests WHERE id=$1 ORDER BY id ASC',
+    values: [id],
+  };
+  db.query(sql, (err, result) => {
+    if (result.rows.length > 0) {
+      return res.status(200)
+        .json({
+          result: result.rows,
+        });
+    }
+    res.status(404)
+      .json({
+        message: 'Request not found',
+      });
+  });
+};
+
 exports.approveRequest = (req, res) => {
   const id = parseInt(req.params.requestId, 10);
   const query = {
