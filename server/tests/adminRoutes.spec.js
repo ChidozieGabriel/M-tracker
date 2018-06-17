@@ -77,6 +77,22 @@ describe('ADMIN ROUTES', () => {
     done();
   });
 
+  it('Should list ONE requests on /request/:requestId GET', (done) => {
+    chai.request(app)
+      .get('/api/v1/requests/admin/1')
+      .set({ Authorization: 'Bearer ' + global.tok })
+      .end((err, res) => {
+        Expect(res.statusCode)
+          .to
+          .equal(200);
+        Expect(res)
+          .to
+          .be
+          .an('object');
+      });
+    done();
+  });
+
   it('Should list ALL requests ordered by resolved', (done) => {
     chai.request(app)
       .get('/api/v1/requests/resolved')
