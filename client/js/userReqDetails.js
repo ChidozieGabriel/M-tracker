@@ -78,11 +78,12 @@ if (token && token.auth) {
                       </tr>`;
       const output2 = ` 
                     <div>
-                       <a href="user.html" class="left btn btn-primary" title="Click to edit request"><i
+                       <a href="user.html" class="left btn btn-primary" title="Click to go back"><i
                                 class="fa fa-arrow-left"></i> Back</a>
                     </div>
                     <div>
-                        <a href="edit-request.html?id=${result.result[0].id}" class="right btn btn-primary" disabled
+                        <a href="edit-request.html?id=${result.result[0].id}" 
+                        class="right btn btn-primary ${result.result[0].status === 'resolved' || result.result[0].status === 'approved' ? 'disabled' : ''}"
                            title="Click to edit request"><i
                                 class="fa fa-edit"></i> Edit</a>
                     </div>

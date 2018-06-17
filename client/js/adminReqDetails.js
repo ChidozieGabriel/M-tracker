@@ -45,10 +45,20 @@ fetch(apiUrl, {
                           </td>
                       </tr>`;
     const output2 = ` 
-                    <li><a href="javascript:void(0)" class="btn btn-approve disabled" title="Click to go back"><i class="fa fa-thumbs-up"></i> Approve</a></li>
-                    <li><a href="javascript:void(0)" class="btn btn-edit" title="Click to go back"><i class="fa fa-check-square"></i> Resolve</a></li>
-                    <li><a href="javascript:void(0)" class="btn btn-delete" title="Click to go back"><i class="fa fa-thumbs-down"></i> Disapprove</a></li>
-                    <li><a href="../admin.html" class="btn btn-default" title="Click to go back"><i class="fa fa-arrow-left"></i> Back</a></li>
+                    <li><a href="javascript:void(0)" onclick='approve(${result.result[0].id})'
+                        class="btn btn-approve ${result.result[0].status === 'resolved' || result.result[0].status === 'approved' ? 'disabled' : ''}"
+                        title="Click to approve"><i class="fa fa-thumbs-up"></i> Approve</a>
+                     </li>
+                    <li><a href="javascript:void(0)" onclick='resolve(${result.result[0].id})' 
+                        class="btn btn-edit ${result.result[0].status === 'disapproved' || result.result[0].status === 'resolved' ? 'disabled' : ''}" 
+                        title="Click to resolve"><i class="fa fa-check-square"></i> Resolve</a>
+                    </li>
+                    <li><a href="javascript:void(0)" onclick='disapprove(${result.result[0].id})'
+                        class="btn btn-delete ${result.result[0].status === 'resolved' || result.result[0].status === 'approved' ? 'disabled' : ''}" 
+                        title="Click to disapprove"><i class="fa fa-thumbs-down"></i> Disapprove</a></li>
+                    <li><a href="../admin.html" class="btn btn-default" 
+                        title="Click to go back"><i class="fa fa-arrow-left"></i> Back</a>
+                    </li>
       `;
 
     reqBtn.innerHTML = output2;
@@ -56,3 +66,51 @@ fetch(apiUrl, {
   })
   .catch(error => error);
 
+
+function approve(requestId) {
+  const res = confirm('ARE YOU SURE?');
+  if (res) {
+    fetch(`api/v1/requests/${requestId}/approve`, {
+      method: 'PUT',
+      headers: myHeaders,
+    })
+      .then(resp => resp.json())
+      .then((data) => {
+        if (data.message !== '') {
+          window.location.href = 'admin.html';
+        }
+      });
+  }
+}
+
+function disapprove(requestId) {
+  const res = confirm('ARE YOU SURE?');
+  if (res) {
+    fetch(`api/v1/requests/${requestId}/disapprove`, {
+      method: 'PUT',
+      headers: myHeaders,
+    })
+      .then(resp => resp.json())
+      .then((data) => {
+        if (data.message !== '') {
+          window.location.href = 'admin.html';
+        }
+      });
+  }
+}
+
+function resolve(requestId) {
+  const res = confirm('ARE YOU SURE?');
+  if (res) {
+    fetch(`api/v1/requests/${requestId}/resolve`, {
+      method: 'PUT',
+      headers: myHeaders,
+    })
+      .then(resp => resp.json())
+      .then((data) => {
+        if (data.message !== '') {
+          window.location.reload(true);
+        }
+      });
+  }
+}
