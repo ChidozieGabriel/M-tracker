@@ -1,6 +1,6 @@
 import db from '../config/config';
 
-exports.getAllRequests = (req, res) => {
+export const getAllRequests = (req, res) => {
   const sql = {
     text: 'SELECT * FROM requests ORDER BY date DESC',
   };
@@ -13,14 +13,14 @@ exports.getAllRequests = (req, res) => {
   });
 };
 
-exports.getOneRequest = (req, res) => {
+export const getOneRequest = (req, res) => {
   const id = parseInt(req.params.requestId, 10);
   const sql = {
     text: 'SELECT * FROM requests WHERE id=$1 ORDER BY date ASC',
     values: [id],
   };
   db.query(sql, (err, result) => {
-    return res.status(200)
+    res.status(200)
       .json({
         user: req.userInfo,
         result: result.rows,
@@ -28,50 +28,44 @@ exports.getOneRequest = (req, res) => {
   });
 };
 
-exports.approveRequest = (req, res) => {
+export const approveRequest = (req, res) => {
   const id = parseInt(req.params.requestId, 10);
-  const query = {
+  const approvedQuery = {
     text: 'UPDATE requests SET status=$1 WHERE id=$2 RETURNING *',
-    values: ['approved', id],
+    values: [1, id],
   };
-  db.query(query, (err, result) => {
-    if (result.rows.length > 0) {
-      return res.status(200)
-        .json({
-          result: result.rows,
-        });
-    }
+  db.query(approvedQuery, (err, result) => {
+    res.status(200)
+      .json({
+        result: result.rows,
+      });
   });
 };
 
-exports.disapproveRequest = (req, res) => {
+export const disapproveRequest = (req, res) => {
   const id = parseInt(req.params.requestId, 10);
-  const query = {
+  const disapproveQuery = {
     text: 'UPDATE requests SET status=$1 WHERE id=$2 RETURNING *',
-    values: ['disapproved', id],
+    values: [2, id],
   };
-  db.query(query, (err, result) => {
-    if (result.rows.length > 0) {
-      return res.status(200)
-        .json({
-          result: result.rows,
-        });
-    }
+  db.query(disapproveQuery, (err, result) => {
+    res.status(200)
+      .json({
+        result: result.rows,
+      });
   });
 };
 
-exports.resolveRequest = (req, res) => {
+export const resolveRequest = (req, res) => {
   const id = parseInt(req.params.requestId, 10);
-  const query = {
+  const resolvedQuery = {
     text: 'UPDATE requests SET status=$1 WHERE id=$2 RETURNING *',
-    values: ['resolved', id],
+    values: [3, id],
   };
-  db.query(query, (err, result) => {
-    if (result.rows.length > 0) {
-      return res.status(200)
-        .json({
-          result: result.rows,
-        });
-    }
+  db.query(resolvedQuery, (err, result) => {
+    res.status(200)
+      .json({
+        result: result.rows,
+      });
   });
 };
