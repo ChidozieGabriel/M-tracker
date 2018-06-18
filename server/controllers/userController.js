@@ -20,7 +20,7 @@ export const signUp = (req, res) => {
       if (result.rows.length > 0) {
         return res.status(409)
           .json({
-            error: 'Email already exists',
+            errors: 'Email already exists',
           });
       }
       bcrypt.hash(password, 10, (err, hash) => {
@@ -32,14 +32,13 @@ export const signUp = (req, res) => {
           if (result.rowCount === 1) {
             const token = jwt.sign({
               id: result.rows[0].id,
-              email: result.rows[0].email,
-              name: result.rows[0].name,
+              admin: result.rows[0].admin,
             }, process.env.JWT_KEY, {
               expiresIn: '1hr',
             });
             res.status(201)
               .json({
-                auth: true,
+                auth: jwt.decode(token),
                 token,
               })
               .end();
@@ -73,14 +72,14 @@ export const login = (req, res) => {
             });
             res.status(200)
               .json({
-                auth: true,
+                auth: jwt.decode(token),
                 token,
               })
               .end();
           } else {
             res.status(401)
               .json({
-                error: 'Login Authentication failed',
+                errors: 'Login Authentication failed',
               })
               .end();
           }
@@ -88,7 +87,7 @@ export const login = (req, res) => {
       } else {
         res.status(401)
           .json({
-            error: 'User not found',
+            errors: 'Login Authentication failed',
           })
           .end();
       }

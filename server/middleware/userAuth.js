@@ -5,7 +5,7 @@ export default (req, res, next) => {
     if (err) {
       res.status(401)
         .json({
-          error: 'Authentication failed',
+          errors: 'Authentication failed',
         });
     }
     req.userInfo = decoded;
