@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>M-Tracker</title>
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+</head>
+<body>
+<div id="error-message">
+    <header>
+        <a class="brand" href="#">M-Tracker</a>
+        <nav class="nav-bar">
+            <ul>
+                <li><a class="btn btn-default" id="logout" href="javascript:void(0)">Logout</a></li>
+                <li><a class="btn btn-default" href="user.html">Back</a></li>
+
+            </ul>
+        </nav>
+    </header>
+    <div class="wrapper">
+        <div class="request-wrapper">
+            <h3>Create new request</h3>
+            <span id="alert-box" class="alert alert-warning"></span>
+            <form id="createRequest" method="post">
+                <div class="input-group">
+                    <input type="text" id="dept" name="dept" placeholder="Enter the department"/>
+                    <span id="error-dept" class="error"></span>
+                    <br>
+                    <textarea rows="5" id="request" name="request"
+                              placeholder="Write the details of the request"></textarea>
+                    <span id="error-request" class="error"></span>
+                </div>
+                <div>
+                    <a class="left btn btn-default" href="user.html"><i class="fa fa-arrow-left"></i> Back</a>
+                </div>
+                <div>
+                    <button type="submit" class="right btn btn-default" name="submit"><i class="fa fa-plus"></i> Create
+                    </button>
+                </div>
+                <div class="clearfix"></div>
+            </form>
+        </div>
+    </div> <!--End of wrapper-->
+    <footer>
+        <p>&copy;2018 VeeqTor</p>
+    </footer>
+</div>
+<script src="js/create.js"></script>
+<script src="js/logout.js"></script>
+</body>
+</html>
