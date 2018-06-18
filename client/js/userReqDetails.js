@@ -3,52 +3,42 @@ const url = new URL(urlString);
 const param = url.searchParams.get('id');
 const token = JSON.parse(localStorage.getItem('token'));
 const apiUrl = `/api/v1/users/requests/${param}`;
-const apiUrl2 = '/api/v1/users/requests';
 const reqDetails = document.getElementById('user-details');
 const reqBtn = document.getElementById('edit-btn');
-const alertBox = document.getElementById('alert-box');
+const errorMessage = document.getElementById('error-message');
 
 const myHeaders = new Headers({
-  Authorization: `Bearer ${token.token}`,
+  Authorization: `Bearer ${token}`,
 });
 
-if (token && token.auth) {
-  fetch(apiUrl2, {
-    headers: myHeaders,
-  })
-    .then(res => res.json())
-    .then((data) => {
-      if (data.error) {
-        alertBox.innerHTML = `
-                <header>
-                    <a class="brand" href="#">M-Tracker</a>
-                    <nav class="nav-bar">
-                        <ul>
-                            <li><a class="btn btn-default" href="../sign-in.html">Log in</a></li>
-                        </ul>
-                    </nav>
-                </header>
-                <div class="wrapper" style="margin-top: 200px">
-                    <div class="alert" id="alert-message">
-                        <p>
-                            Oops! Sorry, Your session has ended, therefore You are not Authorized to view this page, <strong>kindly log in!</strong>
-                        </p>
-                    </div>
-                </div>
-                <footer>
-                    <p>&copy;2018 VeeqTor</p>
-                </footer>
+fetch(apiUrl, {
+  headers: myHeaders,
+})
+  .then(res => res.json())
+  .then((result) => {
+    if (result.errors) {
+      errorMessage.innerHTML = `
+    <header>
+        <a class="brand" href="#">M-Tracker</a>
+        <nav class="nav-bar">
+            <ul>
+                <li><a class="btn btn-default" href="../sign-in.html">Log in</a></li>
+            </ul>
+        </nav>
+    </header>
+    <div class="wrapper" style="margin-top: 200px">
+        <div class="alert alert-warning" id="403-error">
+            <p>
+                Oops! Sorry, You cannot access this page at the moment!!
+            </p>
+        </div>
+    </div>
+    <footer>
+        <p>&copy;2018 VeeqTor</p>
+    </footer>
       `;
-        document.getElementById('alert-message').style.display = 'block';
-      }
-    })
-    .catch(error => error);
-
-  fetch(apiUrl, {
-    headers: myHeaders,
-  })
-    .then(res => res.json())
-    .then((result) => {
+      document.getElementById('403-error').style.display = 'block';
+    } else {
       const output = `
                       <tr>
                           <td><i>Created&nbsp;by:</i></td>
@@ -68,7 +58,9 @@ if (token && token.auth) {
                       </tr>
                       <tr>
                           <td><i>Status:</i></td>
-                          <td class="${result.result[0].status}">${result.result[0].status}</td>
+                          <td class="${ result.result[0].status === 0 ? 'pending' : ''}">
+                            ${result.result[0].status}
+                          </td>
                       </tr>
                       <tr>
                           <td><i>Request:</i></td>
@@ -83,37 +75,13 @@ if (token && token.auth) {
                     </div>
                     <div>
                         <a href="edit-request.html?id=${result.result[0].id}" 
-                        class="right btn btn-primary ${result.result[0].status === 'resolved' || result.result[0].status === 'approved' ? 'disabled' : ''}"
-                           title="Click to edit request"><i
-                                class="fa fa-edit"></i> Edit</a>
+                           class="right btn btn-primary ${result.result[0].status === '1' || result.result[0].status === '3' ? 'disabled' : ''}"
+                           title="Click to edit request">
+                           <i class="fa fa-edit"></i> Edit</a>
                     </div>
                     <div class="clearfix"></div>
       `;
-
       reqBtn.innerHTML = output2;
       reqDetails.innerHTML = output;
-    });
-} else {
-  alertBox.innerHTML = `
-    <header>
-        <a class="brand" href="#">M-Tracker</a>
-        <nav class="nav-bar">
-            <ul>
-                <li><a class="btn btn-default" href="../sign-in.html">Log in</a></li>
-            </ul>
-        </nav>
-    </header>
-    <div class="wrapper" style="margin-top: 200px">
-        <div class="alert" id="alert-message">
-            <p>
-                Oops! Sorry, You do not have access to this page!!
-            </p>
-        </div>
-    </div>
-    <footer>
-        <p>&copy;2018 VeeqTor</p>
-    </footer>
-      `;
-  document.getElementById('alert-message').style.display = 'block';
-}
-
+    }
+  });

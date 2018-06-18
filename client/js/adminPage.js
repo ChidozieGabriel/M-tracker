@@ -1,20 +1,44 @@
 const requests = document.getElementById('adminRequests');
 const token = JSON.parse(localStorage.getItem('token'));
-const alertBox = document.getElementById('alert-box');
+const errorMessage = document.getElementById('error-message');
 const filter = document.getElementById('filter');
 
 const displayTable = (apiUrl) => {
   const myHeader = new Headers({
-    Authorization: `Bearer ${token.token}`,
+    Authorization: `Bearer ${token}`,
   });
   fetch(apiUrl, {
     headers: myHeader,
   })
     .then(res => res.json())
     .then((data) => {
-      let output = '';
-      data.result.forEach((request) => {
-        output += `
+      if (data.message || data.errors) {
+        errorMessage.innerHTML = `
+    <header>
+        <a class="brand" href="#">M-Tracker</a>
+        <nav class="nav-bar">
+            <ul>
+                <li><a class="btn btn-default" href="../sign-in.html">Log in</a></li>
+            </ul>
+        </nav>
+    </header>
+    <div class="wrapper" style="margin-top: 200px">
+        <div class="alert alert-warning" id="403-error">
+            <p>
+                Oops! Sorry, You cannot access this page at the moment!,<br>
+                 <strong>Kindly login as an admin</strong>
+            </p>
+        </div>
+    </div>
+    <footer>
+        <p>&copy;2018 VeeqTor</p>
+    </footer>
+      `;
+        document.getElementById('403-error').style.display = 'block';
+      } else {
+        let output = '';
+        data.result.forEach((request) => {
+          output += `
                 <tr>
                     <td>${request.requester_name}</td>
                     <td>${request.requester_email}</td>
@@ -25,39 +49,13 @@ const displayTable = (apiUrl) => {
                     </td>
                 </tr>
         `;
-      });
-      requests.innerHTML = output;
-    })
-    .catch((error) => {
-      alertBox.innerHTML = `
-    <header>
-        <a class="brand" href="#">M-Tracker</a>
-        <nav class="nav-bar">
-            <ul>
-                <li><a class="btn btn-default" href="../sign-in.html">Log in</a></li>
-            </ul>
-        </nav>
-    </header>
-    <div class="wrapper" style="margin-top: 200px">
-        <div class="alert" id="alert-message">
-            <p>
-                Oops! Sorry, Your session has ended, therefore You are not Authorized to view this page, <strong>kindly log in</strong>!!
-                <br>OR<br>
-                You are not an <strong>Admin.</strong>
-            </p>
-        </div>
-    </div>
-    <footer>
-        <p>&copy;2018 VeeqTor</p>
-    </footer>
-      `;
-      document.getElementById('alert-message').style.display = 'block';
+        });
+        requests.innerHTML = output;
+      }
     });
 };
 
-displayTable('/api/v1/requests/');
-
-filter.addEventListener('change', () => {
+const requestFilter = () => {
   const selectedValue = filter.options[filter.selectedIndex].value;
   switch (selectedValue) {
     case '1':
@@ -76,4 +74,8 @@ filter.addEventListener('change', () => {
       displayTable('/api/v1/requests/');
       break;
   }
-});
+};
+
+displayTable('/api/v1/requests/');
+
+filter.addEventListener('change', requestFilter);

@@ -13,16 +13,16 @@
         <span id="alert-box" class="alert alert-warning"></span>
         <form id="signUp" method="post" action="javascript:void(0)">
             <div class="input-group">
-                <input type="text" id="name" name="name" placeholder="Enter your name">
+                <input type="text" id="name" name="name" placeholder="Enter your name" required>
+                <span id="error-name" class="error"></span>
             </div>
             <div class="input-group">
-                <input type="email" id="email" name="email" placeholder="Enter your email">
+                <input type="email" id="email" name="email" placeholder="Enter your email" required>
+                <span id="error-email" class="error"></span>
             </div>
             <div class="input-group">
-                <input type="password" id="password" name="password" placeholder="Enter your password">
-            </div>
-            <div class="input-group">
-                <input type="password" id="confirmPwd" name="confirmPwd" placeholder="Confirm your password">
+                <input type="password" id="password" name="password" placeholder="Enter your password" required>
+                <span id="error-password" class="error"></span>
             </div>
             <div class="input-group">
                 <input class="btn btn-default" type="submit" value="Sign up">
@@ -31,6 +31,7 @@
         </form>
     </div>
 </div> <!--End of wrapper-->
+<script src="js/functions.js"></script>
 <script src="js/signUp.js"></script>
 </body>
 </html>

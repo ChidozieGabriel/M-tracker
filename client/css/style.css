@@ -432,6 +432,12 @@ footer p {
     border: 1px solid #41b737;
 }
 
+.error {
+    display: none;
+    color: #b23435;
+    font-weight: bold;
+}
+
 .disabled {
     cursor: not-allowed;
     pointer-events: none;

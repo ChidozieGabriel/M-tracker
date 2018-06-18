@@ -7,7 +7,7 @@
     <link rel="stylesheet" type="text/css" href="css/style.css">
 </head>
 <body>
-<div id="aler-box">
+<div id="error-message">
     <header>
         <a class="brand" href="#">M-Tracker</a>
         <nav class="nav-bar">
@@ -16,16 +16,18 @@
             </ul>
         </nav>
     </header>
-
     <div class="wrapper">
         <div class="request-wrapper">
             <h3>Edit request</h3>
             <form id="edit" method="post">
                 <span id="alert-box" class="alert alert-warning"></span>
                 <div class="input-group">
-                    <input type="text" id="dept" name="dept" placeholder="Enter the department"/><br>
+                    <input type="text" id="dept" name="dept" placeholder="Enter the department"/>
+                    <span id="error-dept" class="error"></span>
+                    <br>
                     <textarea rows="5" id="request" name="request"
                               placeholder="Write the details of the request"></textarea>
+                    <span id="error-request" class="error"></span>
                 </div>
                 <div id="edit-btn"></div>
                 <div class="clearfix"></div>

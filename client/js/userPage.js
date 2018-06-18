@@ -1,44 +1,44 @@
 const requests = document.getElementById('userRequests');
-const alertBox = document.getElementById('alert-box');
+const errorMessage = document.getElementById('error-message');
 const token = JSON.parse(localStorage.getItem('token'));
-
+const apiUrl = '/api/v1/users/requests/';
 const url = new URL(window.location.href);
 const successMessage = url.searchParams.get('success');
 const successType = url.searchParams.get('type');
-const messageBox = document.getElementById('alert-success');
+const successBox = document.getElementById('alert-success');
 const errorBox = document.getElementById('alert-warning');
 
 if (successMessage === 'true') {
   switch (successType) {
     case '1':
-      messageBox.innerHTML = '<p>Successfully updated</p>';
-      messageBox.style.display = 'block';
+      successBox.innerHTML = 'Successfully updated';
+      successBox.style.display = 'block';
       break;
     case '2':
-      messageBox.innerHTML = '<p>Successfully created a new request</p>';
-      messageBox.style.display = 'block';
+      successBox.innerHTML = 'Successfully created a new request';
+      successBox.style.display = 'block';
       break;
     case '3':
-      messageBox.innerHTML = '<p>Request delete was successful</p>';
-      messageBox.style.display = 'block';
+      successBox.innerHTML = 'Request delete was successful';
+      successBox.style.display = 'block';
   }
   setTimeout(() => {
-    messageBox.style.display = 'none';
+    successBox.style.display = 'none';
   }, 3000);
 }
 
 if (successMessage === 'false') {
   switch (successType) {
     case '1':
-      errorBox.innerHTML = '<p>Update was not successful</p>';
+      errorBox.innerHTML = 'Update was not successful';
       errorBox.style.display = 'block';
       break;
     case '2':
-      errorBox.innerHTML = '<p>Creation of new request not successful</p>';
+      errorBox.innerHTML = 'Creation of new request not successful';
       errorBox.style.display = 'block';
       break;
     case '3':
-      errorBox.innerHTML = '<p>Sorry Request cannot be deleted</p>';
+      errorBox.innerHTML = 'Sorry Request cannot be deleted';
       errorBox.style.display = 'block';
   }
   setTimeout(() => {
@@ -47,33 +47,61 @@ if (successMessage === 'false') {
 }
 
 const myHeader = new Headers({
-  Authorization: `Bearer ${token.token}`,
+  Authorization: `Bearer ${token}`,
 });
 
-const apiUrl = '/api/v1/users/requests/';
-
-if (token && token.auth) {
-  fetch(apiUrl, {
-    headers: myHeader,
-  })
-    .then(res => res.json())
-    .then((data) => {
+fetch(apiUrl, {
+  headers: myHeader,
+})
+  .then(res => res.json())
+  .then((data) => {
+    if (data.errors) {
+      errorMessage.innerHTML = `
+    <header>
+        <a class="brand" href="#">M-Tracker</a>
+        <nav class="nav-bar">
+            <ul>
+                <li><a class="btn btn-default" href="../sign-in.html">Log in</a></li>
+            </ul>
+        </nav>
+    </header>
+    <div class="wrapper" style="margin-top: 200px">
+        <div class="alert alert-warning" id="403-error">
+            <p>
+                Oops! Sorry, You cannot access this page at the moment!!
+            </p>
+        </div>
+    </div>
+    <footer>
+        <p>&copy;2018 VeeqTor</p>
+    </footer>
+      `;
+      document.getElementById('403-error').style.display = 'block';
+    } else {
       let output = '';
       if (data.result.length > 0) {
         let count = 0;
         data.result.forEach((request) => {
           output += `
-                <tr>
-                    <td>${count += 1}</td>
-                    <td>${request.requester_name}</td>
-                    <td>${request.requester_email}</td>
-                    <td class="${request.status}"><small>${request.status}</small></td>
-                    <td>${request.date}</td>
-                    <td>
-                        <a href="user-view-details.html?id=${request.id}" class="btn-sm btn-primary" title="Click to view request"><i class="fa fa-eye"></i></a>
-                        <a href="javascript:void(0)" class="btn-sm btn-delete" onClick='deleteData(${request.id})' title="Click to delete request"><i class="fa fa-trash"></i></a>
-                    </td>
-                </tr>`;
+          <tr>
+              <td>${count += 1}</td>
+              <td>${request.requester_name}</td>
+              <td>${request.requester_email}</td>
+              <td class="${request.status}">
+                  <small>${request.status}</small>
+              </td>
+              <td>${request.date}</td>
+              <td>
+                  <a href="user-view-details.html?id=${request.id}" 
+                  class="btn-sm btn-primary" 
+                  title="Click to view request"><i class="fa fa-eye"></i>
+                  </a>
+                  <a href="javascript:void(0)" class="btn-sm btn-delete" 
+                  onClick='deleteData(${request.id})' 
+                  title="Click to delete request"><i class="fa fa-trash"></i>
+                  </a>
+              </td>
+          </tr>`;
         });
         requests.innerHTML = output;
       } else {
@@ -83,53 +111,8 @@ if (token && token.auth) {
         </div>`;
         requests.innerHTML = output;
       }
-    })
-    .catch((error) => {
-      alertBox.innerHTML = `
-    <header>
-        <a class="brand" href="#">M-Tracker</a>
-        <nav class="nav-bar">
-            <ul>
-                <li><a class="btn btn-default" href="../sign-in.html">Log in</a></li>
-            </ul>
-        </nav>
-    </header>
-    <div class="wrapper" style="margin-top: 200px">
-        <div class="alert" id="alert-message">
-            <p>
-                Oops! Sorry, You are not Authorized to view this page, <strong>kindly log in!</strong>
-            </p>
-        </div>
-    </div>
-    <footer>
-        <p>&copy;2018 VeeqTor</p>
-    </footer>
-      `;
-      document.getElementById('alert-message').style.display = 'block';
-    });
-} else {
-  alertBox.innerHTML = `
-    <header>
-        <a class="brand" href="#">M-Tracker</a>
-        <nav class="nav-bar">
-            <ul>
-                <li><a class="btn btn-default" href="../sign-in.html">Log in</a></li>
-            </ul>
-        </nav>
-    </header>
-    <div class="wrapper" style="margin-top: 200px">
-        <div class="alert" id="alert-warning">
-            <p>
-                Oops! Sorry, You do not have access to this page!!
-            </p>
-        </div>
-    </div>
-    <footer>
-        <p>&copy;2018 VeeqTor</p>
-    </footer>
-      `;
-  document.getElementById('alert-warning').style.display = 'block';
-}
+    }
+  });
 
 function deleteData(requestId) {
   if (confirm('Are you sure?')) {
