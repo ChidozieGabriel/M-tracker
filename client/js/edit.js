@@ -3,7 +3,6 @@ const id = url.searchParams.get('id');
 const editRequest = document.getElementById('edit');
 const apiUrl = `/api/v1/users/requests/${id}`;
 const token = JSON.parse(localStorage.getItem('token'));
-const errorMessage = document.getElementById('error-message');
 const editBtn = document.getElementById('edit-btn');
 const dept = document.getElementById('dept');
 const deptError = document.getElementById('error-dept');
@@ -24,30 +23,6 @@ const userRequestDetails = (result) => {
   editBtn.innerHTML = output;
 };
 
-const userAuthError = () => {
-  errorMessage.innerHTML = `
-    <header>
-        <a class="brand" href="#">M-Tracker</a>
-        <nav class="nav-bar">
-            <ul>
-                <li><a class="btn btn-default" href="../sign-in.html">Log in</a></li>
-            </ul>
-        </nav>
-    </header>
-    <div class="wrapper" style="margin-top: 200px">
-        <div class="alert alert-warning" id="403-error">
-            <p>
-                Oops! Sorry, You cannot access this page at the moment!!
-            </p>
-        </div>
-    </div>
-    <footer>
-        <p>&copy;2018 VeeqTor</p>
-    </footer>
-      `;
-  document.getElementById('403-error').style.display = 'block';
-};
-
 const editUserRequest = (e) => {
   e.preventDefault();
   const editPayload = {
@@ -65,14 +40,8 @@ const editUserRequest = (e) => {
   fetch(apiUrl, options)
     .then(res => res.json())
     .then((data) => {
-      if (data.errors && typeof data.errors === 'object') {
-        if (data.errors.dept) {
-          deptError.innerHTML = data.errors.dept;
-          deptError.style.display = 'block';
-        } else if (data.errors.request) {
-          requestError.innerHTML = data.errors.request;
-          requestError.style.display = 'block';
-        }
+      if (data.errors) {
+        requestFormErrorHandling(data);
       } else if (data.message !== '') {
         window.location.href = `user-view-details.html?id=${id}&success=true&type=1`;
       }
