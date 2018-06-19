@@ -82,11 +82,10 @@ fetch(apiUrl, {
           <tr>
               <td>${count += 1}</td>
               <td>${request.requester_name}</td>
-              <td>${request.requester_email}</td>
-              <td class="${request.status}">
-                  <small>${request.status}</small>
+              <td class="${requestStatus(request.status)}">
+                  <small>${requestStatus(request.status)}</small>
               </td>
-              <td>${request.date}</td>
+              <td>${dateFormat(request.date)}</td>
               <td>
                   <a href="user-view-details.html?id=${request.id}" 
                   class="btn-sm btn-primary" 

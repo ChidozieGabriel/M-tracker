@@ -1,11 +1,9 @@
 const urlString = window.location.href;
 const url = new URL(urlString);
 const param = url.searchParams.get('id');
-const token = JSON.parse(localStorage.getItem('token'));
 const apiUrl = `/api/v1/requests/admin/${param}`;
 const reqDetails = document.getElementById('user-details');
 const reqBtn = document.getElementById('admin-btn');
-const errorMessage = document.getElementById('error-message');
 
 const myHeaders = new Headers({
   Authorization: `Bearer ${token}`,
@@ -52,7 +50,7 @@ fetch(apiUrl, {
               </tr>
               <tr>
                   <td><i>Date&nbsp;created:</i></td>
-                  <td>${result.result[0].date}</td>
+                  <td>${dateFormat(result.result[0].date)}</td>
               </tr>
               <tr>
                   <td><i>Department:</i></td>
@@ -60,7 +58,9 @@ fetch(apiUrl, {
               </tr>
               <tr>
                   <td><i>Status:</i></td>
-                  <td class="${result.result[0].status}">${result.result[0].status}</td>
+                  <td class="${requestStatus(result.result[0].status)}">
+                        ${requestStatus(result.result[0].status)}
+                  </td>
               </tr>
               <tr>
                   <td><i>Request:</i></td>

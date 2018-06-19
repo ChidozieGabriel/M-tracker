@@ -102,3 +102,31 @@ const requestFormErrorHandling = (data) => {
   }
 };
 
+const requestStatus = (status) => {
+  let requestStat = '';
+  switch (status) {
+    default:
+      requestStat = 'pending';
+      break;
+    case '1':
+      requestStat = 'approved';
+      break;
+    case '2':
+      requestStat = 'disapproved';
+      break;
+    case '3':
+      requestStat = 'resolved';
+      break;
+  }
+  return requestStat;
+};
+
+const dateFormat = (timestamp) => {
+  return new Date(timestamp).toLocaleDateString(undefined, {
+    day: 'numeric',
+    month: 'short',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+  });
+};

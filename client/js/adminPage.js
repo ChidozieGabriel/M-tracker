@@ -1,6 +1,4 @@
 const requests = document.getElementById('adminRequests');
-const token = JSON.parse(localStorage.getItem('token'));
-const errorMessage = document.getElementById('error-message');
 const filter = document.getElementById('filter');
 
 const displayTable = (apiUrl) => {
@@ -41,11 +39,13 @@ const displayTable = (apiUrl) => {
           output += `
                 <tr>
                     <td>${request.requester_name}</td>
-                    <td>${request.requester_email}</td>
-                    <td class="${request.status}"><small>${request.status}</small></td>
-                    <td>${request.date}</td>
+                    <td class="${requestStatus(request.status)}">
+                    <small>${requestStatus(request.status)}</small>
+                    </td>
+                    <td>${dateFormat(request.date)}</td>
                     <td>
-                        <a href="admin-view-details.html?id=${request.id}" class="btn-sm btn-primary">View</a>
+                        <a href="admin-view-details.html?id=${request.id}" 
+                        class="btn-sm btn-primary">View</a>
                     </td>
                 </tr>
         `;
