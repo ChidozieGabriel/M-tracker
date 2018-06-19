@@ -20,9 +20,24 @@ const redirectUser = (role) => {
   }
 };
 
+const checkAuth = () => {
+  const now = new Date();
+  if (now < tokenExp) {
+    redirectUser();
+  }
+  // expired
+};
+
 const saveToken = (auth, token) => {
   localStorage.setItem('token', JSON.stringify(token));
   localStorage.setItem('auth', JSON.stringify(auth));
+};
+
+const saveRedirect = (data) => {
+  if (data.auth && data.token) {
+    saveToken(data.auth, data.token);
+    redirectUser(data.auth.admin);
+  }
 };
 
 const userAuthError = () => {
@@ -50,13 +65,25 @@ const userAuthError = () => {
 };
 
 const requestFormErrorHandling = (data) => {
-  if (typeof data.errors === 'object') {
-    if (data.errors.dept) {
+  if (typeof data.errors === 'string') {
+    alertBox.style.display = 'block';
+    alertBox.innerHTML = `${data.errors}`;
+  } else if (typeof data.errors === 'object') {
+    if (data.errors.email) {
+      emailError.innerHTML = data.errors.email;
+      emailError.style.display = 'block';
+    } else if (data.errors.password) {
+      passwordError.innerHTML = data.errors.password;
+      passwordError.style.display = 'block';
+    } else if (data.errors.dept) {
       deptError.innerHTML = data.errors.dept;
       deptError.style.display = 'block';
     } else if (data.errors.request) {
       requestError.innerHTML = data.errors.request;
       requestError.style.display = 'block';
+    } else if (data.errors.name) {
+      nameError.innerHTML = data.errors.name;
+      nameError.style.display = 'block';
     }
   }
 };

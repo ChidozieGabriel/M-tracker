@@ -22,30 +22,15 @@ const userLogin = (e) => {
   })
     .then(res => res.json())
     .then((data) => {
-      if (data.errors && typeof data.errors === 'string') {
-        alertBox.style.display = 'block';
-        alertBox.innerHTML = `${data.errors}`;
-      } else if (data.errors && typeof data.errors === 'object') {
-        if (data.errors.email) {
-          emailError.innerHTML = data.errors.email;
-          emailError.style.display = 'block';
-        } else if (data.errors.password) {
-          passwordError.innerHTML = data.errors.password;
-          passwordError.style.display = 'block';
-        }
+      if (data.errors) {
+        return requestFormErrorHandling(data);
       }
-      if (data.auth && data.token) {
-        saveToken(data.auth, data.token);
-        redirectUser(data.auth.admin);
-      }
+      saveRedirect(data);
     });
 };
 
 window.onload = () => {
-  const now = new Date();
-  if (now < tokenExp) {
-    redirectUser();
-  }
+  return checkAuth();
   // expired
 };
 
