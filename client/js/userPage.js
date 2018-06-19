@@ -25,9 +25,7 @@ if (successMessage === 'true') {
   setTimeout(() => {
     successBox.style.display = 'none';
   }, 3000);
-}
-
-if (successMessage === 'false') {
+} else if (successMessage === 'false') {
   switch (successType) {
     case '1':
       errorBox.innerHTML = 'Update was not successful';
