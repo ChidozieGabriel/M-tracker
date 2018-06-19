@@ -1,5 +1,4 @@
 const requests = document.getElementById('userRequests');
-const errorMessage = document.getElementById('error-message');
 const token = JSON.parse(localStorage.getItem('token'));
 const apiUrl = '/api/v1/users/requests/';
 const url = new URL(window.location.href);
