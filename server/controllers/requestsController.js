@@ -2,7 +2,7 @@ import Validator from 'validatorjs';
 
 import db from '../config/config';
 
-import { requestValidation, restriction } from '../helpers/validations';
+import { dbResults, requestValidation, restriction } from '../helpers/validations';
 
 export const getAllUserRequests = (req, res) => {
   const userId = req.userInfo.id;
@@ -10,13 +10,7 @@ export const getAllUserRequests = (req, res) => {
     text: 'SELECT * FROM requests WHERE user_id=$1 ORDER BY id ASC',
     values: [userId],
   };
-  db.query(sql, (err, result) => {
-    res.status(200)
-      .json({
-        user: req.userInfo,
-        result: result.rows,
-      });
-  });
+  dbResults(sql, req.userInfo, res);
 };
 
 export const getSingleRequest = (req, res) => {
