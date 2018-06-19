@@ -1,16 +1,12 @@
 import db from '../config/config';
 
+import { dbResults } from '../helpers/validations';
+
 export const getAllRequests = (req, res) => {
   const sql = {
     text: 'SELECT * FROM requests ORDER BY date DESC',
   };
-  db.query(sql, (err, result) => {
-    res.status(200)
-      .json({
-        user: req.userInfo,
-        result: result.rows,
-      });
-  });
+  dbResults(sql, req.userInfo, res);
 };
 
 export const getOneRequest = (req, res) => {
@@ -19,13 +15,8 @@ export const getOneRequest = (req, res) => {
     text: 'SELECT * FROM requests WHERE id=$1 ORDER BY date ASC',
     values: [id],
   };
-  db.query(sql, (err, result) => {
-    res.status(200)
-      .json({
-        user: req.userInfo,
-        result: result.rows,
-      });
-  });
+  dbResults(sql, req.userInfo, res);
+
 };
 
 export const adminRequestActions = (req, res) => {
@@ -46,11 +37,6 @@ export const adminRequestActions = (req, res) => {
       sql = `UPDATE requests SET status=${0} WHERE id=${id} RETURNING *`;
       break;
   }
-  db.query(sql, (err, result) => {
-    res.status(200)
-      .json({
-        user: req.userInfo,
-        result: result.rows,
-      });
-  });
+  dbResults(sql, req.userInfo, res);
+
 };
