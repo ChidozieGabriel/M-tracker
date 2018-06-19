@@ -17,6 +17,16 @@ const tokenGen = (result) => {
   });
 };
 
+const tokenify = (result, res) => {
+  const token = tokenGen(result);
+  res.status(200)
+    .json({
+      auth: jwt.decode(token),
+      token,
+    })
+    .end();
+};
+
 export const signUp = (req, res) => {
   const { name, email, password } = req.body;
   const validation = new Validator({ name, password, email }, signUpValidation);
@@ -39,13 +49,7 @@ export const signUp = (req, res) => {
         };
         user.query(query, (err, result) => {
           if (result.rowCount === 1) {
-            const token = tokenGen(result);
-            res.status(201)
-              .json({
-                auth: jwt.decode(token),
-                token,
-              })
-              .end();
+            tokenify(result, res);
           }
         });
       });
@@ -68,13 +72,7 @@ export const login = (req, res) => {
       if (result && result.rows.length === 1) {
         bcrypt.compare(password, result.rows[0].password, (error, match) => {
           if (match) {
-            const token = tokenGen(result);
-            res.status(200)
-              .json({
-                auth: jwt.decode(token),
-                token,
-              })
-              .end();
+            tokenify(result, res);
           } else {
             res.status(401)
               .json({
