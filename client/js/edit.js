@@ -28,11 +28,7 @@ const editUserRequest = (e) => {
     dept: document.getElementById('dept').value,
     request: document.getElementById('request').value,
   };
-  const options = {
-    method: 'PUT',
-    body: `dept=${editPayload.dept}&request=${editPayload.request}`,
-    headers,
-  };
+  const options = fetchOptions(editPayload, 'PUT');
   fetch(apiUrl, options)
     .then(res => res.json())
     .then((data) => {

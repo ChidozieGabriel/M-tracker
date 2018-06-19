@@ -11,11 +11,8 @@ const userCreateRequest = (e) => {
     dept: document.getElementById('dept').value,
     request: document.getElementById('request').value,
   };
-  const option = {
-    method: 'POST',
-    body: `dept=${payload.dept}&request=${payload.request}`,
-    headers,
-  };
+  const option = fetchOptions(payload, 'POST');
+
   fetch(apiUrl, option)
     .then(res => res.json())
     .then((data) => {

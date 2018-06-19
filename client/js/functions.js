@@ -12,6 +12,14 @@ const headers = new Headers({
   Authorization: `Bearer ${token}`,
 });
 
+const fetchOptions = (payload, method) => {
+  return {
+    method: method,
+    body: `dept=${payload.dept}&request=${payload.request}`,
+    headers,
+  };
+};
+
 const redirectUser = (role) => {
   switch (role) {
     case true:
