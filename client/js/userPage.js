@@ -1,5 +1,4 @@
 const requests = document.getElementById('userRequests');
-const token = JSON.parse(localStorage.getItem('token'));
 const apiUrl = '/api/v1/users/requests/';
 const url = new URL(window.location.href);
 const successMessage = url.searchParams.get('success');

@@ -8,6 +8,15 @@ import user from '../config/config';
 
 import { signUpValidation, loginValidation } from '../helpers/validations';
 
+const tokenGen = (result) => {
+  return jwt.sign({
+    id: result.rows[0].id,
+    admin: result.rows[0].admin,
+  }, process.env.JWT_KEY, {
+    expiresIn: '1h',
+  });
+};
+
 export const signUp = (req, res) => {
   const { name, email, password } = req.body;
   const validation = new Validator({ name, password, email }, signUpValidation);
@@ -30,12 +39,7 @@ export const signUp = (req, res) => {
         };
         user.query(query, (err, result) => {
           if (result.rowCount === 1) {
-            const token = jwt.sign({
-              id: result.rows[0].id,
-              admin: result.rows[0].admin,
-            }, process.env.JWT_KEY, {
-              expiresIn: '1hr',
-            });
+            const token = tokenGen(result);
             res.status(201)
               .json({
                 auth: jwt.decode(token),
@@ -64,12 +68,7 @@ export const login = (req, res) => {
       if (result && result.rows.length === 1) {
         bcrypt.compare(password, result.rows[0].password, (error, match) => {
           if (match) {
-            const token = jwt.sign({
-              id: result.rows[0].id,
-              admin: result.rows[0].admin,
-            }, process.env.JWT_KEY, {
-              expiresIn: '1h',
-            });
+            const token = tokenGen(result);
             res.status(200)
               .json({
                 auth: jwt.decode(token),
