@@ -12,3 +12,8 @@ export const loginValidation = {
   email: 'email|required',
   password: 'required|min:6|max:20',
 };
+export const restriction = (response) => {
+  if (response.rows.length !== 0 && (response.rows[0].status === '1' || response.rows[0].status === '3')) {
+    return true;
+  }
+};

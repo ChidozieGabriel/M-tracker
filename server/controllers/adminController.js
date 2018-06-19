@@ -28,43 +28,28 @@ export const getOneRequest = (req, res) => {
   });
 };
 
-export const approveRequest = (req, res) => {
+export const adminRequestActions = (req, res) => {
   const id = parseInt(req.params.requestId, 10);
-  const approvedQuery = {
-    text: 'UPDATE requests SET status=$1 WHERE id=$2 RETURNING *',
-    values: [1, id],
-  };
-  db.query(approvedQuery, (err, result) => {
+  const { action } = req.params;
+  let sql = '';
+  switch (action) {
+    case 'approve':
+      sql = `UPDATE requests SET status=${1} WHERE id=${id} RETURNING *`;
+      break;
+    case 'disapprove':
+      sql = `UPDATE requests SET status=${2} WHERE id=${id} RETURNING *`;
+      break;
+    case 'resolve':
+      sql = `UPDATE requests SET status=${3} WHERE id=${id} RETURNING *`;
+      break;
+    default:
+      sql = `UPDATE requests SET status=${0} WHERE id=${id} RETURNING *`;
+      break;
+  }
+  db.query(sql, (err, result) => {
     res.status(200)
       .json({
-        result: result.rows,
-      });
-  });
-};
-
-export const disapproveRequest = (req, res) => {
-  const id = parseInt(req.params.requestId, 10);
-  const disapproveQuery = {
-    text: 'UPDATE requests SET status=$1 WHERE id=$2 RETURNING *',
-    values: [2, id],
-  };
-  db.query(disapproveQuery, (err, result) => {
-    res.status(200)
-      .json({
-        result: result.rows,
-      });
-  });
-};
-
-export const resolveRequest = (req, res) => {
-  const id = parseInt(req.params.requestId, 10);
-  const resolvedQuery = {
-    text: 'UPDATE requests SET status=$1 WHERE id=$2 RETURNING *',
-    values: [3, id],
-  };
-  db.query(resolvedQuery, (err, result) => {
-    res.status(200)
-      .json({
+        user: req.userInfo,
         result: result.rows,
       });
   });
