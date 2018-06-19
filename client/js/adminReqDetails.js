@@ -39,48 +39,20 @@ fetch(apiUrl, {
       `;
       document.getElementById('403-error').style.display = 'block';
     } else {
-      const output = `
-              <tr>
-                  <td><i>Created&nbsp;by:</i></td>
-                  <td>${result.result[0].requester_name}</td>
-              </tr>
-              <tr>
-                  <td><i>Email:</i></td>
-                  <td>${result.result[0].requester_email}</td>
-              </tr>
-              <tr>
-                  <td><i>Date&nbsp;created:</i></td>
-                  <td>${dateFormat(result.result[0].date)}</td>
-              </tr>
-              <tr>
-                  <td><i>Department:</i></td>
-                  <td>${result.result[0].dept}</td>
-              </tr>
-              <tr>
-                  <td><i>Status:</i></td>
-                  <td class="${requestStatus(result.result[0].status)}">
-                        ${requestStatus(result.result[0].status)}
-                  </td>
-              </tr>
-              <tr>
-                  <td><i>Request:</i></td>
-                  <td>
-                      <p>${result.result[0].request}</p>
-                  </td>
-              </tr>`;
+      const output = requestTable(result);
       const output2 = ` 
                     <li><a href="javascript:void(0)" 
                         onclick='adminRequestActions(${result.result[0].id},"approve")'
-                        class="btn btn-approve ${result.result[0].status === 'resolved' || result.result[0].status === 'approved' ? 'disabled' : ''}"
+                        class="btn btn-approve ${result.result[0].status === '3' || result.result[0].status === '1' ? 'disabled' : ''}"
                         title="Click to approve"><i class="fa fa-thumbs-up"></i> Approve</a>
                      </li>
                     <li><a href="javascript:void(0)" onclick='adminRequestActions(${result.result[0].id}, "resolve")' 
-                        class="btn btn-edit ${result.result[0].status === 'disapproved' || result.result[0].status === 'resolved' ? 'disabled' : ''}" 
+                        class="btn btn-edit ${result.result[0].status === '2' || result.result[0].status === '3' ? 'disabled' : ''}" 
                         title="Click to resolve"><i class="fa fa-check-square"></i> Resolve</a>
                     </li>
                     <li><a href="javascript:void(0)" 
                     onclick='adminRequestActions(${result.result[0].id}, "disapprove")'
-                        class="btn btn-delete ${result.result[0].status === 'resolved' || result.result[0].status === 'approved' ? 'disabled' : ''}" 
+                        class="btn btn-delete ${result.result[0].status === '3' ? 'disabled' : ''}" 
                         title="Click to disapprove"><i class="fa fa-thumbs-down"></i> Disapprove</a>
                         </li>
                     <li><a href="../admin.html" class="btn btn-default" 

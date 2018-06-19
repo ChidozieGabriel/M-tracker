@@ -39,35 +39,7 @@ fetch(apiUrl, {
       `;
       document.getElementById('403-error').style.display = 'block';
     } else {
-      const output = `
-                      <tr>
-                          <td><i>Created&nbsp;by:</i></td>
-                          <td>${result.result[0].requester_name}</td>
-                      </tr>
-                      <tr>
-                          <td><i>Email:</i></td>
-                          <td>${result.result[0].requester_email}</td>
-                      </tr>
-                      <tr>
-                          <td><i>Date&nbsp;created:</i></td>
-                          <td>${dateFormat(result.result[0].date)}</td>
-                      </tr>
-                      <tr>
-                          <td><i>Department:</i></td>
-                          <td>${result.result[0].dept}</td>
-                      </tr>
-                      <tr>
-                          <td><i>Status:</i></td>
-                          <td class="${requestStatus(result.result[0].status)}">
-                            ${requestStatus(result.result[0].status)}
-                          </td>
-                      </tr>
-                      <tr>
-                          <td><i>Request:</i></td>
-                          <td>
-                              <p>${result.result[0].request}</p>
-                          </td>
-                      </tr>`;
+      const output = requestTable(result);
       const output2 = ` 
                     <div>
                        <a href="user.html" class="left btn btn-primary" title="Click to go back"><i
