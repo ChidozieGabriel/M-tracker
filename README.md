@@ -50,31 +50,22 @@ This is a javascript application built with [**Express**](https://expressjs.com/
 7. Create a `.env` file in the root directory of the application. Use a different database for your testing and development. Example of the content of a `.env` file is shown in the `.env.sample`
 
 8. Start the application:
-**_Different Build Environment_**
-
-**Production**
 ```
-npm run start
-```
-**Development**
-```
-npm run start:dev
+npm start
 ```
 
 ## Usage
-- Run database migration with `npm start:migrate`
+- Run database migration with `npm run migration`
 - Start app development with `npm run start` or `npm start`
-- To start the client `npm run start:webdev`
-- Install **Postman** and use to test all endpoints
 
 ## Limitations
-The limitations with this current version of Hello Books includes:
-- Authenticated Users can not read books
+The limitations with this current version of maintainance tracker includes:
+- Request Pagination not available
+- Password recovery not available
 
 ## Testing
 
-Sever side tests - Run `npm test` on the terminal while within the **project root directory**.
-Client side tests - Run `npm client:test` on the terminal while within the **project root directory**.
+- Run `npm test` on the terminal while within the **project root directory**.
 
 Server side testing is achieved through use of `chai-http`, `mocha` and `chai` packages. `chai-http` is used to make requests to the api and `mocha` is the testing framework and `chai` is the exception library. They will both be installed when you run `npm install` and the tests will run when you run `npm test`.
 
