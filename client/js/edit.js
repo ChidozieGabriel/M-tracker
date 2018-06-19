@@ -2,7 +2,6 @@ const url = new URL(window.location.href);
 const id = url.searchParams.get('id');
 const editRequest = document.getElementById('edit');
 const apiUrl = `/api/v1/users/requests/${id}`;
-const token = JSON.parse(localStorage.getItem('token'));
 const editBtn = document.getElementById('edit-btn');
 const dept = document.getElementById('dept');
 const deptError = document.getElementById('error-dept');
@@ -32,10 +31,7 @@ const editUserRequest = (e) => {
   const options = {
     method: 'PUT',
     body: `dept=${editPayload.dept}&request=${editPayload.request}`,
-    headers: new Headers({
-      'Content-Type': 'application/x-www-form-urlencoded',
-      Authorization: `Bearer ${token}`,
-    }),
+    headers,
   };
   fetch(apiUrl, options)
     .then(res => res.json())
@@ -48,11 +44,7 @@ const editUserRequest = (e) => {
     });
 };
 
-const myHeader = new Headers({
-  Authorization: `Bearer ${token}`,
-});
-
-fetch(apiUrl, { headers: myHeader })
+fetch(apiUrl, { headers })
   .then(res => res.json())
   .then((result) => {
     if (result.errors) {

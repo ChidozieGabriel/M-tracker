@@ -1,11 +1,9 @@
-const token = JSON.parse(localStorage.getItem('token'));
 const apiUrl = '/api/v1/users/requests/';
 const createRequest = document.getElementById('createRequest');
 const dept = document.getElementById('dept');
 const deptError = document.getElementById('error-dept');
 const request = document.getElementById('request');
 const requestError = document.getElementById('error-request');
-
 
 const userCreateRequest = (e) => {
   e.preventDefault();
@@ -16,10 +14,7 @@ const userCreateRequest = (e) => {
   const option = {
     method: 'POST',
     body: `dept=${payload.dept}&request=${payload.request}`,
-    headers: new Headers({
-      'Content-Type': 'application/x-www-form-urlencoded',
-      Authorization: `Bearer ${token}`,
-    }),
+    headers,
   };
   fetch(apiUrl, option)
     .then(res => res.json())
@@ -32,11 +27,7 @@ const userCreateRequest = (e) => {
     });
 };
 
-fetch(apiUrl, {
-  headers: new Headers({
-    Authorization: `Bearer ${token}`,
-  }),
-})
+fetch(apiUrl, { headers })
   .then((res) => {
     if (res.status === 401) {
       userAuthError();

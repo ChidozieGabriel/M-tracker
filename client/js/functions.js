@@ -1,10 +1,16 @@
 const auth = JSON.parse(localStorage.getItem('auth'));
+const token = JSON.parse(localStorage.getItem('token'));
 const errorMessage = document.getElementById('error-message');
 
 let tokenExp = '';
 if (auth) {
   tokenExp = (auth.exp) * 1000;
 }
+
+const headers = new Headers({
+  'Content-Type': 'application/x-www-form-urlencoded',
+  Authorization: `Bearer ${token}`,
+});
 
 const redirectUser = (role) => {
   switch (role) {
