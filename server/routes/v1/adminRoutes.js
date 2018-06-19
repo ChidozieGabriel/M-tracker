@@ -1,13 +1,8 @@
 import express from 'express';
 import isAdmin from '../../middleware/isAdmin';
-import {
-  getAllApprovedRequests, getAllDisapprovedRequests,
-  getAllPendingRequests, getAllResolvedRequests,
-} from '../../controllers/filterController';
+import { requestsOrderBy } from '../../controllers/filterController';
 
-import {
-  approveRequest, disapproveRequest,
-  getAllRequests, getOneRequest, resolveRequest,
+import { getAllRequests, getOneRequest, adminRequestActions,
 } from '../../controllers/adminController';
 
 import userAuth from '../../middleware/userAuth';
@@ -19,18 +14,8 @@ admin.get('/requests', verifyToken, userAuth, isAdmin, getAllRequests);
 
 admin.get('/requests/admin/:requestId/', verifyToken, userAuth, isAdmin, getOneRequest);
 
-admin.get('/requests/pending', verifyToken, userAuth, isAdmin, getAllPendingRequests);
+admin.get('/requests/:action', verifyToken, userAuth, isAdmin, requestsOrderBy);
 
-admin.get('/requests/approved', verifyToken, userAuth, isAdmin, getAllApprovedRequests);
-
-admin.get('/requests/disapproved', verifyToken, userAuth, isAdmin, getAllDisapprovedRequests);
-
-admin.get('/requests/resolved', verifyToken, userAuth, isAdmin, getAllResolvedRequests);
-
-admin.put('/requests/:requestId/approve', verifyToken, userAuth, isAdmin, approveRequest);
-
-admin.put('/requests/:requestId/disapprove', verifyToken, userAuth, isAdmin, disapproveRequest);
-
-admin.put('/requests/:requestId/resolve', verifyToken, userAuth, isAdmin, resolveRequest);
+admin.put('/requests/:requestId/:action', verifyToken, userAuth, isAdmin, adminRequestActions);
 
 export default admin;

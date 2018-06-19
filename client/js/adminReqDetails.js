@@ -69,16 +69,17 @@ fetch(apiUrl, {
                   </td>
               </tr>`;
       const output2 = ` 
-                    <li><a href="javascript:void(0)" onclick='approve(${result.result[0].id})'
+                    <li><a href="javascript:void(0)" 
+                        onclick='adminRequestActions(${result.result[0].id},"approve")'
                         class="btn btn-approve ${result.result[0].status === 'resolved' || result.result[0].status === 'approved' ? 'disabled' : ''}"
                         title="Click to approve"><i class="fa fa-thumbs-up"></i> Approve</a>
                      </li>
-                    <li><a href="javascript:void(0)" onclick='resolve(${result.result[0].id})' 
+                    <li><a href="javascript:void(0)" onclick='adminRequestActions(${result.result[0].id}, "resolve")' 
                         class="btn btn-edit ${result.result[0].status === 'disapproved' || result.result[0].status === 'resolved' ? 'disabled' : ''}" 
                         title="Click to resolve"><i class="fa fa-check-square"></i> Resolve</a>
                     </li>
                     <li><a href="javascript:void(0)" 
-                    onclick='disapprove(${result.result[0].id})'
+                    onclick='adminRequestActions(${result.result[0].id}, "disapprove")'
                         class="btn btn-delete ${result.result[0].status === 'resolved' || result.result[0].status === 'approved' ? 'disabled' : ''}" 
                         title="Click to disapprove"><i class="fa fa-thumbs-down"></i> Disapprove</a>
                         </li>
@@ -91,42 +92,10 @@ fetch(apiUrl, {
     }
   });
 
-function approve(requestId) {
+function adminRequestActions(requestId, action) {
   const res = confirm('ARE YOU SURE?');
   if (res) {
-    fetch(`api/v1/requests/${requestId}/approve`, {
-      method: 'PUT',
-      headers: myHeaders,
-    })
-      .then(resp => resp.json())
-      .then((data) => {
-        if (data.message !== '') {
-          window.location.reload(true);
-        }
-      });
-  }
-}
-
-function disapprove(requestId) {
-  const res = confirm('ARE YOU SURE?');
-  if (res) {
-    fetch(`api/v1/requests/${requestId}/disapprove`, {
-      method: 'PUT',
-      headers: myHeaders,
-    })
-      .then(resp => resp.json())
-      .then((data) => {
-        if (data.message !== '') {
-          window.location.reload(true);
-        }
-      });
-  }
-}
-
-function resolve(requestId) {
-  const res = confirm('ARE YOU SURE?');
-  if (res) {
-    fetch(`api/v1/requests/${requestId}/resolve`, {
+    fetch(`api/v1/requests/${requestId}/${action}`, {
       method: 'PUT',
       headers: myHeaders,
     })
