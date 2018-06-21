@@ -2,7 +2,8 @@ import Validator from 'validatorjs';
 
 import db from '../config/config';
 
-import { dbResults, requestValidation, restriction } from '../helpers/validations';
+import { requestValidation } from '../helpers/validations';
+import { dbResults, restriction } from '../helpers/utilities';
 
 export const getAllUserRequests = (req, res) => {
   const userId = req.userInfo.id;
@@ -36,10 +37,7 @@ export const getSingleRequest = (req, res) => {
 
 export const createRequest = (req, res) => {
   const { dept, request } = req.body;
-  const validation = new Validator({
-    dept,
-    request
-  }, requestValidation);
+  const validation = new Validator({ dept, request }, requestValidation);
   validation.setAttributeNames({ dept: 'Department field' });
   validation.passes(() => {
     const userId = req.userInfo.id;
