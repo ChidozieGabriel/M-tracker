@@ -73,6 +73,70 @@ describe('USER REQUEST CONTROLLER API ENDPOINT', () => {
       });
   });
 
+  it('Should list ALL requests ordered by resolved', (done) => {
+    chai.request(app)
+      .get('/api/v1/users/requests/orderBy/resolved')
+      .set({ Authorization: 'Bearer ' + global.tok })
+      .end((err, res) => {
+        Expect(res.statusCode)
+          .to
+          .equal(200);
+        Expect(res)
+          .to
+          .be
+          .an('object');
+      });
+    done();
+  });
+
+  it('Should list ALL requests ordered by approved', (done) => {
+    chai.request(app)
+      .get('/api/v1/users/requests/orderBy/approved')
+      .set({ Authorization: 'Bearer ' + global.tok })
+      .end((err, res) => {
+        Expect(res.statusCode)
+          .to
+          .equal(200);
+        Expect(res)
+          .to
+          .be
+          .an('object');
+      });
+    done();
+  });
+
+  it('Should list ALL requests ordered by disapproved', (done) => {
+    chai.request(app)
+      .get('/api/v1/users/requests/orderBy/disapproved')
+      .set({ Authorization: 'Bearer ' + global.tok })
+      .end((err, res) => {
+        Expect(res.statusCode)
+          .to
+          .equal(200);
+        Expect(res)
+          .to
+          .be
+          .an('object');
+      });
+    done();
+  });
+
+  it('Should list ALL requests ordered by pending', (done) => {
+    chai.request(app)
+      .get('/api/v1/users/requests/orderBy/pending')
+      .set({ Authorization: 'Bearer ' + global.tok })
+      .end((err, res) => {
+        Expect(res.statusCode)
+          .to
+          .equal(200);
+        Expect(res)
+          .to
+          .be
+          .an('object');
+      });
+    done();
+  });
+
   it('Should list ONE requests on /user/request/:requestId GET', (done) => {
     chai.request(app)
       .get('/api/v1/users/requests/1')
