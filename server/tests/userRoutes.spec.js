@@ -78,6 +78,21 @@ describe('USER CONTROLLER TESTS', () => {
       done();
     });
 
+    it('Should return a status code of 401 login authentication fail', (done) => {
+      const User = {
+        email: 'example@gmail.com',
+        password: '1234567',
+      };
+      chai.request(app)
+        .post('/api/v1/auth/login')
+        .send(User)
+        .end((err, res) => {
+          Expect(err).to.equal(null);
+          Expect(res.statusCode).to.equal(401);
+        });
+      return done();
+    });
+
     it('Should return a status code of 401 for incorrect password and email', (done) => {
       const User = {
         email: 'example21233@gmail.com',
