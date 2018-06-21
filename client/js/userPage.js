@@ -6,41 +6,50 @@ const successType = url.searchParams.get('type');
 const successBox = document.getElementById('alert-success');
 const errorBox = document.getElementById('alert-warning');
 
-if (successMessage === 'true') {
+const userSuccessFeedback = (successType) => {
+let output = '';
   switch (successType) {
     case '1':
-      successBox.innerHTML = 'Successfully updated';
-      successBox.style.display = 'block';
+      output = 'Successfully updated';
       break;
     case '2':
-      successBox.innerHTML = 'Successfully created a new request';
-      successBox.style.display = 'block';
+      output = 'Successfully created a new request';
       break;
     case '3':
-      successBox.innerHTML = 'Request delete was successful';
-      successBox.style.display = 'block';
+      output = 'Request delete was successful';
   }
+  return output;
+};
+const userErrorFeedback = (successType) => {
+  let output = '';
+  switch (successType) {
+    case '1':
+      output = 'Update was not successful';
+      break;
+    case '2':
+      output = 'Could not create a new request';
+      break;
+    case '3':
+      output = 'Sorry Request cannot be deleted';
+  }
+  return output;
+};
+
+
+if (successMessage === 'true') {
+  successBox.innerHTML = userSuccessFeedback(successType);
+  successBox.style.display = 'block';
   setTimeout(() => {
     successBox.style.display = 'none';
   }, 3000);
 } else if (successMessage === 'false') {
-  switch (successType) {
-    case '1':
-      errorBox.innerHTML = 'Update was not successful';
-      errorBox.style.display = 'block';
-      break;
-    case '2':
-      errorBox.innerHTML = 'Creation of new request not successful';
-      errorBox.style.display = 'block';
-      break;
-    case '3':
-      errorBox.innerHTML = 'Sorry Request cannot be deleted';
-      errorBox.style.display = 'block';
-  }
+  errorBox.innerHTML = userErrorFeedback(successType);
+  errorBox.style.display = 'block';
   setTimeout(() => {
     errorBox.style.display = 'none';
   }, 3000);
 }
+
 
 const myHeader = new Headers({
   Authorization: `Bearer ${token}`,
