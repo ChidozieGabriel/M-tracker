@@ -1,6 +1,8 @@
 const auth = JSON.parse(localStorage.getItem('auth'));
 const token = JSON.parse(localStorage.getItem('token'));
 const errorMessage = document.getElementById('error-message');
+const filter = document.getElementById('filter');
+
 
 let tokenExp = '';
 if (auth) {
@@ -162,3 +164,23 @@ const requestTable = (result) => {
                           </td>
                       </tr>`;
 };
+
+const requestFilter = (url) => {
+  const selectedValue = filter.options[filter.selectedIndex].value;
+
+  switch (selectedValue) {
+    case '1':
+      displayTable(`/api/v1/${url}/approved`);
+      break;
+    case '2':
+      displayTable(`/api/v1/${url}/disapproved`);
+      break;
+    case '3':
+      displayTable(`/api/v1/${url}/resolved`);
+      break;
+    case '4':
+      displayTable(`/api/v1/${url}/pending`);
+      break;
+  }
+};
+

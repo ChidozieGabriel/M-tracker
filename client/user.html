@@ -21,8 +21,16 @@
         <section class="list">
             <div class="list-header">
                 <h3>My requests</h3>
+                <label for="filter">Order By:</label>
+                <select id="filter" name="filter">
+                    <option value='0'>Most recent</option>
+                    <option value='1'>Approved</option>
+                    <option value='2'>Disapproved</option>
+                    <option value='3'>Resolved</option>
+                    <option value='4'>Pending</option>
+                </select>
+            </div>
                 <span id="alert-success" class="alert alert-success"></span>
-                <span id="alert-warning" class="alert alert-warning"></span>
                 <div class="table-res">
                     <table class="table">
                         <thead>
@@ -37,7 +45,6 @@
                         <tbody id="userRequests"></tbody>
                     </table>
                 </div>
-            </div>
         </section>
     </div> <!--End of wrapper-->
     <footer>

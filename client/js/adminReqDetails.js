@@ -52,7 +52,7 @@ fetch(apiUrl, {
                     </li>
                     <li><a href="javascript:void(0)" 
                     onclick='adminRequestActions(${result.result[0].id}, "disapprove")'
-                        class="btn btn-delete ${result.result[0].status === '3' ? 'disabled' : ''}" 
+                        class="btn btn-delete ${result.result[0].status === '3' || result.result[0].status === '2' ? 'disabled' : ''}" 
                         title="Click to disapprove"><i class="fa fa-thumbs-down"></i> Disapprove</a>
                         </li>
                     <li><a href="../admin.html" class="btn btn-default" 

@@ -4,41 +4,31 @@ const url = new URL(window.location.href);
 const successMessage = url.searchParams.get('success');
 const successType = url.searchParams.get('type');
 const successBox = document.getElementById('alert-success');
-const errorBox = document.getElementById('alert-warning');
+
+const userFeedback = (type) => {
+  let output = '';
+  switch (type) {
+    case '1':
+      output = 'Successfully updated';
+      break;
+    case '2':
+      output = 'Successfully created a new request';
+      break;
+    case '3':
+      output = 'Request delete was successful';
+      break;
+    default:
+      output = 'Operation was successful';
+      break;
+  }
+  return output;
+};
 
 if (successMessage === 'true') {
-  switch (successType) {
-    case '1':
-      successBox.innerHTML = 'Successfully updated';
-      successBox.style.display = 'block';
-      break;
-    case '2':
-      successBox.innerHTML = 'Successfully created a new request';
-      successBox.style.display = 'block';
-      break;
-    case '3':
-      successBox.innerHTML = 'Request delete was successful';
-      successBox.style.display = 'block';
-  }
+  successBox.innerHTML = userFeedback(successType);
+  successBox.style.display = 'block';
   setTimeout(() => {
     successBox.style.display = 'none';
-  }, 3000);
-} else if (successMessage === 'false') {
-  switch (successType) {
-    case '1':
-      errorBox.innerHTML = 'Update was not successful';
-      errorBox.style.display = 'block';
-      break;
-    case '2':
-      errorBox.innerHTML = 'Creation of new request not successful';
-      errorBox.style.display = 'block';
-      break;
-    case '3':
-      errorBox.innerHTML = 'Sorry Request cannot be deleted';
-      errorBox.style.display = 'block';
-  }
-  setTimeout(() => {
-    errorBox.style.display = 'none';
   }, 3000);
 }
 
@@ -46,13 +36,14 @@ const myHeader = new Headers({
   Authorization: `Bearer ${token}`,
 });
 
-fetch(apiUrl, {
-  headers: myHeader,
-})
-  .then(res => res.json())
-  .then((data) => {
-    if (data.errors) {
-      errorMessage.innerHTML = `
+const displayTable = (apiUrl) => {
+  fetch(apiUrl, {
+    headers: myHeader,
+  })
+    .then(res => res.json())
+    .then((data) => {
+      if (data.errors) {
+        errorMessage.innerHTML = `
     <header>
         <a class="brand" href="#">M-Tracker</a>
         <nav class="nav-bar">
@@ -72,13 +63,13 @@ fetch(apiUrl, {
         <p>&copy;2018 VeeqTor</p>
     </footer>
       `;
-      document.getElementById('403-error').style.display = 'block';
-    } else {
-      let output = '';
-      if (data.result.length > 0) {
-        let count = 0;
-        data.result.forEach((request) => {
-          output += `
+        document.getElementById('403-error').style.display = 'block';
+      } else {
+        let output = '';
+        if (data.result.length > 0) {
+          let count = 0;
+          data.result.forEach((request) => {
+            output += `
           <tr>
               <td>${count += 1}</td>
               <td>${request.requester_name}</td>
@@ -91,23 +82,25 @@ fetch(apiUrl, {
                   class="btn-sm btn-primary" 
                   title="Click to view request"><i class="fa fa-eye"></i>
                   </a>
-                  <a href="javascript:void(0)" class="btn-sm btn-delete" 
+                  <a href="javascript:void(0)" class="btn-sm btn-delete 
+                    ${request.status === '1' || request.status === '3' ? 'disabled' : ''}" 
                   onClick='deleteData(${request.id})' 
                   title="Click to delete request"><i class="fa fa-trash"></i>
                   </a>
               </td>
           </tr>`;
-        });
-        requests.innerHTML = output;
-      } else {
-        output = `
+          });
+          requests.innerHTML = output;
+        } else {
+          output = `
         <div class="alert" style="display: block">
             <p>No requests yet</p>
         </div>`;
-        requests.innerHTML = output;
+          requests.innerHTML = output;
+        }
       }
-    }
-  });
+    });
+};
 
 function deleteData(requestId) {
   if (confirm('Are you sure?')) {
@@ -119,10 +112,11 @@ function deleteData(requestId) {
       .then((data) => {
         if (data.message !== '' && data.error === undefined) {
           window.location.href = 'user.html?success=true&type=3';
-        } else if (data.error !== '' && data.message === undefined) {
-          window.location.href = 'user.html?success=false&type=3';
         }
       });
   }
 }
 
+displayTable(apiUrl);
+
+filter.addEventListener('change', () => { requestFilter('users/requests/orderBy'); });

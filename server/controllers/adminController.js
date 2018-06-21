@@ -1,6 +1,5 @@
-import db from '../config/config';
 
-import { dbResults } from '../helpers/validations';
+import { dbResults } from '../helpers/utilities';
 
 export const getAllRequests = (req, res) => {
   const sql = {

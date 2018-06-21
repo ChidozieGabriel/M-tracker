@@ -1,5 +1,4 @@
 const requests = document.getElementById('adminRequests');
-const filter = document.getElementById('filter');
 
 const displayTable = (apiUrl) => {
   const myHeader = new Headers({
@@ -55,27 +54,6 @@ const displayTable = (apiUrl) => {
     });
 };
 
-const requestFilter = () => {
-  const selectedValue = filter.options[filter.selectedIndex].value;
-  switch (selectedValue) {
-    case '1':
-      displayTable('/api/v1/requests/approved');
-      break;
-    case '2':
-      displayTable('/api/v1/requests/disapproved');
-      break;
-    case '3':
-      displayTable('/api/v1/requests/resolved');
-      break;
-    case '4':
-      displayTable('/api/v1/requests/pending');
-      break;
-    default:
-      displayTable('/api/v1/requests/');
-      break;
-  }
-};
-
 displayTable('/api/v1/requests/');
 
-filter.addEventListener('change', requestFilter);
+filter.addEventListener('change', () => { requestFilter('requests'); });
