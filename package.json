@@ -4,7 +4,7 @@
   "description": "API for Maintenance-tracker",
   "main": "server/server.js",
   "scripts": {
-    "test": "cross-env NODE_ENV=test nyc --reporter=html --reporter=text mocha server/tests/**.spec.js --require babel-register --timeout 10000",
+    "test": "cross-env NODE_ENV=test nyc --reporter=text mocha server/tests/**.spec.js --require babel-register --timeout 10000",
     "start": "cross-env NODE_ENV=development nodemon -r babel-register server/server.js",
     "createTable": "cross-env NODE_ENV=test node -r babel-register server/migrations/createTable.js",
     "dropTable": "cross-env NODE_ENV=test node -r babel-register server/migrations/dropTable.js",
@@ -13,8 +13,7 @@
     "migration": "npm run dropTable && npm run createTable",
     "seeder": "npm run userSeed && npm run adminSeed",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
-    "pretest": "npm run migration && npm run seeder",
-    "posttest": ""
+    "pretest": "npm run migration && npm run seeder"
   },
   "nyc": {
     "exclude": [

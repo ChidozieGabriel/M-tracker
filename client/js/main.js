@@ -3,10 +3,9 @@ const token = JSON.parse(localStorage.getItem('token'));
 const errorMessage = document.getElementById('error-message');
 const filter = document.getElementById('filter');
 
-
 let tokenExp = '';
 if (auth) {
-  tokenExp = (auth.exp) * 1000;
+  tokenExp = auth.exp * 1000;
 }
 
 const headers = new Headers({
@@ -14,13 +13,11 @@ const headers = new Headers({
   Authorization: `Bearer ${token}`,
 });
 
-const fetchOptions = (payload, method) => {
-  return {
-    method: method,
-    body: `dept=${payload.dept}&request=${payload.request}`,
-    headers,
-  };
-};
+const fetchOptions = (payload, method) => ({
+  method,
+  body: `dept=${payload.dept}&request=${payload.request}`,
+  headers,
+});
 
 const redirectUser = (role) => {
   switch (role) {
@@ -81,9 +78,9 @@ const userAuthError = () => {
 };
 
 const requestFormErrorHandling = (data) => {
-  if (typeof data.errors === 'string') {
+  if (data.errors.message) {
     alertBox.style.display = 'block';
-    alertBox.innerHTML = `${data.errors}`;
+    alertBox.innerHTML = `${data.errors.message}`;
   } else if (typeof data.errors === 'object') {
     if (data.errors.email) {
       emailError.innerHTML = data.errors.email;
@@ -123,18 +120,16 @@ const requestStatus = (status) => {
   return requestStat;
 };
 
-const dateFormat = (timestamp) => {
-  return new Date(timestamp).toLocaleDateString(undefined, {
+const dateFormat = timestamp =>
+  new Date(timestamp).toLocaleDateString(undefined, {
     day: 'numeric',
     month: 'short',
     year: 'numeric',
     hour: '2-digit',
     minute: '2-digit',
   });
-};
 
-const requestTable = (result) => {
-  return `
+const requestTable = result => `
                       <tr>
                           <td><i>Created&nbsp;by:</i></td>
                           <td>${result.result[0].requester_name}</td>
@@ -163,7 +158,6 @@ const requestTable = (result) => {
                               <p>${result.result[0].request}</p>
                           </td>
                       </tr>`;
-};
 
 const requestFilter = (url) => {
   const selectedValue = filter.options[filter.selectedIndex].value;
@@ -183,4 +177,3 @@ const requestFilter = (url) => {
       break;
   }
 };
-
