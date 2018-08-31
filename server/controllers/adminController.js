@@ -15,7 +15,6 @@ export const getOneRequest = (req, res) => {
     values: [id],
   };
   dbResults(sql, req.userInfo, res);
-
 };
 
 export const adminRequestActions = (req, res) => {
@@ -23,19 +22,18 @@ export const adminRequestActions = (req, res) => {
   const { action } = req.params;
   let sql = '';
   switch (action) {
-    case 'approve':
-      sql = `UPDATE requests SET status=${1} WHERE id=${id} RETURNING *`;
-      break;
-    case 'disapprove':
-      sql = `UPDATE requests SET status=${2} WHERE id=${id} RETURNING *`;
-      break;
-    case 'resolve':
-      sql = `UPDATE requests SET status=${3} WHERE id=${id} RETURNING *`;
-      break;
-    default:
-      sql = `UPDATE requests SET status=${0} WHERE id=${id} RETURNING *`;
-      break;
+  case 'approve':
+    sql = `UPDATE requests SET status=${1} WHERE id=${id} RETURNING *`;
+    break;
+  case 'disapprove':
+    sql = `UPDATE requests SET status=${2} WHERE id=${id} RETURNING *`;
+    break;
+  case 'resolve':
+    sql = `UPDATE requests SET status=${3} WHERE id=${id} RETURNING *`;
+    break;
+  default:
+    sql = `UPDATE requests SET status=${0} WHERE id=${id} RETURNING *`;
+    break;
   }
   dbResults(sql, req.userInfo, res);
-
 };

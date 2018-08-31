@@ -21,15 +21,15 @@ const fetchOptions = (payload, method) => ({
 
 const redirectUser = (role) => {
   switch (role) {
-    case true:
-      window.location.href = 'admin.html';
-      break;
-    case false:
-      window.location.href = 'user.html';
-      break;
-    default:
-      window.location.href = 'user.html';
-      break;
+  case true:
+    window.location.href = 'admin.html';
+    break;
+  case false:
+    window.location.href = 'user.html';
+    break;
+  default:
+    window.location.href = 'user.html';
+    break;
   }
 };
 
@@ -104,18 +104,18 @@ const requestFormErrorHandling = (data) => {
 const requestStatus = (status) => {
   let requestStat = '';
   switch (status) {
-    default:
-      requestStat = 'pending';
-      break;
-    case '1':
-      requestStat = 'approved';
-      break;
-    case '2':
-      requestStat = 'disapproved';
-      break;
-    case '3':
-      requestStat = 'resolved';
-      break;
+  default:
+    requestStat = 'pending';
+    break;
+  case '1':
+    requestStat = 'approved';
+    break;
+  case '2':
+    requestStat = 'disapproved';
+    break;
+  case '3':
+    requestStat = 'resolved';
+    break;
   }
   return requestStat;
 };
@@ -161,19 +161,18 @@ const requestTable = result => `
 
 const requestFilter = (url) => {
   const selectedValue = filter.options[filter.selectedIndex].value;
-
   switch (selectedValue) {
-    case '1':
-      displayTable(`/api/v1/${url}/approved`);
-      break;
-    case '2':
-      displayTable(`/api/v1/${url}/disapproved`);
-      break;
-    case '3':
-      displayTable(`/api/v1/${url}/resolved`);
-      break;
-    case '4':
-      displayTable(`/api/v1/${url}/pending`);
-      break;
+  case '1':
+    displayTable(`/api/v1/${url}/approved`);
+    break;
+  case '2':
+    displayTable(`/api/v1/${url}/disapproved`);
+    break;
+  case '3':
+    displayTable(`/api/v1/${url}/resolved`);
+    break;
+  case '4':
+    displayTable(`/api/v1/${url}/pending`);
+    break;
   }
 };

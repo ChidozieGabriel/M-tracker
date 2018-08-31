@@ -21,7 +21,6 @@ before((done) => {
     });
 });
 describe('USER REQUEST CONTROLLER API ENDPOINT', () => {
-
   it('Should not have access to requests on no token GET', (done) => {
     chai.request(app)
       .get('/api/v1/users/requests/')
@@ -56,7 +55,7 @@ describe('USER REQUEST CONTROLLER API ENDPOINT', () => {
   it('Should list ALL requests on /user/request GET', (done) => {
     chai.request(app)
       .get('/api/v1/users/requests/')
-      .set({ Authorization: 'Bearer ' + global.token })
+      .set({ Authorization: `Bearer ${global.token}` })
       .end((err, res) => {
         Expect(err)
           .to
@@ -76,7 +75,7 @@ describe('USER REQUEST CONTROLLER API ENDPOINT', () => {
   it('Should list ALL requests ordered by resolved', (done) => {
     chai.request(app)
       .get('/api/v1/users/requests/orderBy/resolved')
-      .set({ Authorization: 'Bearer ' + global.tok })
+      .set({ Authorization: `Bearer ${global.tok}` })
       .end((err, res) => {
         Expect(res.statusCode)
           .to
@@ -92,7 +91,7 @@ describe('USER REQUEST CONTROLLER API ENDPOINT', () => {
   it('Should list ALL requests ordered by approved', (done) => {
     chai.request(app)
       .get('/api/v1/users/requests/orderBy/approved')
-      .set({ Authorization: 'Bearer ' + global.tok })
+      .set({ Authorization: `Bearer ${global.tok}` })
       .end((err, res) => {
         Expect(res.statusCode)
           .to
@@ -108,7 +107,7 @@ describe('USER REQUEST CONTROLLER API ENDPOINT', () => {
   it('Should list ALL requests ordered by disapproved', (done) => {
     chai.request(app)
       .get('/api/v1/users/requests/orderBy/disapproved')
-      .set({ Authorization: 'Bearer ' + global.tok })
+      .set({ Authorization: `Bearer ${global.tok}` })
       .end((err, res) => {
         Expect(res.statusCode)
           .to
@@ -124,7 +123,7 @@ describe('USER REQUEST CONTROLLER API ENDPOINT', () => {
   it('Should list ALL requests ordered by pending', (done) => {
     chai.request(app)
       .get('/api/v1/users/requests/orderBy/pending')
-      .set({ Authorization: 'Bearer ' + global.tok })
+      .set({ Authorization: `Bearer ${global.tok}` })
       .end((err, res) => {
         Expect(res.statusCode)
           .to
@@ -140,7 +139,7 @@ describe('USER REQUEST CONTROLLER API ENDPOINT', () => {
   it('Should list ONE requests on /user/request/:requestId GET', (done) => {
     chai.request(app)
       .get('/api/v1/users/requests/1')
-      .set({ Authorization: 'Bearer ' + global.token })
+      .set({ Authorization: `Bearer ${global.token}` })
       .end((err, res) => {
         Expect(res.statusCode)
           .to
@@ -156,7 +155,7 @@ describe('USER REQUEST CONTROLLER API ENDPOINT', () => {
   it('Should throw a 404 error when request is not found', (done) => {
     chai.request(app)
       .get('/api/v1/users/requests/1100')
-      .set({ Authorization: 'Bearer ' + global.token })
+      .set({ Authorization: `Bearer ${global.token}` })
       .end((err, res) => {
         Expect(res.statusCode)
           .to
@@ -173,7 +172,7 @@ describe('USER REQUEST CONTROLLER API ENDPOINT', () => {
     };
     chai.request(app)
       .post('/api/v1/users/requests')
-      .set({ Authorization: 'Bearer ' + global.token })
+      .set({ Authorization: `Bearer ${global.token}` })
       .send(data1)
       .end((err, res) => {
         Expect(res.statusCode)
@@ -191,7 +190,7 @@ describe('USER REQUEST CONTROLLER API ENDPOINT', () => {
     };
     chai.request(app)
       .put('/api/v1/users/requests/3')
-      .set({ Authorization: 'Bearer ' + global.token })
+      .set({ Authorization: `Bearer ${global.token}` })
       .send(data)
       .end((err, res) => {
         Expect(res.statusCode)
@@ -208,7 +207,7 @@ describe('USER REQUEST CONTROLLER API ENDPOINT', () => {
     };
     chai.request(app)
       .post('/api/v1/users/requests/')
-      .set({ Authorization: 'Bearer ' + global.token })
+      .set({ Authorization: `Bearer ${global.token}` })
       .send(data1)
       .end((err, res) => {
         Expect(res.statusCode)
@@ -227,7 +226,7 @@ describe('USER REQUEST CONTROLLER API ENDPOINT', () => {
     chai.request(app)
       .put('/api/v1/users/requests/1100')
       .send(data)
-      .set({ Authorization: 'Bearer ' + global.token })
+      .set({ Authorization: `Bearer ${global.token}` })
       .end((err, res) => {
         Expect(res.statusCode)
           .to
@@ -239,7 +238,7 @@ describe('USER REQUEST CONTROLLER API ENDPOINT', () => {
   it('should get an error when a request is not found on user/requests/:requestId  DELETE', (done) => {
     chai.request(app)
       .delete('/api/v1/users/requests/1110/delete')
-      .set({ Authorization: 'Bearer ' + global.token })
+      .set({ Authorization: `Bearer ${global.token}` })
       .end((err, res) => {
         Expect(res.statusCode)
           .to
@@ -251,7 +250,7 @@ describe('USER REQUEST CONTROLLER API ENDPOINT', () => {
   it('should delete a request on user/requests/:requestId  DELETE', (done) => {
     chai.request(app)
       .delete('/api/v1/users/requests/2/delete')
-      .set({ Authorization: 'Bearer ' + global.token })
+      .set({ Authorization: `Bearer ${global.token}` })
       .end((err, res) => {
         Expect(res.statusCode)
           .to
@@ -263,7 +262,7 @@ describe('USER REQUEST CONTROLLER API ENDPOINT', () => {
   it('should not grant access to none admin users', (done) => {
     chai.request(app)
       .get('/api/v1/requests/')
-      .set({ Authorization: 'Bearer ' + global.token })
+      .set({ Authorization: `Bearer ${global.token}` })
       .end((err, res) => {
         Expect(res.statusCode)
           .to
@@ -274,7 +273,6 @@ describe('USER REQUEST CONTROLLER API ENDPOINT', () => {
 });
 
 describe('SERVER', () => {
-
   it('Should return 200 on root Endpoint  ', (done) => {
     chai.request(app)
       .get('/')
