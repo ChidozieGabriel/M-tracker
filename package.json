@@ -4,8 +4,12 @@
   "description": "API for Maintenance-tracker",
   "main": "server/server.js",
   "scripts": {
+    "test:react": "jest ./React --coverage",
+    "build": "webpack --mode production",
+    "webpack": "webpack-dev-server --mode development --open --hot --watch-poll",
     "test": "cross-env NODE_ENV=test nyc --reporter=text mocha server/tests/**.spec.js --require babel-register --timeout 10000",
     "start": "cross-env NODE_ENV=development nodemon -r babel-register server/server.js",
+    "start:dev": "cross-env NODE_ENV=development nodemon -r babel-register server/server.js",
     "createTable": "cross-env NODE_ENV=test node -r babel-register server/migrations/createTable.js",
     "dropTable": "cross-env NODE_ENV=test node -r babel-register server/migrations/dropTable.js",
     "userSeed": "cross-env NODE_ENV=test node -r babel-register server/migrations/user.seed.js",
@@ -13,12 +17,24 @@
     "migration": "npm run dropTable && npm run createTable",
     "seeder": "npm run userSeed && npm run adminSeed",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
-    "pretest": "npm run migration && npm run seeder"
+    "pretest": "npm run migration && npm run seeder",
+    "lint": "eslint React"
   },
   "nyc": {
     "exclude": [
       "**/*.spec.js",
-      "server/config/config.js"
+      "server/config/config.js",
+      "React"
+    ]
+  },
+  "jest": {
+    "setupTestFrameworkScriptFile": "<rootDir>/React/src/tests/setupTests.js",
+    "moduleNameMapper": {
+      "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/React/__mocks__/fileMock.js",
+      "\\.(css|less)$": "<rootDir>/React/__mocks__/styleMock.js"
+    },
+    "testPathIgnorePatterns": [
+      "server"
     ]
   },
   "repository": {
@@ -36,7 +52,7 @@
   },
   "homepage": "https://github.com/veeqtor/M-tracker#readme",
   "dependencies": {
-    "babel-preset-env": "^1.7.0",
+    "axios": "^0.18.0",
     "babel-register": "^6.26.0",
     "bcrypt": "^3.0.0",
     "body-parser": "^1.18.3",
@@ -45,24 +61,60 @@
     "cors": "^2.8.4",
     "coveralls": "^3.0.1",
     "dotenv": "^5.0.1",
-    "eslint": "^4.19.1",
+    "dotenv-webpack": "^1.5.7",
+    "enzyme": "^3.5.0",
+    "enzyme-adapter-react-16": "^1.3.0",
+    "eslint": "^5.4.0",
     "eslint-config-airbnb": "^16.1.0",
     "eslint-plugin-import": "^2.11.0",
     "eslint-plugin-jsx-a11y": "^6.0.3",
     "eslint-plugin-react": "^7.8.2",
     "express": "^4.16.3",
     "istanbul": "^0.4.5",
+    "jest": "^23.5.0",
     "jsonwebtoken": "^8.2.1",
+    "jwt-decode": "^2.2.0",
     "mocha": "^5.1.1",
+    "moxios": "^0.4.0",
     "nodemon": "^1.17.4",
     "nyc": "^11.8.0",
     "pg": "^7.4.3",
+    "prop-types": "^15.6.2",
+    "react": "^16.4.2",
+    "react-dom": "^16.4.2",
+    "react-hot-loader": "^4.3.5",
+    "react-redux": "^5.0.7",
+    "react-router": "^4.3.1",
+    "react-router-dom": "^4.3.1",
+    "redux": "^4.0.0",
+    "redux-logger": "^3.0.6",
+    "redux-mock-store": "^1.5.3",
+    "redux-thunk": "^2.3.0",
     "supertest": "^3.1.0",
     "swagger-ui-express": "^3.0.9",
-    "validatorjs": "^3.14.2"
+    "validatorjs": "^3.14.2",
+    "webpack": "^4.17.1",
+    "webpack-dev-middleware": "^3.2.0"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
-    "cross-env": "^5.1.6"
+    "babel-core": "^6.26.3",
+    "babel-eslint": "^8.2.6",
+    "babel-jest": "^23.4.2",
+    "babel-loader": "^7.1.5",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-react": "^6.24.1",
+    "babel-preset-stage-2": "^6.24.1",
+    "cross-env": "^5.1.6",
+    "css-loader": "^1.0.0",
+    "file-loader": "^2.0.0",
+    "html-webpack-plugin": "^3.2.0",
+    "img-loader": "^3.0.0",
+    "node-sass": "^4.9.3",
+    "sass-loader": "^7.1.0",
+    "style-loader": "^0.22.1",
+    "url-loader": "^1.1.1",
+    "webpack-cli": "^3.1.0",
+    "webpack-dev-server": "^3.1.7"
   }
 }

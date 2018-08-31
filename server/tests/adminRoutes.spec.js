@@ -24,11 +24,10 @@ before((done) => {
 });
 
 describe('ADMIN ROUTES', () => {
-
   it('Should approve a request', (done) => {
     chai.request(app)
       .put('/api/v1/requests/1/approve')
-      .set({ Authorization: 'Bearer ' + global.tok })
+      .set({ Authorization: `Bearer ${global.tok}` })
       .end((err, res) => {
         Expect(res.statusCode)
           .to
@@ -40,7 +39,7 @@ describe('ADMIN ROUTES', () => {
   it('Should Disapprove a request', (done) => {
     chai.request(app)
       .put('/api/v1/requests/1/disapprove')
-      .set({ Authorization: 'Bearer ' + global.tok })
+      .set({ Authorization: `Bearer ${global.tok}` })
       .end((err, res) => {
         Expect(res.statusCode)
           .to
@@ -52,7 +51,7 @@ describe('ADMIN ROUTES', () => {
   it('Should Resolve a request', (done) => {
     chai.request(app)
       .put('/api/v1/requests/1/resolve')
-      .set({ Authorization: 'Bearer ' + global.tok })
+      .set({ Authorization: `Bearer ${global.tok}` })
       .end((err, res) => {
         Expect(res.statusCode)
           .to
@@ -64,7 +63,7 @@ describe('ADMIN ROUTES', () => {
   it('Should list ALL requests ordered by date', (done) => {
     chai.request(app)
       .get('/api/v1/requests/')
-      .set({ Authorization: 'Bearer ' + global.tok })
+      .set({ Authorization: `Bearer ${global.tok}` })
       .end((err, res) => {
         Expect(res.statusCode)
           .to
@@ -80,7 +79,7 @@ describe('ADMIN ROUTES', () => {
   it('Should list ONE requests on /request/:requestId GET', (done) => {
     chai.request(app)
       .get('/api/v1/requests/admin/1')
-      .set({ Authorization: 'Bearer ' + global.tok })
+      .set({ Authorization: `Bearer ${global.tok}` })
       .end((err, res) => {
         Expect(res.statusCode)
           .to
@@ -96,7 +95,7 @@ describe('ADMIN ROUTES', () => {
   it('Should list ALL requests ordered by resolved', (done) => {
     chai.request(app)
       .get('/api/v1/requests/resolved')
-      .set({ Authorization: 'Bearer ' + global.tok })
+      .set({ Authorization: `Bearer ${global.tok}` })
       .end((err, res) => {
         Expect(res.statusCode)
           .to
@@ -112,7 +111,7 @@ describe('ADMIN ROUTES', () => {
   it('Should list ALL requests ordered by approved', (done) => {
     chai.request(app)
       .get('/api/v1/requests/approved')
-      .set({ Authorization: 'Bearer ' + global.tok })
+      .set({ Authorization: `Bearer ${global.tok}` })
       .end((err, res) => {
         Expect(res.statusCode)
           .to
@@ -128,7 +127,7 @@ describe('ADMIN ROUTES', () => {
   it('Should list ALL requests ordered by disapproved', (done) => {
     chai.request(app)
       .get('/api/v1/requests/disapproved')
-      .set({ Authorization: 'Bearer ' + global.tok })
+      .set({ Authorization: `Bearer ${global.tok}` })
       .end((err, res) => {
         Expect(res.statusCode)
           .to
@@ -144,7 +143,7 @@ describe('ADMIN ROUTES', () => {
   it('Should list ALL requests ordered by pending', (done) => {
     chai.request(app)
       .get('/api/v1/requests/pending')
-      .set({ Authorization: 'Bearer ' + global.tok })
+      .set({ Authorization: `Bearer ${global.tok}` })
       .end((err, res) => {
         Expect(res.statusCode)
           .to
