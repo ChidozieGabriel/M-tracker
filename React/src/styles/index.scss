@@ -133,7 +133,7 @@ a {
     border-bottom: 1px solid $shadow-color;
     border-radius: 3px;
     box-shadow: 1px 4px 10px $shadow-color;
-    margin: 170px auto;
+    margin: 150px auto;
     padding: 2%;
     width: 40%;
 
@@ -155,6 +155,78 @@ a {
     font-weight: 900;
     text-transform: uppercase;
   }
+  .input-group {
+    display: flex;
+    flex-direction: column;
+    padding: 10px 0;
+    p {
+      text-align: center;
+    }
+    a {
+      color: $dark-shade;
+      font-size: 1.05em;
+      text-align: center;
+      text-decoration: none;
+    }
+    label {
+      display: inline-block;
+      font-family: "Ubuntu", sans-serif;
+      font-weight: 200;
+      letter-spacing: 1px;
+    }
+  }
+
+  .wrapper {
+    width: 70%;
+    margin: 0 auto;
+  }
+
+  .table {
+    width: 100%;
+    text-align: center;
+    background-color: $white;
+    margin: 10px 0 15px;
+    padding: 10px;
+    border-bottom: 1px solid $primary-color;
+    .approved {
+      background: $approve;
+      text-align: center;
+    }
+    .pending {
+      background: $shadow-color;
+      text-align: center;
+    }
+    .resolved {
+      background: $primary-color;
+      text-align: center;
+    }
+    .disapproved {
+      background: $disapprove;
+      text-align: center;
+      color: $white;
+    }
+    th {
+      padding: 5px 5px 5px 0;
+      background: $bg;
+    }
+    th, td {
+      border-bottom: 1px solid $bg;
+    }
+    a {
+      margin: 3px;
+      display: inline-block;
+    }
+    tr {
+      td {
+        padding: 5px 0 5px;
+      }
+    }
+  }
+
+
+
+
+
 
   @media only screen and (max-width: 900px) {
     .brand {
@@ -164,7 +236,6 @@ a {
       align-items: center;
       display: flex;
       flex-direction: column;
-
       nav {
         padding: 20px 0;
 
@@ -196,22 +267,18 @@ a {
     .form-title {
       font-size: 1em;
     }
-  }
-  .input-group {
-    display: flex;
-    flex-direction: column;
-    padding: 10px 0;
-    p {
-      text-align: center;
+    .table-res {
+      overflow-x: auto;
+      .table {
+        font-size: 0.8rem;
+      }
     }
-    a {
-      color: $dark-shade;
-      font-size: 1.05em;
-      text-align: center;
-      text-decoration: none;
+    .wrapper {
+      width: 90%;
     }
   }
 }
+
 
 input[type="text"],
 input[type="password"],
@@ -246,12 +313,6 @@ input[type="submit"] {
   padding-left: 2%;
 }
 
-.input-group label {
-  display: inline-block;
-  font-family: "Ubuntu", sans-serif;
-  font-weight: 200;
-  letter-spacing: 1px;
-}
 
 .btn-landing {
   background: transparent;
@@ -260,13 +321,13 @@ input[type="submit"] {
   color: $white;
   padding: 0.625rem 2.85rem;
   transition: all 500ms;
+  &:hover {
+    border-radius: 10px;
+    font-size: 16px;
+    padding: 0.8rem 3.25rem;
+  }
 }
 
-.btn-landing:hover {
-  border-radius: 10px;
-  font-size: 16px;
-  padding: 0.8rem 3.25rem;
-}
 
 .btn {
   background: transparent;
@@ -290,50 +351,49 @@ input[type="submit"] {
 .btn-primary {
   background: $dark-shade;
   color: $white;
+  &:hover {
+    background: $primary-button-hover;
+  }
 }
 
-.btn-primary:hover {
-  background: $primary-button-hover;
-}
 
 .btn-edit {
   background: $primary-color;
   color: $dark-shade;
+  &:hover {
+    background: $edit-btn-shade;
+    color: $dark-shade;
+  }
 }
 
-.btn-edit:hover {
-  background: $edit-btn-shade;
-  color: $dark-shade;
-}
 
 .btn-delete {
   background: $disapprove;
   color: $white;
+  &:hover {
+    background: $disapprove-darker;
+  }
 }
 
-.btn-delete:hover {
-  background: $disapprove-darker;
-}
 
 .btn-default {
   background: $dark-shade;
   border: 1px solid transparent;
   color: $white;
+  &:hover {
+    background: $primary-button-hover;
+    color: $white;
+  }
 }
 
-.btn-default:hover {
-  background: $primary-button-hover;
-  color: $white;
-}
 
 .btn-approve {
   background: $approve;
   color: $dark-shade;
-}
-
-.btn-approve:hover {
-  background: $approve-darker;
-  color: $dark-shade;
+    &:hover {
+    background: $approve-darker;
+    color: $dark-shade;
+  }
 }
 
 h3 {

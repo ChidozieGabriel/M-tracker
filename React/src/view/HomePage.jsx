@@ -9,7 +9,7 @@ const Homepage = () => (
     <div className="landing-page">
       <div className="welcome">
         <h1>M-tracker</h1>
-        <p>Maintenance/repairs at your convenience</p>
+        <p>Maintenance/repairs at your convenience </p>
         <br />
         <Link href="/register" className="btn-landing" to="/register">
           Get started

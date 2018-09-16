@@ -75,6 +75,7 @@
     "jsonwebtoken": "^8.2.1",
     "jwt-decode": "^2.2.0",
     "mocha": "^5.1.1",
+    "moment": "^2.22.2",
     "moxios": "^0.4.0",
     "nodemon": "^1.17.4",
     "nyc": "^11.8.0",
