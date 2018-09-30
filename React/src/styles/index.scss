@@ -1,0 +1,439 @@
+@import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css");
+@import url("https://fonts.googleapis.com/css?family=Lato:400,900|Ubuntu:400,700|Fredoka+One|Kaushan+Script|Permanent+Marker");
+
+$alert-danger: #b74138;
+$approve-darker: #9ad99e;
+$approve: #aef0b2;
+$bg: #eeeeee;
+$dark-shade: #363851;
+$disapprove-darker: #7e3b3b;
+$disapprove: #b16464;
+$edit-btn-shade: #aa91aa;
+$grey: #f7f7f7;
+$placeholder: #c3c3c3;
+$primary-button-hover: #17192a;
+$primary-color: #d8bfd8;
+$shadow-color: #bebebe;
+$text-shadow-color: #181818;
+$white: #fff;
+
+html,
+body {
+  height: 100%;
+  position: relative;
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: $bg;
+  font-family: "Lato", sans-serif;
+  line-height: 1.4;
+}
+
+.loader {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.6s;
+}
+
+a {
+  color: $dark-shade;
+  text-decoration: none;
+}
+
+#root {
+  min-height: 100vh;
+  position: relative;
+
+  .brand {
+    float: left;
+    font-family: "Fredoka One", cursive, sans-serif;
+    font-size: 26px;
+    font-weight: 900;
+    letter-spacing: 5px;
+    padding: 30px 60px;
+    text-transform: uppercase;
+  }
+
+  header {
+    background: $primary-color;
+    border-bottom: 1px solid $dark-shade;
+    min-height: 100px;
+    width: 100%;
+
+    nav {
+      float: right;
+      padding: 40px 60px 40px 0;
+      ul {
+        display: inline-flex;
+        list-style: none;
+
+        li {
+          padding: 0 10px 0 10px;
+        }
+      }
+    }
+  }
+
+  footer {
+    background: $dark-shade;
+    bottom: 0;
+    margin-top: 100px;
+    padding: 1.5rem;
+    position: absolute;
+    width: 100%;
+
+    p {
+      color: $white;
+      font-size: 14px;
+      text-align: center;
+    }
+  }
+
+  .landing-page {
+    background-attachment: fixed;
+    background-image: url("../assets/bg.jpeg");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+  .welcome {
+    min-height: 100vh;
+    padding: 400px 0 0 0;
+    text-align: center;
+
+    h1 {
+      color: $white;
+      font-family: "Fredoka One", cursive, sans-serif;
+      font-size: 3.25rem;
+      font-weight: 900;
+      letter-spacing: 5px;
+      text-shadow: 3px 3px 1px $text-shadow-color;
+      text-transform: uppercase;
+    }
+
+    p {
+      color: $white;
+      letter-spacing: 5px;
+      text-shadow: 3px 3px 1px $text-shadow-color;
+      text-transform: uppercase;
+    }
+  }
+
+  .form-wrapper {
+    background: $grey;
+    border-bottom: 1px solid $shadow-color;
+    border-radius: 3px;
+    box-shadow: 1px 4px 10px $shadow-color;
+    margin: 150px auto;
+    padding: 2%;
+    width: 40%;
+
+    .form-inner {
+      margin: 10px;
+      padding-top: 10px;
+    }
+  }
+
+  .request-wrapper {
+    width: 70%;
+  }
+
+  .form-title {
+    border-bottom: 1px solid $primary-color;
+    color: $dark-shade;
+    font-family: "Ubuntu", sans-serif;
+    font-size: 2em;
+    font-weight: 900;
+    text-transform: uppercase;
+  }
+  .input-group {
+    display: flex;
+    flex-direction: column;
+    padding: 10px 0;
+    p {
+      text-align: center;
+    }
+    a {
+      color: $dark-shade;
+      font-size: 1.05em;
+      text-align: center;
+      text-decoration: none;
+    }
+    label {
+      display: inline-block;
+      font-family: "Ubuntu", sans-serif;
+      font-weight: 200;
+      letter-spacing: 1px;
+    }
+  }
+
+  .wrapper {
+    width: 70%;
+    margin: 0 auto;
+  }
+
+  .table {
+    width: 100%;
+    text-align: center;
+    background-color: $white;
+    margin: 10px 0 15px;
+    padding: 10px;
+    border-bottom: 1px solid $primary-color;
+    .approved {
+      background: $approve;
+      text-align: center;
+    }
+    .pending {
+      background: $shadow-color;
+      text-align: center;
+    }
+    .resolved {
+      background: $primary-color;
+      text-align: center;
+    }
+    .disapproved {
+      background: $disapprove;
+      text-align: center;
+      color: $white;
+    }
+    th {
+      padding: 5px 5px 5px 0;
+      background: $bg;
+    }
+    th, td {
+      border-bottom: 1px solid $bg;
+    }
+    a {
+      margin: 3px;
+      display: inline-block;
+    }
+    tr {
+      td {
+        padding: 5px 0 5px;
+      }
+    }
+  }
+
+
+
+
+
+
+  @media only screen and (max-width: 900px) {
+    .brand {
+      font-size: 22px;
+    }
+    header {
+      align-items: center;
+      display: flex;
+      flex-direction: column;
+      nav {
+        padding: 20px 0;
+
+        ul {
+          list-style: none;
+          padding: 0;
+        }
+      }
+    }
+
+    .welcome {
+      padding: 200px 0 0;
+
+      h1 {
+        font-size: 2rem;
+        letter-spacing: 2px;
+      }
+
+      p {
+        letter-spacing: 2px;
+      }
+    }
+
+    .form-wrapper,
+    .request-wrapper {
+      width: 95%;
+    }
+
+    .form-title {
+      font-size: 1em;
+    }
+    .table-res {
+      overflow-x: auto;
+      .table {
+        font-size: 0.8rem;
+      }
+    }
+    .wrapper {
+      width: 90%;
+    }
+  }
+}
+
+
+input[type="text"],
+input[type="password"],
+input[type="email"],
+textarea,
+select {
+  background: transparent;
+  border-radius: 3px;
+  border: 1px solid $primary-color;
+  font-family: "Ubuntu", sans-serif;
+  letter-spacing: 2px;
+  margin: 10px 0;
+  padding: 8px 5px;
+}
+
+input[type="text"]:focus,
+input[type="password"]:focus,
+input[type="email"]:focus,
+textarea:focus {
+  background: $white;
+  border: 1px solid $dark-shade;
+  outline-style: none;
+}
+
+input[type="submit"] {
+  margin: 10px 0;
+}
+
+::placeholder {
+  color: $placeholder;
+  font-size: 12px;
+  padding-left: 2%;
+}
+
+
+.btn-landing {
+  background: transparent;
+  border: 1px solid $white;
+  border-radius: 3px;
+  color: $white;
+  padding: 0.625rem 2.85rem;
+  transition: all 500ms;
+  &:hover {
+    border-radius: 10px;
+    font-size: 16px;
+    padding: 0.8rem 3.25rem;
+  }
+}
+
+
+.btn {
+  background: transparent;
+  border-radius: 3px;
+  color: $dark-shade;
+  cursor: pointer;
+  font-size: 16px;
+  line-height: 1;
+  margin: 10px 0;
+  padding: 0.5rem 0.85rem;
+  transition: all 500ms;
+}
+
+.btn-sm {
+  border-radius: 3px;
+  color: $dark-shade;
+  cursor: pointer;
+  padding: 0.35rem 0.85rem;
+}
+
+.btn-primary {
+  background: $dark-shade;
+  color: $white;
+  &:hover {
+    background: $primary-button-hover;
+  }
+}
+
+
+.btn-edit {
+  background: $primary-color;
+  color: $dark-shade;
+  &:hover {
+    background: $edit-btn-shade;
+    color: $dark-shade;
+  }
+}
+
+
+.btn-delete {
+  background: $disapprove;
+  color: $white;
+  &:hover {
+    background: $disapprove-darker;
+  }
+}
+
+
+.btn-default {
+  background: $dark-shade;
+  border: 1px solid transparent;
+  color: $white;
+  &:hover {
+    background: $primary-button-hover;
+    color: $white;
+  }
+}
+
+
+.btn-approve {
+  background: $approve;
+  color: $dark-shade;
+    &:hover {
+    background: $approve-darker;
+    color: $dark-shade;
+  }
+}
+
+h3 {
+  border-bottom: 1px solid $primary-color;
+  color: $dark-shade;
+  font-size: 20px;
+  margin: 5px;
+  padding: 15px 0;
+  text-transform: uppercase;
+}
+
+.alert {
+  display: none;
+  letter-spacing: 2px;
+  margin: 15px;
+  padding: 10px;
+  text-align: center;
+  text-transform: capitalize;
+  transition: all 500ms;
+}
+
+.alert-warning {
+  color: $dark-shade;
+  background: $grey;
+  border: 1px solid $alert-danger;
+}
+
+.alert-success {
+  color: $dark-shade;
+  background: $approve;
+  border: 1px solid $approve-darker;
+}
+
+.error {
+  color: $alert-danger;
+  font-weight: bold;
+}
+
+.disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+  pointer-events: none;
+}

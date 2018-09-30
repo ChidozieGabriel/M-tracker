@@ -8,18 +8,18 @@ const successBox = document.getElementById('alert-success');
 const userFeedback = (type) => {
   let output = '';
   switch (type) {
-    case '1':
-      output = 'Successfully updated';
-      break;
-    case '2':
-      output = 'Successfully created a new request';
-      break;
-    case '3':
-      output = 'Request delete was successful';
-      break;
-    default:
-      output = 'Operation was successful';
-      break;
+  case '1':
+    output = 'Successfully updated';
+    break;
+  case '2':
+    output = 'Successfully created a new request';
+    break;
+  case '3':
+    output = 'Request delete was successful';
+    break;
+  default:
+    output = 'Operation was successful';
+    break;
   }
   return output;
 };
@@ -71,7 +71,7 @@ const displayTable = (apiUrl) => {
           data.result.forEach((request) => {
             output += `
           <tr>
-              <td>${count += 1}</td>
+              <td>${(count += 1)}</td>
               <td>${request.requester_name}</td>
               <td class="${requestStatus(request.status)}">
                   <small>${requestStatus(request.status)}</small>
@@ -83,8 +83,10 @@ const displayTable = (apiUrl) => {
                   title="Click to view request"><i class="fa fa-eye"></i>
                   </a>
                   <a href="javascript:void(0)" class="btn-sm btn-delete 
-                    ${request.status === '1' || request.status === '3' ? 'disabled' : ''}" 
-                  onClick='deleteData(${request.id})' 
+                 ${
+  request.status === '1' || request.status === '3' ? 'disabled' : ''
+}"
+                  onClick='deleteData(${request.id})'
                   title="Click to delete request"><i class="fa fa-trash"></i>
                   </a>
               </td>
@@ -119,4 +121,6 @@ function deleteData(requestId) {
 
 displayTable(apiUrl);
 
-filter.addEventListener('change', () => { requestFilter('users/requests/orderBy'); });
+filter.addEventListener('change', () => {
+  requestFilter('users/requests/orderBy');
+});
