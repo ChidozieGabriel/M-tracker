@@ -36,7 +36,20 @@ body {
   font-family: "Lato", sans-serif;
   line-height: 1.4;
 }
+.left {
+    float: left;
+}
 
+.right {
+    float: right;
+}
+
+.clearfix {
+    clear: both;
+}
+.action-btn{
+  display: inline-flex;
+}
 .loader {
   align-items: center;
   display: flex;
@@ -219,6 +232,30 @@ a {
     tr {
       td {
         padding: 5px 0 5px;
+      }
+    }
+  }
+  .view-request-wrapper {
+    padding: 2%;
+    background: #F7F7F7;
+    border-radius: 3px;
+    width: 70%;
+    margin: 50px auto;
+    border-bottom: 1px solid #bebebe;
+    box-shadow: 1px 4px 10px #bebebe;
+    .card {
+      max-width: 70%;
+      margin: auto;
+      padding-bottom: 5%;
+      .table {
+        text-align: left;
+        font-size: 14px;
+        color: #363851;
+        padding: 5px 0;
+        tr td {
+          padding: 10px;
+          border: none;
+        }
       }
     }
   }

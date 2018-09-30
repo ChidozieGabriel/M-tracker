@@ -1,11 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 
-const Homepage = () => (
+const Homepage = ({ history }) => (
   <div>
-    <Header />
+    <Header history={history} />
     <div className="landing-page">
       <div className="welcome">
         <h1>M-tracker</h1>
@@ -20,4 +21,7 @@ const Homepage = () => (
   </div>
 );
 
+Homepage.propTypes = {
+  history: PropTypes.shape().isRequired,
+};
 export default Homepage;
