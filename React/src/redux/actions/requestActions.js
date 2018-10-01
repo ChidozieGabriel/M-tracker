@@ -11,11 +11,6 @@ const getSingleRequest = payload => ({
   payload,
 });
 
-const createRequest = payload => ({
-  type: types.CREATE_REQUEST,
-  payload,
-});
-
 const getAllRequests = () => dispatch =>
   axios
     .get(`${process.env.BASE_URL}/users/requests/`)
@@ -36,6 +31,12 @@ export const createRequestAction = detail => dispatch =>
 export const editRequestAction = (detail, id) => dispatch =>
   axios.put(`${process.env.BASE_URL}/users/requests/${id}`, detail).then((res) => {
     dispatch({ type: types.EDIT_REQUEST });
+    return res.data;
+  });
+
+export const deleteRequestAction = id => dispatch =>
+  axios.delete(`${process.env.BASE_URL}/users/requests/${id}/delete`).then((res) => {
+    dispatch({ type: types.DELETE_REQUEST });
     return res.data;
   });
 
