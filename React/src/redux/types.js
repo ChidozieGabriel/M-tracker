@@ -4,3 +4,4 @@ export const ALL_REQUESTS = 'ALL_REQUESTS';
 export const SINGLE_REQUEST = 'SINGLE_REQUEST';
 export const CREATE_REQUEST = 'CREATE_REQUEST';
 export const EDIT_REQUEST = 'EDIT_REQUEST';
+export const DELETE_REQUEST = 'DELETE_REQUEST';
