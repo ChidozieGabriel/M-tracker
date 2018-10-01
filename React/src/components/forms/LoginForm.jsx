@@ -41,8 +41,8 @@ class LoginForm extends Component {
         <h2 className="form-title">Login</h2>
         <div className="form-inner">
           <Loader loading={loading} />
-          {errors
-            && errors.message && (
+          {errors &&
+            errors.message && (
             <span
               id="alert-box"
               style={{ display: 'block' }}
@@ -86,7 +86,9 @@ class LoginForm extends Component {
               <input type="submit" className="btn btn-default" value="Log in" />
               <p>
                 Do not have an account?&nbsp;{' '}
-                <Link to="/register">Register</Link>
+                <Link href="/register" to="/register">
+                  Register
+                </Link>
               </p>
             </div>
           </form>
