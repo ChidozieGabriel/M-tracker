@@ -19,8 +19,7 @@ class SingleView extends Component {
     } = this.props;
     SingleRequest(params.requestID).then((result) => {
       this.setState({
-        ...this.state,
-        request: result.payload[0],
+        request: result[0],
       });
     });
   }
