@@ -22,12 +22,20 @@ const getAllRequests = () => dispatch =>
     .then(res => dispatch(getRequest(res.data.result)));
 
 export const getASingleRequest = id => dispatch =>
-  axios
-    .get(`${process.env.BASE_URL}/users/requests/${id}`)
-    .then(res => dispatch(getSingleRequest(res.data.result)));
+  axios.get(`${process.env.BASE_URL}/users/requests/${id}`).then((res) => {
+    dispatch(getSingleRequest(res.data.result));
+    return res.data.result;
+  });
+
 export const createRequestAction = detail => dispatch =>
   axios.post(`${process.env.BASE_URL}/users/requests/`, detail).then((res) => {
     dispatch({ type: types.CREATE_REQUEST });
+    return res.data;
+  });
+
+export const editRequestAction = (detail, id) => dispatch =>
+  axios.put(`${process.env.BASE_URL}/users/requests/${id}`, detail).then((res) => {
+    dispatch({ type: types.EDIT_REQUEST });
     return res.data;
   });
 
