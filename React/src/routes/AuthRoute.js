@@ -10,9 +10,13 @@ const AuthRoute = ({ component: Component, token, ...otherProps }) => (
   />
 );
 
+AuthRoute.defaultProps = {
+  token: '',
+};
+
 AuthRoute.propTypes = {
   component: PropTypes.func.isRequired,
-  token: PropTypes.string.isRequired,
+  token: PropTypes.string,
 };
 
 const mapStateToProps = state => ({

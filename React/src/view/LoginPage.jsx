@@ -8,14 +8,20 @@ import LoginForm from '../components/forms/LoginForm';
 
 export class LoginPage extends PureComponent {
   componentWillMount() {
-    const { token, history: { replace } } = this.props;
+    const {
+      token,
+      history: { replace },
+    } = this.props;
     if (token) {
       replace('/dashboard');
     }
   }
 
   submit = (details) => {
-    const { userLogin, history: { push } } = this.props;
+    const {
+      userLogin,
+      history: { push },
+    } = this.props;
     return userLogin(details).then(() => push('/dashboard'));
   };
 
@@ -30,8 +36,12 @@ export class LoginPage extends PureComponent {
   }
 }
 
+LoginPage.defaultProps = {
+  token: '',
+};
+
 LoginPage.propTypes = {
-  token: PropTypes.string.isRequired,
+  token: PropTypes.string,
   userLogin: PropTypes.func.isRequired,
   history: PropTypes.shape({
     push: PropTypes.func.isRequired,

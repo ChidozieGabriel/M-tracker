@@ -6,9 +6,19 @@ const getRequest = payload => ({
   payload,
 });
 
+const getSingleRequest = payload => ({
+  type: types.SINGLE_REQUESTS,
+  payload,
+});
+
 const getAllRequests = () => dispatch =>
   axios
-    .get('/api/v1/users/requests/')
+    .get(`${process.env.BASE_URL}/users/requests/`)
     .then(res => dispatch(getRequest(res.data.result)));
+
+export const getASingleRequest = id => dispatch =>
+  axios
+    .get(`${process.env.BASE_URL}/users/requests/${id}`)
+    .then(res => dispatch(getSingleRequest(res.data.result)));
 
 export default getAllRequests;

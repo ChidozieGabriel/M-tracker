@@ -2,14 +2,12 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import * as types from '../redux/types';
 import { logOut } from '../redux/actions/userActions';
 import NavLink from './NavLink';
 
 const HeaderDash = ({ userLogOut, history }) => {
-  const logout = () => {
-    // console.log(history);
-    // return userLogOut();
+  const logout = (e) => {
+    e.preventDefault();
     return userLogOut().then(() => history.replace('/'));
   };
   return (
@@ -21,7 +19,7 @@ const HeaderDash = ({ userLogOut, history }) => {
         <nav>
           <ul>
             <li>
-              <NavLink icon="fa fa-plus" title="Create request" to="/add" />
+              <NavLink icon="fa fa-plus" title="Create request" to="/create" />
             </li>
             <li>
               <NavLink
@@ -40,8 +38,14 @@ const HeaderDash = ({ userLogOut, history }) => {
 
 HeaderDash.propTypes = {
   userLogOut: PropTypes.func.isRequired,
+  history: PropTypes.shape({
+    replace: PropTypes.func.isRequired,
+  }).isRequired,
 };
 
-const HeaderDashWithRedux = connect(null, { userLogOut: logOut })(HeaderDash);
+const HeaderDashWithRedux = connect(
+  null,
+  { userLogOut: logOut },
+)(HeaderDash);
 
 export default HeaderDashWithRedux;

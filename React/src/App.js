@@ -4,6 +4,7 @@ import HomePage from './view/HomePage';
 import LoginPageRedux from './view/LoginPage';
 import RegisterPageRedux from './view/RegisterPage';
 import Dashboard from './view/Dashboard';
+import SingleRequest from './view/SingleRequest';
 import AuthRoute from '../src/routes/AuthRoute';
 
 const App = () => (
@@ -13,6 +14,7 @@ const App = () => (
       <Route path="/login" exact component={LoginPageRedux} />
       <Route path="/register" exact component={RegisterPageRedux} />
       <AuthRoute path="/dashboard" exact component={Dashboard} />
+      <AuthRoute path="/view/:requestID" exact component={SingleRequest} />
       <Redirect path="*" to="/" />
     </Switch>
   </div>

@@ -1,21 +1,12 @@
 import React from 'react';
 import moment from 'moment';
 import PropTypes from 'prop-types';
+import status from '../helpers/setStatus';
+import Button from './Button';
 
-// Request status map
-// 1 =approved, 2 = disapproved 3 =resolved 0 = pending
-const status = (num) => {
-  switch (Number(num)) {
-  case 1:
-    return 'approved';
-  case 2:
-    return 'disapproved';
-  case 3:
-    return 'resolved';
-  case 0:
-    return 'pending';
-  default:
-    return null;
+const onclick = (id) => {
+  if (confirm('Are you sure you want to delete this ?')) {
+    console.log('here', id);
   }
 };
 const table = requests =>
@@ -27,17 +18,20 @@ const table = requests =>
         <small>{status(request.status).toUpperCase()}</small>
       </td>
       <td>{moment(request.date).fromNow()}</td>
-      <td>
-        <a
-          href={`/view/${request.id}`}
+      <td className="action-btn">
+        <Button
+          to={`/view/${request.id}`}
           className="btn-sm btn-primary"
           title="Click to view request"
-        >
-          <i className="fa fa-eye" />
-        </a>
-        <a href="/" className="btn-sm btn-delete" title="Click to delete">
-          <i className="fa fa-trash" />
-        </a>
+          iconName="fa-eye"
+        />
+        <Button
+          to="#"
+          className="btn-sm btn-delete"
+          title="Click to delete"
+          iconName="fa-trash"
+          onClick={() => onclick(request.id)}
+        />
       </td>
     </tr>
   ));
