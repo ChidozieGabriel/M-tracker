@@ -7,7 +7,12 @@ const getRequest = payload => ({
 });
 
 const getSingleRequest = payload => ({
-  type: types.SINGLE_REQUESTS,
+  type: types.SINGLE_REQUEST,
+  payload,
+});
+
+const createRequest = payload => ({
+  type: types.CREATE_REQUEST,
   payload,
 });
 
@@ -20,5 +25,10 @@ export const getASingleRequest = id => dispatch =>
   axios
     .get(`${process.env.BASE_URL}/users/requests/${id}`)
     .then(res => dispatch(getSingleRequest(res.data.result)));
+export const createRequestAction = detail => dispatch =>
+  axios.post(`${process.env.BASE_URL}/users/requests/`, detail).then((res) => {
+    dispatch({ type: types.CREATE_REQUEST });
+    return res.data;
+  });
 
 export default getAllRequests;
