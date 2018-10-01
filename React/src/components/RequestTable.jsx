@@ -3,12 +3,14 @@ import moment from 'moment';
 import PropTypes from 'prop-types';
 import status from '../helpers/setStatus';
 import Button from './Button';
+import { checkAdmin } from '../redux/actions/requestActions';
 
 class RequestTable extends Component {
   handleOnClick = (id) => {
     const { deleteRequest } = this.props;
     deleteRequest(id);
   };
+
   table = requests =>
     requests.map((request, i) => (
       <tr key={request.id}>
@@ -31,6 +33,26 @@ class RequestTable extends Component {
             title="Click to delete"
             iconName="fa-trash"
             onClick={() => this.handleOnClick(request.id)}
+          />
+        </td>
+      </tr>
+    ));
+
+  AdminTable = requests =>
+    requests.map((request, i) => (
+      <tr key={request.id}>
+        <td>{i + 1}</td>
+        <td>{request.requester_name}</td>
+        <td className={status(request.status)}>
+          <small>{status(request.status).toUpperCase()}</small>
+        </td>
+        <td>{moment(request.date).fromNow()}</td>
+        <td className="action-btn">
+          <Button
+            to={`/view/admin/${request.id}`}
+            className="btn-sm btn-primary"
+            title="Click to view request"
+            iconName="fa-eye"
           />
         </td>
       </tr>
@@ -64,7 +86,9 @@ class RequestTable extends Component {
                   <th>Action</th>
                 </tr>
               </thead>
-              <tbody id="adminRequests">{this.table(requests)}</tbody>
+              <tbody id="adminRequests">
+                {checkAdmin() ? this.AdminTable(requests) : this.table(requests)}
+              </tbody>
             </table>
           </div>
         </section>
