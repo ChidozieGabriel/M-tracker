@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { logOut } from '../redux/actions/userActions';
+import { checkAdmin } from '../redux/actions/requestActions';
 import NavLink from './NavLink';
 
 const HeaderDash = ({ userLogOut, history }) => {
@@ -18,9 +19,11 @@ const HeaderDash = ({ userLogOut, history }) => {
         </Link>
         <nav>
           <ul>
-            <li>
-              <NavLink icon="fa fa-plus" title="Create request" to="/create" />
-            </li>
+            {!checkAdmin() ? (
+              <li>
+                <NavLink icon="fa fa-plus" title="Create request" to="/create" />
+              </li>
+            ) : null}
             <li>
               <NavLink
                 icon="fa fa-sign-out"

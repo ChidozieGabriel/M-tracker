@@ -5,7 +5,12 @@ import Header from '../components/Header';
 import Footer from '../components/Footer';
 import TableBody from '../components/SingleRequestTableBody';
 import Button from '../components/Button';
-import { getASingleRequest } from '../redux/actions/requestActions';
+import AdminButton from '../components/AdminButtons';
+import {
+  getASingleRequest,
+  checkAdmin,
+  getAdminRequest,
+} from '../redux/actions/requestActions';
 
 class SingleView extends Component {
   state = {
@@ -16,13 +21,34 @@ class SingleView extends Component {
     const {
       match: { params },
       SingleRequest,
+      SingleAdminRequest,
     } = this.props;
-    SingleRequest(params.requestID).then((result) => {
-      this.setState({
-        request: result[0],
+
+    if (!checkAdmin()) {
+      SingleRequest(params.requestID).then((result) => {
+        this.setMyState(result);
       });
-    });
+    } else {
+      SingleAdminRequest(params.requestID).then((result) => {
+        this.setMyState(result);
+      });
+    }
   }
+
+  setMyState = result =>
+    this.setState({
+      request: result[0],
+    });
+
+  reloadDetails = () => {
+    const {
+      match: { params },
+      SingleAdminRequest,
+    } = this.props;
+    SingleAdminRequest(params.requestID).then((result) => {
+      this.setMyState(result);
+    });
+  };
 
   render() {
     const { request } = this.state;
@@ -39,23 +65,33 @@ class SingleView extends Component {
                   <TableBody request={request} />
                 </table>
               </div>
-              <div>
-                <Button
-                  to="/dashboard"
-                  className="left btn btn-primary"
-                  text="Back"
-                  iconName="fa-arrow-left"
-                  title="Click to go back"
-                />
-                <Button
-                  to={`/edit/${request.id}`}
-                  className="right btn btn-primary"
-                  text="Edit"
-                  iconName="fa-edit"
-                  title="Click to edit request"
-                />
-                <div className="clearfix" />
-              </div>
+              {checkAdmin() ? (
+                <div>
+                  <AdminButton reload={this.reloadDetails} request={request} />
+                </div>
+              ) : (
+                <div>
+                  <Button
+                    to="/dashboard"
+                    className="left btn btn-primary"
+                    text="Back"
+                    iconName="fa-arrow-left"
+                    title="Click to go back"
+                  />
+                  <Button
+                    to={`/edit/${request.id}`}
+                    className={`right btn btn-primary ${
+                      request.status === '1' || request.status === '3'
+                        ? 'disabled'
+                        : ''
+                    }`}
+                    text="Edit"
+                    iconName="fa-edit"
+                    title="Click to edit request"
+                  />
+                </div>
+              )}
+              <div className="clearfix" />
             </div>
           </div>
         </div>
@@ -67,6 +103,7 @@ class SingleView extends Component {
 
 SingleView.propTypes = {
   SingleRequest: PropTypes.func.isRequired,
+  SingleAdminRequest: PropTypes.func.isRequired,
   history: PropTypes.shape().isRequired,
   match: PropTypes.shape({
     params: PropTypes.object.isRequired,
@@ -75,7 +112,10 @@ SingleView.propTypes = {
 
 const SingleViewWithRedux = connect(
   null,
-  { SingleRequest: getASingleRequest },
+  {
+    SingleRequest: getASingleRequest,
+    SingleAdminRequest: getAdminRequest,
+  },
 )(SingleView);
 
 export default SingleViewWithRedux;

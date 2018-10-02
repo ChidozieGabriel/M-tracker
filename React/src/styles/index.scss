@@ -63,6 +63,16 @@ a {
   text-decoration: none;
 }
 
+.admin-btn {
+    text-align: center;
+    list-style: none;
+    li {
+        margin: 20px auto;
+        display: inline-block;
+    }
+}
+
+
 #root {
   min-height: 100vh;
   position: relative;
