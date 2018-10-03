@@ -1,6 +1,5 @@
 const path = require('path');
 const webpack = require('webpack');
-const Dotenv = require('dotenv-webpack');
 const HtmlWebPackPlugin = require('html-webpack-plugin');
 
 const htmlWebpackPlugin = new HtmlWebPackPlugin({
@@ -42,22 +41,14 @@ module.exports = {
   },
   output: {
     path: path.resolve(__dirname, 'React/dist/'),
-    publicPath: '/dist/',
+    publicPath: '/',
     filename: 'main.js',
   },
   devServer: {
     historyApiFallback: true,
     contentBase: path.join(__dirname, 'React/public/'),
-    publicPath: '/dist/',
+    publicPath: '/',
     hotOnly: true,
   },
-  plugins: [
-    new webpack.HotModuleReplacementPlugin(),
-    htmlWebpackPlugin,
-    new Dotenv(),
-    new webpack.ProvidePlugin({
-      $: 'jquery',
-      jQuery: 'jquery',
-    }),
-  ],
+  plugins: [new webpack.HotModuleReplacementPlugin(), htmlWebpackPlugin],
 };

@@ -18,18 +18,17 @@ const corOptions = {
   preflightContinue: false,
   optionsSuccessStatus: 204,
 };
-const compiler = webpack(config);
+// const compiler = webpack(config);
 
 dotenv.config();
 app.use(cors(corOptions));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-// app.use(express.static(path.join(__dirname, '../React/public/index.html')));
-app.use(
-  webPackDevMiddleware(compiler, {
-    publicPath: config.output.publicPath,
-  }),
-);
+// app.use(
+//   webPackDevMiddleware(compiler, {
+//     publicPath: config.output.publicPath,
+//   }),
+// );
 app.use('/api/v1/docs', swaggerUI.serve, swaggerUI.setup(swaggerDoc));
 app.use('/api/v1', routes);
 
@@ -37,8 +36,9 @@ app.use('/api/v1', routes);
 //   res.sendFile(path.join(__dirname, '../client/index.html'));
 // });
 
+app.use(express.static(path.resolve(__dirname, '../React/dist')));
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../React/public/index.html'));
+  res.sendFile(path.join(__dirname, '../React/dist/index.html'));
 });
 
 app.listen(port, () => {
