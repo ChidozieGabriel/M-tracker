@@ -26,6 +26,11 @@ export const getAllAdminRequests = () => dispatch =>
     .get(`${process.env.BASE_URL}/requests/`)
     .then(res => dispatch(getRequest(res.data.result)));
 
+export const getAllRequestsByOrder = url => dispatch =>
+  axios
+    .get(`${process.env.BASE_URL}${url}`)
+    .then(res => dispatch(getRequest(res.data.result)));
+
 export const getAdminRequest = id => dispatch =>
   axios.get(`${process.env.BASE_URL}/requests/admin/${id}`).then((res) => {
     dispatch(getSingleRequest(res.data.result));

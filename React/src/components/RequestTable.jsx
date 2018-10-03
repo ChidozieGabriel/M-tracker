@@ -3,6 +3,7 @@ import moment from 'moment';
 import PropTypes from 'prop-types';
 import status from '../helpers/setStatus';
 import Button from './Button';
+import OrderBy from './RequestOrder';
 import { checkAdmin } from '../redux/actions/requestActions';
 
 class RequestTable extends Component {
@@ -61,22 +62,11 @@ class RequestTable extends Component {
     ));
 
   render() {
-    const { requests } = this.props;
+    const { requests, link } = this.props;
     return (
       <div className="wrapper">
         <section className="list">
-          <div className="list-header">
-            <h3>All requests</h3>
-            <label htmlFor="filter">Order By:</label>
-            <select id="filter" name="filter">
-              <option value="0">Most recent</option>
-              <option value="1">Approved</option>
-              <option value="2">Disapproved</option>
-              <option value="3">Resolved</option>
-              <option value="4">Pending</option>
-            </select>
-          </div>
-
+          <OrderBy title="All requests" link={link} />
           <div className="table-res">
             <table className="table">
               <thead>
@@ -105,6 +95,7 @@ class RequestTable extends Component {
 RequestTable.propTypes = {
   requests: PropTypes.array.isRequired,
   deleteRequest: PropTypes.func.isRequired,
+  link: PropTypes.func.isRequired,
 };
 
 export default RequestTable;

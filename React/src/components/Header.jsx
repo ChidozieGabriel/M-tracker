@@ -8,7 +8,9 @@ import { logOut } from '../redux/actions/userActions';
 const Header = ({ token, userLogOut, history }) => {
   const logout = (e) => {
     e.preventDefault();
-    return userLogOut().then(() => history.replace('/'));
+    if (userLogOut()) {
+      history.replace('/');
+    }
   };
   return (
     <div>

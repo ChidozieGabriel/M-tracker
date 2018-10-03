@@ -5,6 +5,7 @@ import getAllRequests, {
   checkAdmin,
   deleteRequestAction,
   getAllAdminRequests,
+  getAllRequestsByOrder,
 } from '../redux/actions/requestActions';
 import HeaderDash from '../components/HeaderDash';
 import Footer from '../components/Footer';
@@ -52,6 +53,12 @@ class Dashboard extends Component {
         });
       });
   };
+  requestLink = (link) => {
+    const { orderBy } = this.props;
+    orderBy(link).then((result) => {
+      this.setStateWithRequests(result);
+    });
+  };
 
   render() {
     const { history } = this.props;
@@ -68,7 +75,11 @@ class Dashboard extends Component {
             {this.state.message}
           </span>
         )}
-        <RequestTable deleteRequest={this.handleDelete} requests={requests} />
+        <RequestTable
+          link={this.requestLink}
+          deleteRequest={this.handleDelete}
+          requests={requests}
+        />
         <Footer />
       </div>
     );
@@ -80,6 +91,7 @@ Dashboard.propTypes = {
   getAllRequest: PropTypes.func.isRequired,
   deleteRequest: PropTypes.func.isRequired,
   adminRequests: PropTypes.func.isRequired,
+  orderBy: PropTypes.func.isRequired,
 };
 
 export default connect(
@@ -88,5 +100,6 @@ export default connect(
     getAllRequest: getAllRequests,
     deleteRequest: deleteRequestAction,
     adminRequests: getAllAdminRequests,
+    orderBy: getAllRequestsByOrder,
   },
 )(Dashboard);
