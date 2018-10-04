@@ -2,7 +2,9 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import getAllRequests, {
+  checkAdmin,
   deleteRequestAction,
+  getAllAdminRequests,
 } from '../redux/actions/requestActions';
 import HeaderDash from '../components/HeaderDash';
 import Footer from '../components/Footer';
@@ -10,12 +12,17 @@ import RequestTable from '../components/RequestTable';
 
 class Dashboard extends Component {
   state = {
-    requestState: [],
+    requests: [],
     message: '',
   };
   componentDidMount() {
-    const { getAllRequest } = this.props;
-    return getAllRequest().then((result) => {
+    const { getAllRequest, adminRequests } = this.props;
+    if (!checkAdmin()) {
+      return getAllRequest().then((result) => {
+        this.setStateWithRequests(result);
+      });
+    }
+    return adminRequests().then((result) => {
       this.setStateWithRequests(result);
     });
   }
@@ -23,7 +30,7 @@ class Dashboard extends Component {
   setStateWithRequests = (result) => {
     this.setState({
       ...this.state,
-      requestState: result.payload,
+      requests: result.payload,
     });
   };
 
@@ -48,7 +55,7 @@ class Dashboard extends Component {
 
   render() {
     const { history } = this.props;
-    const { requestState } = this.state;
+    const { requests } = this.state;
     return (
       <div>
         <HeaderDash history={history} />
@@ -61,7 +68,7 @@ class Dashboard extends Component {
             {this.state.message}
           </span>
         )}
-        <RequestTable deleteRequest={this.handleDelete} requests={requestState} />
+        <RequestTable deleteRequest={this.handleDelete} requests={requests} />
         <Footer />
       </div>
     );
@@ -72,6 +79,7 @@ Dashboard.propTypes = {
   history: PropTypes.object.isRequired,
   getAllRequest: PropTypes.func.isRequired,
   deleteRequest: PropTypes.func.isRequired,
+  adminRequests: PropTypes.func.isRequired,
 };
 
 export default connect(
@@ -79,5 +87,6 @@ export default connect(
   {
     getAllRequest: getAllRequests,
     deleteRequest: deleteRequestAction,
+    adminRequests: getAllAdminRequests,
   },
 )(Dashboard);
