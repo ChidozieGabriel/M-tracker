@@ -48,7 +48,7 @@ LoginPage.propTypes = {
   }).isRequired,
 };
 
-const mapStateToProps = state => ({
+export const mapStateToProps = state => ({
   token: state.user.token,
 });
 

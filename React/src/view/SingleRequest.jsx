@@ -6,13 +6,9 @@ import Footer from '../components/Footer';
 import TableBody from '../components/SingleRequestTableBody';
 import Button from '../components/Button';
 import AdminButton from '../components/AdminButtons';
-import {
-  getASingleRequest,
-  checkAdmin,
-  getAdminRequest,
-} from '../redux/actions/requestActions';
+import { getASingleRequest, getAdminRequest } from '../redux/actions/requestActions';
 
-class SingleView extends Component {
+export class SingleView extends Component {
   state = {
     request: {},
   };
@@ -22,9 +18,10 @@ class SingleView extends Component {
       match: { params },
       SingleRequest,
       SingleAdminRequest,
+      admin,
     } = this.props;
 
-    if (!checkAdmin()) {
+    if (!admin) {
       SingleRequest(params.requestID).then((result) => {
         this.setMyState(result);
       });
@@ -52,7 +49,7 @@ class SingleView extends Component {
 
   render() {
     const { request } = this.state;
-    const { history } = this.props;
+    const { history, admin } = this.props;
     return (
       <div id="error-message">
         <Header history={history} />
@@ -65,7 +62,7 @@ class SingleView extends Component {
                   <TableBody request={request} />
                 </table>
               </div>
-              {checkAdmin() ? (
+              {admin ? (
                 <div>
                   <AdminButton reload={this.reloadDetails} request={request} />
                 </div>
@@ -104,14 +101,19 @@ class SingleView extends Component {
 SingleView.propTypes = {
   SingleRequest: PropTypes.func.isRequired,
   SingleAdminRequest: PropTypes.func.isRequired,
+  admin: PropTypes.bool.isRequired,
   history: PropTypes.shape().isRequired,
   match: PropTypes.shape({
     params: PropTypes.object.isRequired,
   }).isRequired,
 };
 
+export const mapStateToProps = state => ({
+  admin: state.user.auth.admin,
+});
+
 const SingleViewWithRedux = connect(
-  null,
+  mapStateToProps,
   {
     SingleRequest: getASingleRequest,
     SingleAdminRequest: getAdminRequest,

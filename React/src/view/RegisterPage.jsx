@@ -6,16 +6,22 @@ import AuthHeader from '../components/AuthHeader';
 import Footer from '../components/Footer';
 import { register } from '../redux/actions/userActions';
 
-class Register extends PureComponent {
+export class Register extends PureComponent {
   componentWillMount() {
-    const { token, history: { push } } = this.props;
+    const {
+      token,
+      history: { push },
+    } = this.props;
     if (token) {
       push('/dashboard');
     }
   }
 
   register = (details) => {
-    const { registerUser, history: { push } } = this.props;
+    const {
+      registerUser,
+      history: { push },
+    } = this.props;
     return registerUser(details).then(() => push('/dashboard'));
   };
 
@@ -37,12 +43,12 @@ Register.propTypes = {
   }).isRequired,
 };
 
-const mapStateTpProps = state => ({
+export const mapStateToProps = state => ({
   token: state.user.token,
 });
 
 const RegisterRedux = connect(
-  mapStateTpProps,
+  mapStateToProps,
   { registerUser: register },
 )(Register);
 export default RegisterRedux;

@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import getAllRequests, {
-  checkAdmin,
   deleteRequestAction,
   getAllAdminRequests,
   getAllRequestsByOrder,
@@ -11,14 +10,14 @@ import HeaderDash from '../components/HeaderDash';
 import Footer from '../components/Footer';
 import RequestTable from '../components/RequestTable';
 
-class Dashboard extends Component {
+export class Dashboard extends Component {
   state = {
     requests: [],
     message: '',
   };
   componentDidMount() {
-    const { getAllRequest, adminRequests } = this.props;
-    if (!checkAdmin()) {
+    const { getAllRequest, adminRequests, admin } = this.props;
+    if (!admin) {
       return getAllRequest().then((result) => {
         this.setStateWithRequests(result);
       });
@@ -36,13 +35,12 @@ class Dashboard extends Component {
   };
 
   handleDelete = (id) => {
-    const { deleteRequest } = this.props;
+    const { deleteRequest, getAllRequest } = this.props;
     deleteRequest(id)
       .then((res) => {
         this.setState({
           message: res.message,
         });
-        const { getAllRequest } = this.props;
         return getAllRequest().then((result) => {
           this.setStateWithRequests(result);
         });
@@ -91,11 +89,16 @@ Dashboard.propTypes = {
   getAllRequest: PropTypes.func.isRequired,
   deleteRequest: PropTypes.func.isRequired,
   adminRequests: PropTypes.func.isRequired,
+  admin: PropTypes.bool.isRequired,
   orderBy: PropTypes.func.isRequired,
 };
 
+export const mapStateToProps = state => ({
+  admin: state.user.auth.admin,
+});
+
 export default connect(
-  null,
+  mapStateToProps,
   {
     getAllRequest: getAllRequests,
     deleteRequest: deleteRequestAction,

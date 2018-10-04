@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import NavLink from './NavLink';
 import { logOut } from '../redux/actions/userActions';
 
-const Header = ({ token, userLogOut, history }) => {
+export const Header = ({ token, userLogOut, history }) => {
   const logout = (e) => {
     e.preventDefault();
     if (userLogOut()) {
@@ -25,6 +25,7 @@ const Header = ({ token, userLogOut, history }) => {
                 <NavLink
                   icon="fa fa-sign-out"
                   onClick={logout}
+                  id="logout"
                   title="Logout"
                   to="#"
                 />
@@ -39,7 +40,7 @@ const Header = ({ token, userLogOut, history }) => {
   );
 };
 
-const mapStateToProps = state => ({
+export const mapStateToProps = state => ({
   token: state.user.token,
 });
 

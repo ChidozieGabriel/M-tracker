@@ -9,7 +9,7 @@ import {
   getASingleRequest,
 } from '../redux/actions/requestActions';
 
-class EditRequest extends Component {
+export class EditRequest extends Component {
   state = {
     request: [],
   };

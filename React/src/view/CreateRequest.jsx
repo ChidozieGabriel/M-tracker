@@ -6,7 +6,7 @@ import AuthHeader from '../components/AuthHeader';
 import Footer from '../components/Footer';
 import { createRequestAction } from '../redux/actions/requestActions';
 
-class CreateRequest extends Component {
+export class CreateRequest extends Component {
   handleSubmit = (data) => {
     const { createRequest } = this.props;
     return createRequest(data);
