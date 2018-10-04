@@ -8,7 +8,7 @@ import { checkAdmin } from '../redux/actions/requestActions';
 class RequestTable extends Component {
   handleOnClick = (id) => {
     const { deleteRequest } = this.props;
-    deleteRequest(id);
+    return window.confirm('Are you sure about this ?') ? deleteRequest(id) : null;
   };
 
   table = requests =>
@@ -29,7 +29,9 @@ class RequestTable extends Component {
           />
           <Button
             to="#"
-            className="btn-sm btn-delete"
+            className={`btn-sm btn-delete ${
+              request.status === '3' || request.status === '1' ? 'disabled' : ''
+            }`}
             title="Click to delete"
             iconName="fa-trash"
             onClick={() => this.handleOnClick(request.id)}
@@ -49,7 +51,7 @@ class RequestTable extends Component {
         <td>{moment(request.date).fromNow()}</td>
         <td className="action-btn">
           <Button
-            to={`/view/admin/${request.id}`}
+            to={`/view/${request.id}`}
             className="btn-sm btn-primary"
             title="Click to view request"
             iconName="fa-eye"
@@ -86,9 +88,13 @@ class RequestTable extends Component {
                   <th>Action</th>
                 </tr>
               </thead>
-              <tbody id="adminRequests">
-                {checkAdmin() ? this.AdminTable(requests) : this.table(requests)}
-              </tbody>
+              {requests.length > 0 ? (
+                <tbody id="adminRequests">
+                  {checkAdmin() ? this.AdminTable(requests) : this.table(requests)}
+                </tbody>
+              ) : (
+                <h3>No requests yet</h3>
+              )}
             </table>
           </div>
         </section>

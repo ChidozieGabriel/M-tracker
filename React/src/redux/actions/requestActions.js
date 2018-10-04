@@ -26,6 +26,27 @@ export const getAllAdminRequests = () => dispatch =>
     .get(`${process.env.BASE_URL}/requests/`)
     .then(res => dispatch(getRequest(res.data.result)));
 
+export const getAdminRequest = id => dispatch =>
+  axios.get(`${process.env.BASE_URL}/requests/admin/${id}`).then((res) => {
+    dispatch(getSingleRequest(res.data.result));
+    return res.data.result;
+  });
+
+export const approveRequest = id => dispatch =>
+  axios.put(`${process.env.BASE_URL}/requests/${id}/approve`).then((res) => {
+    dispatch(getSingleRequest(res.data.result));
+    return res.data.result;
+  });
+export const disapproveRequest = id => dispatch =>
+  axios.put(`${process.env.BASE_URL}/requests/${id}/disapprove`).then((res) => {
+    dispatch(getSingleRequest(res.data.result));
+    return res.data.result;
+  });
+export const resolveRequest = id => dispatch =>
+  axios.put(`${process.env.BASE_URL}/requests/${id}/resolve`).then((res) => {
+    dispatch(getSingleRequest(res.data.result));
+    return res.data.result;
+  });
 export const getASingleRequest = id => dispatch =>
   axios.get(`${process.env.BASE_URL}/users/requests/${id}`).then((res) => {
     dispatch(getSingleRequest(res.data.result));
