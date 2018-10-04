@@ -9,7 +9,9 @@ import NavLink from './NavLink';
 const HeaderDash = ({ userLogOut, history }) => {
   const logout = (e) => {
     e.preventDefault();
-    return userLogOut().then(() => history.replace('/'));
+    if (userLogOut()) {
+      history.replace('/');
+    }
   };
   return (
     <div>

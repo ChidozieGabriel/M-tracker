@@ -8,13 +8,6 @@ const htmlWebpackPlugin = new HtmlWebPackPlugin({
   filename: './index.html',
 });
 
-// const env = dotenv.config().parsed;
-// const envKeys = Object.keys(env).reduce((prev, next) => {
-//   prev[`process.env.${next}`] = JSON.stringify(env[next]);
-//   return prev;
-// }, {});
-// const definePlugin = new webpack.DefinePlugin(envKeys);
-
 module.exports = {
   entry: './React/src/index.js',
   mode: 'development',
@@ -55,14 +48,12 @@ module.exports = {
   devServer: {
     historyApiFallback: true,
     contentBase: path.join(__dirname, 'React/public/'),
-    // port: 3000,
     publicPath: '/dist/',
     hotOnly: true,
   },
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
     htmlWebpackPlugin,
-    // definePlugin,
     new Dotenv(),
     new webpack.ProvidePlugin({
       $: 'jquery',
