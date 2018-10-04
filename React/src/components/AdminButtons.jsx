@@ -8,7 +8,7 @@ import {
   resolveRequest,
 } from '../redux/actions/requestActions';
 
-class AdminButton extends Component {
+export class AdminButton extends Component {
   handleApprove = (id) => {
     const { approve, reload } = this.props;
     approve(id).then(() => {
@@ -39,6 +39,7 @@ class AdminButton extends Component {
               className={`btn btn-approve ${
                 request.status === '3' || request.status === '1' ? 'disabled' : ''
               }`}
+              id="Approve"
               text="Approve"
               onClick={() => this.handleApprove(request.id)}
               iconName="fa-check"
@@ -52,6 +53,7 @@ class AdminButton extends Component {
                 request.status === '2' || request.status === '3' ? 'disabled' : ''
               }`}
               text="Resolve"
+              id="Resolve"
               onClick={() => this.handleResolve(request.id)}
               iconName="fa-check-box"
               title="Click to resolve"
@@ -64,6 +66,7 @@ class AdminButton extends Component {
                 request.status === '3' || request.status === '2' ? 'disabled' : ''
               }`}
               text="Disapprove"
+              id="Disapprove"
               onClick={() => this.handleDisapprove(request.id)}
               iconName="fa-times"
               title="Click to disapprove"

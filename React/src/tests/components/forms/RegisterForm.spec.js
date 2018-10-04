@@ -2,9 +2,9 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import sinon from 'sinon';
 
-import LoginForm from '../../../components/forms/LoginForm';
+import RegisterForm from '../../../components/forms/RegisterForm';
 
-describe('Login form component test', () => {
+describe('Register form component test', () => {
   const error = {
     response: {
       data: {
@@ -13,7 +13,7 @@ describe('Login form component test', () => {
     },
   };
   const sinonSpy = sinon.spy(() => Promise.reject(error));
-  const wrapper = shallow(<LoginForm submit={sinonSpy} />);
+  const wrapper = shallow(<RegisterForm submit={sinonSpy} />);
 
   it('Should render the Login form', () => {
     // console.log(wrapper.debug());

@@ -11,11 +11,15 @@ import './styles/index.scss';
 
 if (localStorage.mTracker) {
   const token = localStorage.getItem('mTracker');
-  const { exp } = decode(token);
+  const data = decode(token);
   const currentTime = Math.floor(Date.now() / 1000);
-  if (exp > currentTime) {
+  if (data.exp > currentTime) {
+    const payload = {
+      token,
+      auth: data,
+    };
     setAuth(token);
-    store.dispatch({ type: types.SAVE_USER_TOKEN, payload: token });
+    store.dispatch({ type: types.SAVE_USER_TOKEN, payload });
   }
 }
 

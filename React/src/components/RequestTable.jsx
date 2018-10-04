@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import moment from 'moment';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import status from '../helpers/setStatus';
 import Button from './Button';
 import OrderBy from './RequestOrder';
-import { checkAdmin } from '../redux/actions/requestActions';
 
-class RequestTable extends Component {
+export class RequestTable extends Component {
   handleOnClick = (id) => {
     const { deleteRequest } = this.props;
     return window.confirm('Are you sure about this ?') ? deleteRequest(id) : null;
@@ -35,6 +35,7 @@ class RequestTable extends Component {
             }`}
             title="Click to delete"
             iconName="fa-trash"
+            id="delete"
             onClick={() => this.handleOnClick(request.id)}
           />
         </td>
@@ -62,7 +63,7 @@ class RequestTable extends Component {
     ));
 
   render() {
-    const { requests, link } = this.props;
+    const { requests, link, admin } = this.props;
     return (
       <div className="wrapper">
         <section className="list">
@@ -80,7 +81,7 @@ class RequestTable extends Component {
               </thead>
               {requests.length > 0 ? (
                 <tbody id="adminRequests">
-                  {checkAdmin() ? this.AdminTable(requests) : this.table(requests)}
+                  {admin ? this.AdminTable(requests) : this.table(requests)}
                 </tbody>
               ) : (
                 <h3>No requests yet</h3>
@@ -96,6 +97,11 @@ RequestTable.propTypes = {
   requests: PropTypes.array.isRequired,
   deleteRequest: PropTypes.func.isRequired,
   link: PropTypes.func.isRequired,
+  admin: PropTypes.bool.isRequired,
 };
 
-export default RequestTable;
+export const mapStateToProps = state => ({
+  admin: state.user.auth.admin,
+});
+
+export default connect(mapStateToProps)(RequestTable);

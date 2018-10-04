@@ -5,7 +5,7 @@ import Button from '../Button';
 import Loader from '../Loader';
 import { getASingleRequest } from '../../redux/actions/requestActions';
 
-class RequestForm extends Component {
+export class RequestForm extends Component {
   state = {
     data: {
       dept: '',

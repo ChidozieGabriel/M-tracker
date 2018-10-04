@@ -3,6 +3,7 @@ import * as types from '../../redux/types';
 
 describe('Test userReducers', () => {
   const state = {
+    auth: false,
     token: 'kam',
   };
 
@@ -12,10 +13,21 @@ describe('Test userReducers', () => {
 
   it('Should return state of loaded user', () => {
     const actual = userReducer(state, {
-      type: types.GET_USER_TOKEN,
-      payload: state.token,
+      type: types.SAVE_USER_TOKEN,
+      payload: state,
     });
-    const expected = { token: 'kam' };
+    const expected = {
+      auth: false,
+      token: 'kam',
+    };
+    expect(actual).toEqual(expected);
+  });
+
+  it('Should return state of loaded user', () => {
+    const actual = userReducer(state, {
+      type: types.LOG_OUT,
+    });
+    const expected = { auth: null, token: null };
     expect(actual).toEqual(expected);
   });
 });

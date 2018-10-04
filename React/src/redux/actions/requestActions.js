@@ -1,5 +1,4 @@
 import axios from 'axios';
-import decoded from 'jwt-decode';
 import * as types from '../types';
 
 const getRequest = payload => ({
@@ -11,11 +10,6 @@ const getSingleRequest = payload => ({
   type: types.SINGLE_REQUEST,
   payload,
 });
-
-export const checkAdmin = () => {
-  const { admin } = decoded(localStorage.mTracker);
-  return admin;
-};
 const getAllRequests = () => dispatch =>
   axios
     .get(`${process.env.BASE_URL}/users/requests/`)

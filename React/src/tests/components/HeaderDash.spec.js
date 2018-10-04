@@ -2,7 +2,7 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import sinon from 'sinon';
 
-import { Header, mapStateToProps } from '../../components/Header';
+import { HeaderDash, mapStateToProps } from '../../components/HeaderDash';
 
 describe('Header component rendering', () => {
   const history = {
@@ -12,7 +12,7 @@ describe('Header component rendering', () => {
 
   const sinonSpyResolve = sinon.spy(() => Promise.resolve());
   const wrapper = shallow(
-    <Header userLogOut={sinonSpyResolve} token="token" history={history} />,
+    <HeaderDash userLogOut={sinonSpyResolve} admin history={history} />,
   );
   const state = {
     user: {
@@ -35,7 +35,7 @@ describe('Header component rendering', () => {
 
   it('Maps state To Props', () => {
     const storeState = mapStateToProps(state);
-    const { token } = storeState;
-    expect(token).toBe('token');
+    const { admin } = storeState;
+    expect(admin).toBe(false);
   });
 });

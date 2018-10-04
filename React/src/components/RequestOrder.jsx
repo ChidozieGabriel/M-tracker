@@ -1,8 +1,8 @@
 import React, { Component, Fragment } from 'react';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { checkAdmin } from '../redux/actions/requestActions';
 
-class OrderButton extends Component {
+export class OrderButton extends Component {
   requestFilter = (url, value) => {
     switch (value) {
     case '1':
@@ -19,8 +19,8 @@ class OrderButton extends Component {
   };
 
   handleChange = (e) => {
-    const { link } = this.props;
-    if (!checkAdmin()) {
+    const { link, admin } = this.props;
+    if (!admin) {
       link(this.requestFilter('/users/requests/orderBy', e.target.value));
     } else {
       link(this.requestFilter('/requests', e.target.value));
@@ -50,6 +50,10 @@ class OrderButton extends Component {
 OrderButton.propTypes = {
   title: PropTypes.string.isRequired,
   link: PropTypes.func.isRequired,
+  admin: PropTypes.bool.isRequired,
 };
+export const mapStateToProps = state => ({
+  admin: state.user.auth.admin,
+});
 
-export default OrderButton;
+export default connect(mapStateToProps)(OrderButton);
