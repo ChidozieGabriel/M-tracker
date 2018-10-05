@@ -78,7 +78,6 @@ export class Dashboard extends Component {
           deleteRequest={this.handleDelete}
           requests={requests}
         />
-        <Footer />
       </div>
     );
   }
