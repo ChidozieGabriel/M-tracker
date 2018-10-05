@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Header from '../components/Header';
-import Footer from '../components/Footer';
 import TableBody from '../components/SingleRequestTableBody';
 import Button from '../components/Button';
 import AdminButton from '../components/AdminButtons';
@@ -92,7 +91,6 @@ export class SingleView extends Component {
             </div>
           </div>
         </div>
-        <Footer />
       </div>
     );
   }

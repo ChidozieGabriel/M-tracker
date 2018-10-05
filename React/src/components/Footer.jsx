@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 
 const Footer = () => (
-  <div>
+  <Fragment>
     <footer>
       <p>&copy;2018 VeeqTor</p>
     </footer>
-  </div>
+  </Fragment>
 );
 
 export default Footer;
